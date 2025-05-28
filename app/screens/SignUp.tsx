@@ -1,7 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import LogoIcon from "../../assets/colorlogo.svg";
-import { TextInput } from 'react-native-paper';
 import Button from '../../components/button';
 import CustomTextInput from '../../components/textInput';
 import { Link } from 'expo-router';
@@ -47,7 +46,7 @@ const SignUp = () => {
 
                 <CustomTextInput
                     label={'Username'}
-                    style={styles}
+
                     onChangeText={setUserName}
                     hidePassword={hidePassword}
                     toggleButton={null}
@@ -56,7 +55,7 @@ const SignUp = () => {
 
                 <CustomTextInput
                     label={'Email'}
-                    style={styles}
+
                     onChangeText={setEmail}
                     hidePassword={hidePassword}
                     toggleButton={null}
@@ -87,7 +86,11 @@ const SignUp = () => {
                     </Link>
                 </Text>
 
-                <Button title={'Sign Up'} path={'/OnBoarding'} />
+                <Button
+                    title={'Sign Up'}
+                    path={'/OnBoarding'}
+                />
+
 
                 <Text style={{
                     textAlign: 'center',
