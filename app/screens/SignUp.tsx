@@ -47,7 +47,7 @@ const SignUp = () => {
 
                 <CustomTextInput
                     label={'Username'}
-                    style={styles}
+
                     onChangeText={setUserName}
                     hidePassword={hidePassword}
                     toggleButton={null}
@@ -56,7 +56,7 @@ const SignUp = () => {
 
                 <CustomTextInput
                     label={'Email'}
-                    style={styles}
+
                     onChangeText={setEmail}
                     hidePassword={hidePassword}
                     toggleButton={null}
