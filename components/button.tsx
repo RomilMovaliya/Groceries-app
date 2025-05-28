@@ -1,8 +1,12 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { ButtonProps, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { router } from 'expo-router'
+import { MyButtonProps } from '../types/types'
 
-export default function Button({ title, path }) {
+
+
+
+const Button: React.FC<MyButtonProps> = ({ title, path }) => {
 
 
     const pressHandler = () => {
@@ -17,7 +21,7 @@ export default function Button({ title, path }) {
 }
 
 
-
+export default Button;
 
 const styles = StyleSheet.create({
     btn: {

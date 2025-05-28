@@ -1,6 +1,13 @@
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { Image, ImageProps, StyleSheet, View } from 'react-native'
 import React from 'react'
-const Carousel = () => {
+
+// interface MyCarouselProps extends ImageProps {
+
+// }
+
+// here right now i have no any props that i pass so that reason i add one ImageProps directly to below components.
+
+const Carousel: React.FC<ImageProps> = () => {
 
     return (
         <View style={styles.container}>
@@ -18,6 +25,7 @@ export default Carousel
 
 const styles = StyleSheet.create({
     container: {
-        marginHorizontal: 10
+        marginHorizontal: 10,
+
     }
 })
