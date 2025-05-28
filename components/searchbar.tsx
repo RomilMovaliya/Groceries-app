@@ -1,7 +1,13 @@
-import { StyleSheet, Text, TextInput, View } from 'react-native'
+import { ButtonProps, StyleSheet, Text, TextInput, TextInputProps, View } from 'react-native'
 import React from 'react'
 import SearchIcon from "../assets/searchIcon.svg";
-const SearchBar = () => {
+
+// interface MySearchBar extends TextInputProps {
+
+// }
+// here right now i have no any props that i pass so that reason i add one TextInputProps directly to below components.
+
+const SearchBar: React.FC<TextInputProps> = () => {
     return (
         <View style={styles.container}>
             <SearchIcon
