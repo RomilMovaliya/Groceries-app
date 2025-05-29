@@ -28,3 +28,11 @@ export interface MyButtonProps extends ButtonProps, TextInputProps {
 export interface MyProductTitle extends TextProps {
     title: string
 }
+
+export interface ProductData {
+    id: number,
+    name: string,
+    pieces: string,
+    price: number,
+    img: string
+}

@@ -7,7 +7,6 @@ import { MyProductTitle } from '../types/types'
 const ProductTitle: React.FC<MyProductTitle> = ({ title }) => {
     return (
         <View style={{
-            borderWidth: 1,
             width: '100%',
             paddingHorizontal: 20,
             marginBlock: 10,

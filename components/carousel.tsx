@@ -13,10 +13,12 @@ const Carousel: React.FC<ImageProps> = () => {
         <View style={styles.container}>
             <Image
                 source={require('../assets/banner.png')}
-                width={100}
+                width={80}
                 height={100}
                 resizeMode='cover'
             />
+
+
         </View>
     )
 }
@@ -25,7 +27,8 @@ export default Carousel
 
 const styles = StyleSheet.create({
     container: {
-        marginHorizontal: 10,
-
+        paddingHorizontal: 10,
+        borderRadius: 8,
+        marginTop: 20
     }
 })
