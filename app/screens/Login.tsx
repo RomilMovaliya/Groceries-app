@@ -19,8 +19,10 @@ const Login = () => {
             <View style={styles.logobox}>
                 <LogoIcon
                     width={120}
-                    height={60} />
+                    height={60}
+                />
             </View>
+
             <View style={styles.titlebox}>
                 <Text style={{ fontSize: 15, fontWeight: '600' }}>Login</Text>
                 <Text style={{ color: '#7C7C7C', fontSize: 12 }}>Enter your credentials to continue</Text>
@@ -31,7 +33,7 @@ const Login = () => {
                 <CustomTextInput
                     label={'Email'}
                     onChangeText={setEmail}
-                    hidePassword={hidePassword}
+                    hidePassword={null}
                     toggleButton={null}
                     value={email}
                 />
@@ -56,7 +58,7 @@ const Login = () => {
                     Forgot Password?
                 </Text>
 
-                <Button title={'Log In'} path={'/screens/SelectLocation'} />
+                <Button title={'Log In'} path={'/tabs'} />
 
                 <Text style={{
                     textAlign: 'center',

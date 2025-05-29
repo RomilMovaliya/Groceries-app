@@ -13,7 +13,7 @@ const Verification = () => {
     const [code, setCode] = useState('');
 
     const submitHandler = () => {
-        router.replace("/screens/HomeScreen");
+        router.replace("/tabs");
     }
 
     const SendCodeHandler = () => {
