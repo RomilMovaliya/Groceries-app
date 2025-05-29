@@ -34,3 +34,33 @@ export const fruits: {
             img: "https://static.vecteezy.com/system/resources/previews/008/848/362/non_2x/fresh-pineapple-free-png.png",
         },
     ];
+
+
+export const productData = [
+    {
+        name: "apple",
+        productDeatil: "good product",
+        nutritions: "100gr",
+        review: "5 star"
+    },
+    {
+        name: "banana",
+        productDeatil: "fresh and sweet",
+        nutritions: "120gr",
+        review: "4.5 star"
+    },
+    {
+        name: "orange",
+        productDeatil: "juicy and tangy",
+        nutritions: "110gr",
+        review: "4 star"
+    },
+    {
+        name: "pine apple",
+        productDeatil: "tropical and rich",
+        nutritions: "150gr",
+        review: "4.8 star"
+    }
+
+
+]

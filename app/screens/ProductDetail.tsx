@@ -1,54 +1,81 @@
-import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
-import BackIcon from "../../assets/backIcon.svg";
-import ShareIcon from "../../assets/shareIcon.svg";
-import FavoriteIcon from "../../assets/tabIcons/favoriteIcon.svg";
+import {
+    Image,
+    SafeAreaView,
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
+} from 'react-native';
+import React from 'react';
+import BackIcon from '../../assets/backIcon.svg';
+import ShareIcon from '../../assets/shareIcon.svg';
+import FavoriteIcon from '../../assets/tabIcons/favoriteIcon.svg';
 import { router } from 'expo-router';
 import UpdateItemButton from '../../components/updateItemButton';
+import ProductDescription from '../../components/productDescription';
+import Button from '../../components/button';
+
 const ProductDetail = () => {
     return (
-        <SafeAreaView>
+        <SafeAreaView style={{ flex: 1 }}>
+            <View style={{ flex: 1 }}>
+                <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
+                    <View style={styles.topBox}>
+                        <Image
+                            style={{ width: '100%' }}
+                            resizeMode="contain"
+                            source={require('../../assets/appleIcon.png')}
+                        />
+                    </View>
 
-            <View style={styles.topBox}>
-                <Image
-                    style={{
-                        width: '100%',
-                        borderColor: 'red'
-                    }}
-                    resizeMode='contain'
-                    source={require('../../assets/appleIcon.png')}
-                />
-            </View>
+                    <View style={styles.topheading}>
+                        <BackIcon height={24} width={24} onPress={() => router.back()} />
+                        <ShareIcon height={25} width={25} />
+                    </View>
 
-            <View style={styles.topheading}>
-                <BackIcon height={24} width={24} onPress={() => { router.back() }} />
-                <ShareIcon height={25} width={25} />
-            </View>
+                    <View>
+                        <View style={styles.titleRow}>
+                            <Text>Natural Red Apple</Text>
+                            <FavoriteIcon width={24} height={24} />
+                        </View>
 
-            <View>
-                <View style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    paddingHorizontal: 20,
-                    paddingTop: 10
-                }}>
-                    <Text>Natural Red Apple</Text>
-                    <FavoriteIcon width={24} height={24} />
+                        <Text style={styles.subtitleText}>1kg, Price</Text>
+                    </View>
+
+                    <UpdateItemButton />
+
+                    <ProductDescription
+                        title="Product Detail"
+                        description="Apple is a nutritious fruit rich in fiber and vitamin C. It is sweet, crisp, and perfect for snacking or adding to salads and desserts."
+                        weight={false}
+                        rating={0}
+                    />
+
+                    <ProductDescription
+                        title="Nutritions"
+                        description="Apple is a nutritious fruit rich in fiber and vitamin C. It is sweet, crisp, and perfect for snacking or adding to salads and desserts."
+                        weight={true}
+                        rating={0}
+                    />
+
+                    <ProductDescription
+                        title="Review"
+                        description="Apple is a nutritious fruit rich in fiber and vitamin C. It is sweet, crisp, and perfect for snacking or adding to salads and desserts."
+                        weight={false}
+                        rating={5}
+                    />
+                </ScrollView>
+
+
+                <View style={styles.bottomButton}>
+                    <Button title="Add To Basket" path="/screens/HomeScreen" />
                 </View>
-
-                <Text style={{
-                    color: '#7C7C7C',
-                    paddingHorizontal: 20,
-                }}>1kg, Price</Text>
             </View>
-
-            <UpdateItemButton />
-
         </SafeAreaView>
-    )
-}
+    );
+};
 
-export default ProductDetail
+export default ProductDetail;
 
 const styles = StyleSheet.create({
     topheading: {
@@ -57,7 +84,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingHorizontal: 25,
         paddingVertical: 30,
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
     topBox: {
         alignSelf: 'center',
@@ -69,8 +96,21 @@ const styles = StyleSheet.create({
         marginTop: 80,
         justifyContent: 'center',
         borderBottomLeftRadius: 25,
-        borderBottomRightRadius: 25
+        borderBottomRightRadius: 25,
     },
-
-
-})
+    titleRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 20,
+        paddingTop: 10,
+    },
+    subtitleText: {
+        color: '#7C7C7C',
+        paddingHorizontal: 20,
+    },
+    bottomButton: {
+        padding: 20,
+        borderColor: '#E2E2E2',
+        backgroundColor: 'white',
+    },
+});
