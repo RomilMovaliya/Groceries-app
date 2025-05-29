@@ -86,6 +86,7 @@ const SignUp = () => {
                     </Link>
                 </Text>
 
+
                 <Button title={'Sign Up'} path={'/screens/Verification'} />
 
                 <Text style={{
