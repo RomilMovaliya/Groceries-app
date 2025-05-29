@@ -1,9 +1,10 @@
-import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native'
+import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import BackIcon from "../../assets/backIcon.svg";
 import ShareIcon from "../../assets/shareIcon.svg";
 import FavoriteIcon from "../../assets/tabIcons/favoriteIcon.svg";
 import { router } from 'expo-router';
+import UpdateItemButton from '../../components/updateItemButton';
 const ProductDetail = () => {
     return (
         <SafeAreaView>
@@ -41,7 +42,7 @@ const ProductDetail = () => {
                 }}>1kg, Price</Text>
             </View>
 
-
+            <UpdateItemButton />
 
         </SafeAreaView>
     )
@@ -69,5 +70,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderBottomLeftRadius: 25,
         borderBottomRightRadius: 25
-    }
+    },
+
+
 })
