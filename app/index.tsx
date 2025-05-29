@@ -2,6 +2,7 @@ import { Image, StatusBar, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
 import { router } from 'expo-router';
 import LogoIcon from '../assets/logoicon.svg';
+import { SafeAreaView } from 'react-native-safe-area-context';
 const SplashScreen = ({ navigation }) => {
 
     useEffect(() => {
@@ -14,14 +15,14 @@ const SplashScreen = ({ navigation }) => {
 
 
     return (
-        <View style={styles.container}>
-
+        <SafeAreaView style={styles.container} >
+            <StatusBar backgroundColor={'#53B175'} />
             <LogoIcon height={100} width={90} />
             <View style={styles.name}>
                 <Text style={styles.title}>nectar</Text>
                 <Text style={styles.slogan}>online groceriet</Text>
             </View>
-        </View>
+        </SafeAreaView>
     )
 }
 
