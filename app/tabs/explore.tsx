@@ -1,11 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import ExplorePage from '../screens/Explore'
 
 const Explore = () => {
     return (
-        <View>
-            <Text>Explore</Text>
-        </View>
+        <ExplorePage />
     )
 }
 

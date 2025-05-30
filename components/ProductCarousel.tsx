@@ -1,23 +1,23 @@
-import { FlatList, FlatListProps, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, FlatListProps, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
-import { fruits } from '../store/FruitsData'
 import AddIcon from '../assets/plusIcon.svg';
 import { primaryColor } from '../utils/myColors';
 import { ProductData } from '../types/types';
 import { router } from 'expo-router';
 
-interface ProductCarouselProps {
-    data: ProductData[]
+interface ProductCarouselProps extends Omit<FlatListProps<ProductData>, 'data' | 'renderItem'> {
+    data: ProductData[],
+    numColumns?: number;
 }
 
-const ProductCarousel: React.FC<ProductCarouselProps> = ({ data }) => {
+const ProductCarousel: React.FC<ProductCarouselProps> = ({ data, numColumns = 1, ...rest }) => {
 
     return (
         <View style={{ height: 220 }}>
             <FlatList
+                key={numColumns}
+                numColumns={numColumns}
                 data={data}
-                horizontal
-                showsHorizontalScrollIndicator={false}
                 renderItem={({ item }) => (
                     <TouchableOpacity
                         style={styles.box}
@@ -51,6 +51,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ data }) => {
                     </TouchableOpacity>
                 )}
                 keyExtractor={(item) => item.id.toString()}
+                {...rest}
             />
         </View>
     )
