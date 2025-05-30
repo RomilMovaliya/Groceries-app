@@ -11,12 +11,15 @@ const ProductListBox = () => {
         }}>
             <FlatList
                 data={ProductListData}
+                contentContainerStyle={{
+                    paddingVertical: 20
+                }}
                 renderItem={({ item }) => (
                     <TouchableOpacity
 
                         onPress={() => {
                             const id = String(item.id);
-                            router.push(`/screens/ProductList?is=${encodeURIComponent(id)}`);
+                            router.push(`/screens/ProductList?id=${encodeURIComponent(id)}`);
                         }}
                         style={styles.box}>
                         <Image
