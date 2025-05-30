@@ -6,6 +6,7 @@ import Button from '../../components/button';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LocationData } from '../../store/LocationData';
 import { Area, Zone } from '../../types/types';
+import { router } from 'expo-router';
 
 
 
@@ -59,7 +60,10 @@ const SelectLocation = () => {
                             />
                         </View>
 
-                        <Button title={'Submit'} path={'/screens/HomeScreen'} />
+                        <Button
+                            title={'Submit'}
+                            onPress={() => { router.replace('/screens/HomeScreen') }}
+                        />
                     </View>
                 </View>
             </View>

@@ -68,7 +68,10 @@ const ProductDetail = () => {
 
 
                 <View style={styles.bottomButton}>
-                    <Button title="Add To Basket" path="/screens/HomeScreen" />
+                    <Button
+                        title="Add To Basket"
+                        onPress={() => { router.navigate('/screens/HomeScreen') }}
+                    />
                 </View>
             </View>
         </SafeAreaView>

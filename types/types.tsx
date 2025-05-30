@@ -21,8 +21,7 @@ export interface Area {
 }
 
 export interface MyButtonProps extends ButtonProps, TextInputProps {
-    title: string,
-    path: string
+    title: string
 }
 
 export interface MyProductTitle extends TextProps {

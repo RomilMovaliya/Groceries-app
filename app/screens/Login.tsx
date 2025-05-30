@@ -4,7 +4,7 @@ import LogoIcon from "../../assets/colorlogo.svg";
 import { TextInput } from 'react-native-paper';
 import Button from '../../components/button';
 import CustomTextInput from '../../components/textInput';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -58,7 +58,10 @@ const Login = () => {
                     Forgot Password?
                 </Text>
 
-                <Button title={'Log In'} path={'/tabs'} />
+                <Button
+                    title={'Log In'}
+                    onPress={() => { router.replace('/tabs') }}
+                />
 
                 <Text style={{
                     textAlign: 'center',

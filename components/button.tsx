@@ -1,20 +1,13 @@
-import { ButtonProps, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { router } from 'expo-router'
 import { MyButtonProps } from '../types/types'
 
 
 
+const Button: React.FC<MyButtonProps> = ({ title, ...props }) => {
 
-const Button: React.FC<MyButtonProps> = ({ title, path }) => {
-
-
-    const pressHandler = () => {
-        router.replace(`${path}`);
-
-    }
     return (
-        <TouchableOpacity style={styles.btn} onPress={pressHandler}>
+        <TouchableOpacity style={styles.btn} {...props}>
             <Text style={styles.title}>{title}</Text>
         </TouchableOpacity>
     )
@@ -28,7 +21,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#53B175',
         borderRadius: 10,
         width: '100%',
-
     },
     title: {
         textAlign: 'center',

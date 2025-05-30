@@ -53,7 +53,6 @@ const Verification = () => {
                         maxLength={6}
                         onChangeText={setCode}
                         value={code}
-                        textAlign='center'
                         style={{
                             fontSize: 18,
                             letterSpacing: 10,
@@ -101,7 +100,7 @@ const styles = StyleSheet.create({
     backbtn: {
         position: 'absolute',
         marginHorizontal: 10,
-        marginVertical: 2
+        marginVertical: 20
     },
 
     title: {

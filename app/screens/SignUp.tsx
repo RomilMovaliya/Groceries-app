@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import LogoIcon from "../../assets/colorlogo.svg";
 import Button from '../../components/button';
 import CustomTextInput from '../../components/textInput';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 
 const SignUp = () => {
     const [userName, setUserName] = useState('');
@@ -87,7 +87,10 @@ const SignUp = () => {
                 </Text>
 
 
-                <Button title={'Sign Up'} path={'/screens/Verification'} />
+                <Button
+                    title={'Sign Up'}
+                    onPress={() => { router.navigate("/screens/Verification") }}
+                />
 
                 <Text style={{
                     textAlign: 'center',
