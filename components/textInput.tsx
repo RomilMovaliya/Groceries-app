@@ -47,6 +47,7 @@ export default MyTextInput;
 
 const styles = StyleSheet.create({
     input: {
+        paddingHorizontal: 0,
         backgroundColor: 'transparent',
         marginVertical: 8,
     },
