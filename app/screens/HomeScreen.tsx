@@ -1,13 +1,15 @@
-import { SectionList, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { BackHandler, Platform, SectionList, StyleSheet, Text, View } from 'react-native'
+import React, { useEffect } from 'react'
 import SearchBar from '../../components/searchbar'
 import MapIcon from "../../assets/mapIcon.svg"
 import Logo from "../../assets/colorlogo.svg"
 import { SafeAreaView } from 'react-native-safe-area-context'
-import Carousel from '../../components/carousel'
+
 import ProductTitle from '../../components/ProductTitle'
 import ProductCarousel from '../../components/ProductCarousel'
 import { fruits } from '../../store/FruitsData'
+import Car from '../../components/carousel'
+import { useLocalSearchParams, useSearchParams } from 'expo-router/build/hooks'
 
 const HomeScreen = () => {
     const sections = [
@@ -15,6 +17,27 @@ const HomeScreen = () => {
         { title: 'Best Selling', data: fruits },
         { title: 'Groceries', data: fruits }
     ];
+
+    const { zone, area } = useLocalSearchParams();
+
+
+    useEffect(() => {
+        const backAction = () => {
+            if (Platform.OS === 'android') {
+                BackHandler.exitApp();
+                return true; // it prevent default behavior (don't navigate back)
+            }
+            return false; // it shows iOS default behavior 
+        };
+
+        const backHandler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            backAction
+        );
+
+        // below line is for Cleanup the event listener on unmount
+        return () => backHandler.remove();
+    }, []);
 
     return (
         <SafeAreaView style={styles.safeArea}>
@@ -24,10 +47,10 @@ const HomeScreen = () => {
                         <Logo width={70} height={70} />
                         <View style={styles.title}>
                             <MapIcon width={20} height={20} />
-                            <Text>Dhaka, Banassre</Text>
+                            <Text>{zone}, {area}</Text>
                         </View>
                         <SearchBar />
-                        <Carousel />
+                        <Car />
                     </View>
                 )}
                 sections={sections}

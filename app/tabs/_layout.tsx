@@ -13,8 +13,14 @@ import CartIconColor from "../../assets/tabIcons/cartColor.svg";
 import FavoriteIconColor from "../../assets/tabIcons/favoriteColor.svg";
 import AccountIconColor from "../../assets/tabIcons/accountColor.svg";
 import { primaryColor } from '../../utils/myColors';
+import { useSearchParams } from 'expo-router/build/hooks';
 
 const RootLayout = () => {
+
+    const searchParams = useSearchParams();
+    const zone = searchParams.get('zone') || 'zone';
+    const area = searchParams.get('area') || 'area';
+
     return (
         <Tabs
             screenOptions={{
@@ -26,7 +32,8 @@ const RootLayout = () => {
                     paddingBottom: 10,
                     height: 80,
                 }
-            }}>
+            }}
+        >
             <Tabs.Screen
                 name='shop'
                 options={{
@@ -41,7 +48,7 @@ const RootLayout = () => {
                             <ShopIcon width={27} height={27} />
                         )
                 }}
-
+                initialParams={{ zone, area }}
             />
 
             <Tabs.Screen
