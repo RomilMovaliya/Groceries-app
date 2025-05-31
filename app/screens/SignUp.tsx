@@ -15,6 +15,7 @@ import { Link, router } from 'expo-router';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { TextInput } from 'react-native-paper';
 
 const SignUp = () => {
     const [hidePassword, setHidePassword] = useState(true);
@@ -32,6 +33,7 @@ const SignUp = () => {
             .required('Username is required'),
         email: Yup.string()
             .email('Please enter a valid email')
+            .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Please enter a valid email')
             .required('Email is required'),
         password: Yup.string()
             .min(8, 'Password must be at least 8 characters')
@@ -43,7 +45,7 @@ const SignUp = () => {
     });
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
             <StatusBar backgroundColor={'white'} />
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -89,6 +91,18 @@ const SignUp = () => {
                                             onChangeText={handleChange('email')}
                                             onBlur={handleBlur('email')}
                                             value={values.email}
+                                            right={
+                                                touched.email && !errors.email && (
+                                                    <TextInput.Icon
+                                                        icon={'check'}
+                                                        color={'green'}
+                                                        size={25}
+                                                        style={{
+                                                            marginTop: 35
+                                                        }}
+                                                    />
+                                                )}
+
                                         />
                                         {errors.email && touched.email && (
                                             <Text style={styles.errorText}>{errors.email}</Text>
@@ -127,7 +141,7 @@ const SignUp = () => {
                     </View>
                 </ScrollView>
             </KeyboardAvoidingView>
-        </SafeAreaView>
+        </View>
     );
 };
 
@@ -137,7 +151,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: 15,
-        paddingVertical: 20,
+        paddingBottom: 20
     },
     logobox: {
         width: '100%',

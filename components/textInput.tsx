@@ -34,6 +34,9 @@ const MyTextInput: React.FC<MyTextInputProps> = ({
                             icon={hidePassword ? 'eye-off' : 'eye'}
                             onPress={toggleButton}
                             color="#7C7C7C"
+                            style={{
+                                marginTop: 35
+                            }}
                         />
                     ) : null
                 }

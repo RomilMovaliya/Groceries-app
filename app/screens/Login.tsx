@@ -15,6 +15,7 @@ import { Link, router } from 'expo-router';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { TextInput } from 'react-native-paper';
 
 const Login = () => {
     const [hidePassword, setHidePassword] = useState(true);
@@ -29,6 +30,7 @@ const Login = () => {
     const loginValidationSchema = Yup.object().shape({
         email: Yup.string()
             .email('Please enter a valid email')
+            .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Please enter a valid email')
             .required('Email is required'),
         password: Yup.string()
             .min(8, 'Password must be at least 8 characters')
@@ -84,10 +86,24 @@ const Login = () => {
                                             onChangeText={handleChange('email')}
                                             onBlur={handleBlur('email')}
                                             value={values.email}
+                                            right={
+                                                touched.email && !errors.email && (
+                                                    <TextInput.Icon
+                                                        icon={'check'}
+                                                        color={'green'}
+                                                        size={25}
+                                                        style={{
+                                                            marginTop: 35
+                                                        }}
+                                                    />
+                                                )}
+
+
                                         />
                                         {errors.email && touched.email && (
                                             <Text style={styles.errorText}>
                                                 {errors.email}
+
                                             </Text>
                                         )}
 
