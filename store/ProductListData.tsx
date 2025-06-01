@@ -1,425 +1,31 @@
+import { ImageSourcePropType } from "react-native";
 
-export const ProductListData = [
+export interface ProductSubItem {
+    id: number;
+    name: string;
+    price: number;
+    volume: number;
+    img: ImageSourcePropType;
+    pieces: number;
+    productdetails: string;
+    nutritions: string;
+    review: string;
+    rating: number;
+}
+
+export interface ProductItem {
+
+    id: number;
+    title: string;
+    image: ImageSourcePropType;
+    data: ProductSubItem[];
+}
+
+export const ProductListData: ProductItem[] = [
+
     {
         id: 1,
-        title: 'Frash Fruits & Vegetable',
-        image: require('../assets/productListImg/category1.png'),
-        data: [
-            {
-                id: 1,
-                name: 'Diet Coke',
-                price: 1.99,
-                volume: 580,
-                img: require('../assets/coke1.png'),
-                pieces: 1
-            },
-            {
-                id: 2,
-                name: 'Sprite Can',
-                price: 1.2,
-                volume: 520,
-                img: require('../assets/coke2.png'),
-                pieces: 1
-            },
-            {
-                id: 3,
-                name: 'Apple & Grape Juice',
-                price: 1.8,
-                volume: 30,
-                img: require('../assets/coke3.png'),
-                pieces: 1
-            },
-            {
-                id: 4,
-                name: 'Orange Juice',
-                price: 3.0,
-                volume: 50,
-                img: require('../assets/coke4.png'),
-                pieces: 1
-            },
-            {
-                id: 5,
-                name: 'Coca Cola Can',
-                price: 3.0,
-                volume: 30,
-                img: require('../assets/coke5.png'),
-                pieces: 1
-            },
-            {
-                id: 6,
-                name: 'Pepsi Can',
-                price: 3.0,
-                volume: 250,
-                img: require('../assets/coke6.png'),
-                pieces: 1
-            },
-
-            {
-                id: 7,
-                name: 'Apple',
-                price: 2.5,
-                volume: 360,
-                img: require('../assets/coke1.png'),
-                pieces: 1
-            },
-            {
-                id: 8,
-                name: 'Banana',
-                price: 1.2,
-                volume: 50,
-                img: require('../assets/coke2.png'),
-                pieces: 1
-            },
-            {
-                id: 9,
-                name: 'Orange',
-                price: 1.8,
-                volume: 78,
-                img: require('../assets/coke3.png'),
-                pieces: 1
-            },
-            {
-                id: 10,
-                name: 'Pineapple',
-                price: 3.0,
-                volume: 960,
-                img: require('../assets/coke4.png'),
-                pieces: 1
-            },
-            {
-                id: 11,
-                name: 'Pineapple',
-                price: 3.0,
-                volume: 570,
-                img: require('../assets/coke5.png'),
-                pieces: 1
-            },
-            {
-                id: 12,
-                name: 'Pineapple',
-                price: 3.0,
-                volume: 50,
-                img: require('../assets/coke6.png'),
-                pieces: 1
-            },
-        ]
-    },
-    {
-        id: 2,
-        title: 'Frash Fruits & Vegetable',
-        image: require('../assets/productListImg/category2.png'),
-        data: [
-            {
-                id: 1,
-                name: 'Diet Coke',
-                price: 1.99,
-                volume: 580,
-                img: require('../assets/coke1.png'),
-                pieces: 1
-            },
-            {
-                id: 2,
-                name: 'Sprite Can',
-                price: 1.2,
-                volume: 520,
-                img: require('../assets/coke2.png'),
-                pieces: 1
-            },
-            {
-                id: 3,
-                name: 'Apple & Grape Juice',
-                price: 1.8,
-                volume: 30,
-                img: require('../assets/coke3.png'),
-                pieces: 1
-            },
-            {
-                id: 4,
-                name: 'Orange Juice',
-                price: 3.0,
-                volume: 50,
-                img: require('../assets/coke4.png'),
-                pieces: 1
-            },
-            {
-                id: 5,
-                name: 'Coca Cola Can',
-                price: 3.0,
-                volume: 30,
-                img: require('../assets/coke5.png'),
-                pieces: 1
-            },
-            {
-                id: 6,
-                name: 'Pepsi Can',
-                price: 3.0,
-                volume: 250,
-                img: require('../assets/coke6.png'),
-                pieces: 1
-            },
-
-            {
-                id: 7,
-                name: 'Apple',
-                price: 2.5,
-                volume: 360,
-                img: require('../assets/coke1.png'),
-                pieces: 1
-            },
-            {
-                id: 8,
-                name: 'Banana',
-                price: 1.2,
-                volume: 50,
-                img: require('../assets/coke2.png'),
-                pieces: 1
-            },
-            {
-                id: 9,
-                name: 'Orange',
-                price: 1.8,
-                volume: 78,
-                img: require('../assets/coke3.png'),
-                pieces: 1
-            },
-            {
-                id: 10,
-                name: 'Pineapple',
-                price: 3.0,
-                volume: 960,
-                img: require('../assets/coke4.png'),
-                pieces: 1
-            },
-            {
-                id: 11,
-                name: 'Pineapple',
-                price: 3.0,
-                volume: 570,
-                img: require('../assets/coke5.png'),
-                pieces: 1
-            },
-            {
-                id: 12,
-                name: 'Pineapple',
-                price: 3.0,
-                volume: 50,
-                img: require('../assets/coke6.png'),
-                pieces: 1
-            },
-        ]
-    },
-    {
-        id: 3,
-        title: 'Frash Fruits & Vegetable',
-        image: require('../assets/productListImg/category3.png'),
-        data: [
-            {
-                id: 1,
-                name: 'Diet Coke',
-                price: 1.99,
-                volume: 580,
-                img: require('../assets/coke1.png'),
-                pieces: 1
-            },
-            {
-                id: 2,
-                name: 'Sprite Can',
-                price: 1.2,
-                volume: 520,
-                img: require('../assets/coke2.png'),
-                pieces: 1
-            },
-            {
-                id: 3,
-                name: 'Apple & Grape Juice',
-                price: 1.8,
-                volume: 30,
-                img: require('../assets/coke3.png'),
-                pieces: 1
-            },
-            {
-                id: 4,
-                name: 'Orange Juice',
-                price: 3.0,
-                volume: 50,
-                img: require('../assets/coke4.png'),
-                pieces: 1
-            },
-            {
-                id: 5,
-                name: 'Coca Cola Can',
-                price: 3.0,
-                volume: 30,
-                img: require('../assets/coke5.png'),
-                pieces: 1
-            },
-            {
-                id: 6,
-                name: 'Pepsi Can',
-                price: 3.0,
-                volume: 250,
-                img: require('../assets/coke6.png'),
-                pieces: 1
-            },
-
-            {
-                id: 7,
-                name: 'Apple',
-                price: 2.5,
-                volume: 360,
-                img: require('../assets/coke1.png'),
-                pieces: 1
-            },
-            {
-                id: 8,
-                name: 'Banana',
-                price: 1.2,
-                volume: 50,
-                img: require('../assets/coke2.png'),
-                pieces: 1
-            },
-            {
-                id: 9,
-                name: 'Orange',
-                price: 1.8,
-                volume: 78,
-                img: require('../assets/coke3.png'),
-                pieces: 1
-            },
-            {
-                id: 10,
-                name: 'Pineapple',
-                price: 3.0,
-                volume: 960,
-                img: require('../assets/coke4.png'),
-                pieces: 1
-            },
-            {
-                id: 11,
-                name: 'Pineapple',
-                price: 3.0,
-                volume: 570,
-                img: require('../assets/coke5.png'),
-                pieces: 1
-            },
-            {
-                id: 12,
-                name: 'Pineapple',
-                price: 3.0,
-                volume: 50,
-                img: require('../assets/coke6.png'),
-                pieces: 1
-            },
-        ]
-    },
-    {
-        id: 4,
-        title: 'Frash Fruits & Vegetable',
-        image: require('../assets/productListImg/category4.png'),
-        data: [
-            {
-                id: 1,
-                name: 'Diet Coke',
-                price: 1.99,
-                volume: 580,
-                img: require('../assets/coke1.png'),
-                pieces: 1
-            },
-            {
-                id: 2,
-                name: 'Sprite Can',
-                price: 1.2,
-                volume: 520,
-                img: require('../assets/coke2.png'),
-                pieces: 1
-            },
-            {
-                id: 3,
-                name: 'Apple & Grape Juice',
-                price: 1.8,
-                volume: 30,
-                img: require('../assets/coke3.png'),
-                pieces: 1
-            },
-            {
-                id: 4,
-                name: 'Orange Juice',
-                price: 3.0,
-                volume: 50,
-                img: require('../assets/coke4.png'),
-                pieces: 1
-            },
-            {
-                id: 5,
-                name: 'Coca Cola Can',
-                price: 3.0,
-                volume: 30,
-                img: require('../assets/coke5.png'),
-                pieces: 1
-            },
-            {
-                id: 6,
-                name: 'Pepsi Can',
-                price: 3.0,
-                volume: 250,
-                img: require('../assets/coke6.png'),
-                pieces: 1
-            },
-
-            {
-                id: 7,
-                name: 'Apple',
-                price: 2.5,
-                volume: 360,
-                img: require('../assets/coke1.png'),
-                pieces: 1
-            },
-            {
-                id: 8,
-                name: 'Banana',
-                price: 1.2,
-                volume: 50,
-                img: require('../assets/coke2.png'),
-                pieces: 1
-            },
-            {
-                id: 9,
-                name: 'Orange',
-                price: 1.8,
-                volume: 78,
-                img: require('../assets/coke3.png'),
-                pieces: 1
-            },
-            {
-                id: 10,
-                name: 'Pineapple',
-                price: 3.0,
-                volume: 960,
-                img: require('../assets/coke4.png'),
-                pieces: 1
-            },
-            {
-                id: 11,
-                name: 'Pineapple',
-                price: 3.0,
-                volume: 570,
-                img: require('../assets/coke5.png'),
-                pieces: 1
-            },
-            {
-                id: 12,
-                name: 'Pineapple',
-                price: 3.0,
-                volume: 50,
-                img: require('../assets/coke6.png'),
-                pieces: 1
-            },
-        ]
-    },
-
-    {
-        id: 5,
-        title: 'Frash Fruits & Vegetable',
+        title: 'Beverages',
         image: require('../assets/productListImg/category5.png'),
         data: [
             {
@@ -428,7 +34,11 @@ export const ProductListData = [
                 price: 1.99,
                 volume: 580,
                 img: require('../assets/coke1.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Classic low-calorie cola with crisp flavor.",
+                nutritions: "Calories: 1 kcal per 100ml. Contains caffeine.",
+                review: "Refreshing and perfect for diet-conscious drinkers.",
+                rating: 4,
             },
             {
                 id: 2,
@@ -436,31 +46,47 @@ export const ProductListData = [
                 price: 1.2,
                 volume: 520,
                 img: require('../assets/coke2.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Lemon-lime flavored soda with a crisp and clean taste.",
+                nutritions: "Calories: 140 kcal per can. Caffeine-free.",
+                review: "Light and refreshing, great for all occasions.",
+                rating: 4,
             },
             {
                 id: 3,
                 name: 'Apple & Grape Juice',
                 price: 1.8,
-                volume: 30,
+                volume: 300,
                 img: require('../assets/coke3.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "A sweet blend of apple and grape juices.",
+                nutritions: "Calories: 50 kcal per 100ml. Rich in vitamins A & C.",
+                review: "Natural and tasty, perfect for kids.",
+                rating: 5,
             },
             {
                 id: 4,
                 name: 'Orange Juice',
                 price: 3.0,
-                volume: 50,
+                volume: 500,
                 img: require('../assets/coke4.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Freshly squeezed orange juice with natural pulp.",
+                nutritions: "Calories: 45 kcal per 100ml. High in Vitamin C.",
+                review: "Tangy and refreshing, a healthy choice.",
+                rating: 5,
             },
             {
                 id: 5,
                 name: 'Coca Cola Can',
                 price: 3.0,
-                volume: 30,
+                volume: 330,
                 img: require('../assets/coke5.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Classic Coca Cola with original flavor.",
+                nutritions: "Calories: 140 kcal per can. Contains caffeine.",
+                review: "Iconic soda loved worldwide.",
+                rating: 4,
             },
             {
                 id: 6,
@@ -468,63 +94,700 @@ export const ProductListData = [
                 price: 3.0,
                 volume: 250,
                 img: require('../assets/coke6.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Pepsi soda can with bold and refreshing taste.",
+                nutritions: "Calories: 150 kcal per can. Contains caffeine.",
+                review: "Great alternative to cola lovers.",
+                rating: 4,
             },
-
             {
                 id: 7,
-                name: 'Apple',
+                name: 'Mountain Dew',
                 price: 2.5,
-                volume: 360,
+                volume: 355,
                 img: require('../assets/coke1.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Citrus-flavored carbonated drink with high energy.",
+                nutritions: "Calories: 170 kcal per bottle. Contains caffeine.",
+                review: "Perfect for an energy boost.",
+                rating: 4,
             },
             {
                 id: 8,
-                name: 'Banana',
+                name: '7 Up',
                 price: 1.2,
-                volume: 50,
+                volume: 355,
                 img: require('../assets/coke2.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Lemon-lime soda with a crisp, clean taste.",
+                nutritions: "Calories: 140 kcal per can. Caffeine-free.",
+                review: "Refreshing and light soda option.",
+                rating: 4,
             },
             {
                 id: 9,
-                name: 'Orange',
+                name: 'Fanta Orange',
                 price: 1.8,
-                volume: 78,
+                volume: 330,
                 img: require('../assets/coke3.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Sweet and tangy orange flavored soda.",
+                nutritions: "Calories: 160 kcal per can. Contains artificial flavors.",
+                review: "Popular fruity soda loved by many.",
+                rating: 4,
             },
             {
                 id: 10,
-                name: 'Pineapple',
+                name: 'Tropicana Apple Juice',
                 price: 3.0,
                 volume: 960,
                 img: require('../assets/coke4.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Pure apple juice with no added sugar.",
+                nutritions: "Calories: 46 kcal per 100ml. Rich in antioxidants.",
+                review: "Healthy and delicious natural juice.",
+                rating: 5,
             },
             {
                 id: 11,
-                name: 'Pineapple',
+                name: 'Red Bull',
                 price: 3.0,
-                volume: 570,
+                volume: 250,
                 img: require('../assets/coke5.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Energy drink to boost energy and focus.",
+                nutritions: "Calories: 110 kcal per can. Contains caffeine and taurine.",
+                review: "Effective energy booster with great taste.",
+                rating: 4,
             },
             {
                 id: 12,
-                name: 'Pineapple',
+                name: 'Monster Energy',
                 price: 3.0,
-                volume: 50,
+                volume: 500,
                 img: require('../assets/coke6.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Popular energy drink with intense flavor.",
+                nutritions: "Calories: 210 kcal per can. High caffeine content.",
+                review: "Great for energy seekers, but drink in moderation.",
+                rating: 4,
             },
         ]
     },
+    {
+        id: 2,
+        title: 'Fresh Fruits & Vegetable',
+        image: require('../assets/productListImg/category2.png'),
+        data: [
+            // Same 12 items with same images, updated fields:
+            {
+                id: 1,
+                name: 'Diet Coke',
+                price: 1.99,
+                volume: 580,
+                img: require('../assets/coke1.png'),
+                pieces: 1,
+                productdetails: "Classic low-calorie cola with crisp flavor.",
+                nutritions: "Calories: 1 kcal per 100ml. Contains caffeine.",
+                review: "Refreshing and perfect for diet-conscious drinkers.",
+                rating: 4,
+            },
+            {
+                id: 2,
+                name: 'Sprite Can',
+                price: 1.2,
+                volume: 520,
+                img: require('../assets/coke2.png'),
+                pieces: 1,
+                productdetails: "Lemon-lime flavored soda with a crisp and clean taste.",
+                nutritions: "Calories: 140 kcal per can. Caffeine-free.",
+                review: "Light and refreshing, great for all occasions.",
+                rating: 4,
+            },
+            {
+                id: 3,
+                name: 'Apple & Grape Juice',
+                price: 1.8,
+                volume: 300,
+                img: require('../assets/coke3.png'),
+                pieces: 1,
+                productdetails: "A sweet blend of apple and grape juices.",
+                nutritions: "Calories: 50 kcal per 100ml. Rich in vitamins A & C.",
+                review: "Natural and tasty, perfect for kids.",
+                rating: 5,
+            },
+            {
+                id: 4,
+                name: 'Orange Juice',
+                price: 3.0,
+                volume: 500,
+                img: require('../assets/coke4.png'),
+                pieces: 1,
+                productdetails: "Freshly squeezed orange juice with natural pulp.",
+                nutritions: "Calories: 45 kcal per 100ml. High in Vitamin C.",
+                review: "Tangy and refreshing, a healthy choice.",
+                rating: 5,
+            },
+            {
+                id: 5,
+                name: 'Coca Cola Can',
+                price: 3.0,
+                volume: 330,
+                img: require('../assets/coke5.png'),
+                pieces: 1,
+                productdetails: "Classic Coca Cola with original flavor.",
+                nutritions: "Calories: 140 kcal per can. Contains caffeine.",
+                review: "Iconic soda loved worldwide.",
+                rating: 4,
+            },
+            {
+                id: 6,
+                name: 'Pepsi Can',
+                price: 3.0,
+                volume: 250,
+                img: require('../assets/coke6.png'),
+                pieces: 1,
+                productdetails: "Pepsi soda can with bold and refreshing taste.",
+                nutritions: "Calories: 150 kcal per can. Contains caffeine.",
+                review: "Great alternative to cola lovers.",
+                rating: 4,
+            },
+            {
+                id: 7,
+                name: 'Mountain Dew',
+                price: 2.5,
+                volume: 355,
+                img: require('../assets/coke1.png'),
+                pieces: 1,
+                productdetails: "Citrus-flavored carbonated drink with high energy.",
+                nutritions: "Calories: 170 kcal per bottle. Contains caffeine.",
+                review: "Perfect for an energy boost.",
+                rating: 4,
+            },
+            {
+                id: 8,
+                name: '7 Up',
+                price: 1.2,
+                volume: 355,
+                img: require('../assets/coke2.png'),
+                pieces: 1,
+                productdetails: "Lemon-lime soda with a crisp, clean taste.",
+                nutritions: "Calories: 140 kcal per can. Caffeine-free.",
+                review: "Refreshing and light soda option.",
+                rating: 4,
+            },
+            {
+                id: 9,
+                name: 'Fanta Orange',
+                price: 1.8,
+                volume: 330,
+                img: require('../assets/coke3.png'),
+                pieces: 1,
+                productdetails: "Sweet and tangy orange flavored soda.",
+                nutritions: "Calories: 160 kcal per can. Contains artificial flavors.",
+                review: "Popular fruity soda loved by many.",
+                rating: 4,
+            },
+            {
+                id: 10,
+                name: 'Tropicana Apple Juice',
+                price: 3.0,
+                volume: 960,
+                img: require('../assets/coke4.png'),
+                pieces: 1,
+                productdetails: "Pure apple juice with no added sugar.",
+                nutritions: "Calories: 46 kcal per 100ml. Rich in antioxidants.",
+                review: "Healthy and delicious natural juice.",
+                rating: 5,
+            },
+            {
+                id: 11,
+                name: 'Red Bull',
+                price: 3.0,
+                volume: 250,
+                img: require('../assets/coke5.png'),
+                pieces: 1,
+                productdetails: "Energy drink to boost energy and focus.",
+                nutritions: "Calories: 110 kcal per can. Contains caffeine and taurine.",
+                review: "Effective energy booster with great taste.",
+                rating: 4,
+            },
+            {
+                id: 12,
+                name: 'Monster Energy',
+                price: 3.0,
+                volume: 500,
+                img: require('../assets/coke6.png'),
+                pieces: 1,
+                productdetails: "Popular energy drink with intense flavor.",
+                nutritions: "Calories: 210 kcal per can. High caffeine content.",
+                review: "Great for energy seekers, but drink in moderation.",
+                rating: 4,
+            },
+        ]
+    },
+    {
+        id: 3,
+        title: 'Chickens',
+        image: require('../assets/productListImg/category3.png'),
+        data: [
+            // Same 12 items with updated fields:
+            {
+                id: 1,
+                name: 'Diet Coke',
+                price: 1.99,
+                volume: 580,
+                img: require('../assets/coke1.png'),
+                pieces: 1,
+                productdetails: "Classic low-calorie cola with crisp flavor.",
+                nutritions: "Calories: 1 kcal per 100ml. Contains caffeine.",
+                review: "Refreshing and perfect for diet-conscious drinkers.",
+                rating: 4,
+            },
+            {
+                id: 2,
+                name: 'Sprite Can',
+                price: 1.2,
+                volume: 520,
+                img: require('../assets/coke2.png'),
+                pieces: 1,
+                productdetails: "Lemon-lime flavored soda with a crisp and clean taste.",
+                nutritions: "Calories: 140 kcal per can. Caffeine-free.",
+                review: "Light and refreshing, great for all occasions.",
+                rating: 4,
+            },
+            {
+                id: 3,
+                name: 'Apple & Grape Juice',
+                price: 1.8,
+                volume: 300,
+                img: require('../assets/coke3.png'),
+                pieces: 1,
+                productdetails: "A sweet blend of apple and grape juices.",
+                nutritions: "Calories: 50 kcal per 100ml. Rich in vitamins A & C.",
+                review: "Natural and tasty, perfect for kids.",
+                rating: 5,
+            },
+            {
+                id: 4,
+                name: 'Orange Juice',
+                price: 3.0,
+                volume: 500,
+                img: require('../assets/coke4.png'),
+                pieces: 1,
+                productdetails: "Freshly squeezed orange juice with natural pulp.",
+                nutritions: "Calories: 45 kcal per 100ml. High in Vitamin C.",
+                review: "Tangy and refreshing, a healthy choice.",
+                rating: 5,
+            },
+            {
+                id: 5,
+                name: 'Coca Cola Can',
+                price: 3.0,
+                volume: 330,
+                img: require('../assets/coke5.png'),
+                pieces: 1,
+                productdetails: "Classic Coca Cola with original flavor.",
+                nutritions: "Calories: 140 kcal per can. Contains caffeine.",
+                review: "Iconic soda loved worldwide.",
+                rating: 4,
+            },
+            {
+                id: 6,
+                name: 'Pepsi Can',
+                price: 3.0,
+                volume: 250,
+                img: require('../assets/coke6.png'),
+                pieces: 1,
+                productdetails: "Pepsi soda can with bold and refreshing taste.",
+                nutritions: "Calories: 150 kcal per can. Contains caffeine.",
+                review: "Great alternative to cola lovers.",
+                rating: 4,
+            },
+            {
+                id: 7,
+                name: 'Mountain Dew',
+                price: 2.5,
+                volume: 355,
+                img: require('../assets/coke1.png'),
+                pieces: 1,
+                productdetails: "Citrus-flavored carbonated drink with high energy.",
+                nutritions: "Calories: 170 kcal per bottle. Contains caffeine.",
+                review: "Perfect for an energy boost.",
+                rating: 4,
+            },
+            {
+                id: 8,
+                name: '7 Up',
+                price: 1.2,
+                volume: 355,
+                img: require('../assets/coke2.png'),
+                pieces: 1,
+                productdetails: "Lemon-lime soda with a crisp, clean taste.",
+                nutritions: "Calories: 140 kcal per can. Caffeine-free.",
+                review: "Refreshing and light soda option.",
+                rating: 4,
+            },
+            {
+                id: 9,
+                name: 'Fanta Orange',
+                price: 1.8,
+                volume: 330,
+                img: require('../assets/coke3.png'),
+                pieces: 1,
+                productdetails: "Sweet and tangy orange flavored soda.",
+                nutritions: "Calories: 160 kcal per can. Contains artificial flavors.",
+                review: "Popular fruity soda loved by many.",
+                rating: 4,
+            },
+            {
+                id: 10,
+                name: 'Tropicana Apple Juice',
+                price: 3.0,
+                volume: 960,
+                img: require('../assets/coke4.png'),
+                pieces: 1,
+                productdetails: "Pure apple juice with no added sugar.",
+                nutritions: "Calories: 46 kcal per 100ml. Rich in antioxidants.",
+                review: "Healthy and delicious natural juice.",
+                rating: 5,
+            },
+            {
+                id: 11,
+                name: 'Red Bull',
+                price: 3.0,
+                volume: 250,
+                img: require('../assets/coke5.png'),
+                pieces: 1,
+                productdetails: "Energy drink to boost energy and focus.",
+                nutritions: "Calories: 110 kcal per can. Contains caffeine and taurine.",
+                review: "Effective energy booster with great taste.",
+                rating: 4,
+            },
+            {
+                id: 12,
+                name: 'Monster Energy',
+                price: 3.0,
+                volume: 500,
+                img: require('../assets/coke6.png'),
+                pieces: 1,
+                productdetails: "Popular energy drink with intense flavor.",
+                nutritions: "Calories: 210 kcal per can. High caffeine content.",
+                review: "Great for energy seekers, but drink in moderation.",
+                rating: 4,
+            },
+        ]
+    },
+    {
+        id: 4,
+        title: 'Bakery & Bread',
+        image: require('../assets/productListImg/category4.png'),
+        data: [
+            // Same 12 items with updated fields:
+            {
+                id: 1,
+                name: 'Diet Coke',
+                price: 1.99,
+                volume: 580,
+                img: require('../assets/coke1.png'),
+                pieces: 1,
+                productdetails: "Classic low-calorie cola with crisp flavor.",
+                nutritions: "Calories: 1 kcal per 100ml. Contains caffeine.",
+                review: "Refreshing and perfect for diet-conscious drinkers.",
+                rating: 4,
+            },
+            {
+                id: 2,
+                name: 'Sprite Can',
+                price: 1.2,
+                volume: 520,
+                img: require('../assets/coke2.png'),
+                pieces: 1,
+                productdetails: "Lemon-lime flavored soda with a crisp and clean taste.",
+                nutritions: "Calories: 140 kcal per can. Caffeine-free.",
+                review: "Light and refreshing, great for all occasions.",
+                rating: 4,
+            },
+            {
+                id: 3,
+                name: 'Apple & Grape Juice',
+                price: 1.8,
+                volume: 300,
+                img: require('../assets/coke3.png'),
+                pieces: 1,
+                productdetails: "A sweet blend of apple and grape juices.",
+                nutritions: "Calories: 50 kcal per 100ml. Rich in vitamins A & C.",
+                review: "Natural and tasty, perfect for kids.",
+                rating: 5,
+            },
+            {
+                id: 4,
+                name: 'Orange Juice',
+                price: 3.0,
+                volume: 500,
+                img: require('../assets/coke4.png'),
+                pieces: 1,
+                productdetails: "Freshly squeezed orange juice with natural pulp.",
+                nutritions: "Calories: 45 kcal per 100ml. High in Vitamin C.",
+                review: "Tangy and refreshing, a healthy choice.",
+                rating: 5,
+            },
+            {
+                id: 5,
+                name: 'Coca Cola Can',
+                price: 3.0,
+                volume: 330,
+                img: require('../assets/coke5.png'),
+                pieces: 1,
+                productdetails: "Classic Coca Cola with original flavor.",
+                nutritions: "Calories: 140 kcal per can. Contains caffeine.",
+                review: "Iconic soda loved worldwide.",
+                rating: 4,
+            },
+            {
+                id: 6,
+                name: 'Pepsi Can',
+                price: 3.0,
+                volume: 250,
+                img: require('../assets/coke6.png'),
+                pieces: 1,
+                productdetails: "Pepsi soda can with bold and refreshing taste.",
+                nutritions: "Calories: 150 kcal per can. Contains caffeine.",
+                review: "Great alternative to cola lovers.",
+                rating: 4,
+            },
+            {
+                id: 7,
+                name: 'Mountain Dew',
+                price: 2.5,
+                volume: 355,
+                img: require('../assets/coke1.png'),
+                pieces: 1,
+                productdetails: "Citrus-flavored carbonated drink with high energy.",
+                nutritions: "Calories: 170 kcal per bottle. Contains caffeine.",
+                review: "Perfect for an energy boost.",
+                rating: 4,
+            },
+            {
+                id: 8,
+                name: '7 Up',
+                price: 1.2,
+                volume: 355,
+                img: require('../assets/coke2.png'),
+                pieces: 1,
+                productdetails: "Lemon-lime soda with a crisp, clean taste.",
+                nutritions: "Calories: 140 kcal per can. Caffeine-free.",
+                review: "Refreshing and light soda option.",
+                rating: 4,
+            },
+            {
+                id: 9,
+                name: 'Fanta Orange',
+                price: 1.8,
+                volume: 330,
+                img: require('../assets/coke3.png'),
+                pieces: 1,
+                productdetails: "Sweet and tangy orange flavored soda.",
+                nutritions: "Calories: 160 kcal per can. Contains artificial flavors.",
+                review: "Popular fruity soda loved by many.",
+                rating: 4,
+            },
+            {
+                id: 10,
+                name: 'Tropicana Apple Juice',
+                price: 3.0,
+                volume: 960,
+                img: require('../assets/coke4.png'),
+                pieces: 1,
+                productdetails: "Pure apple juice with no added sugar.",
+                nutritions: "Calories: 46 kcal per 100ml. Rich in antioxidants.",
+                review: "Healthy and delicious natural juice.",
+                rating: 5,
+            },
+            {
+                id: 11,
+                name: 'Red Bull',
+                price: 3.0,
+                volume: 250,
+                img: require('../assets/coke5.png'),
+                pieces: 1,
+                productdetails: "Energy drink to boost energy and focus.",
+                nutritions: "Calories: 110 kcal per can. Contains caffeine and taurine.",
+                review: "Effective energy booster with great taste.",
+                rating: 4,
+            },
+            {
+                id: 12,
+                name: 'Monster Energy',
+                price: 3.0,
+                volume: 500,
+                img: require('../assets/coke6.png'),
+                pieces: 1,
+                productdetails: "Popular energy drink with intense flavor.",
+                nutritions: "Calories: 210 kcal per can. High caffeine content.",
+                review: "Great for energy seekers, but drink in moderation.",
+                rating: 4,
+            },
+        ]
+
+    },
+
+    {
+        id: 5,
+        title: 'Beverages',
+        image: require('../assets/productListImg/category5.png'),
+        data: [
+            {
+                id: 1,
+                name: 'Diet Coke',
+                price: 1.99,
+                volume: 580,
+                img: require('../assets/coke1.png'),
+                pieces: 1,
+                productdetails: "Classic low-calorie soda with a crisp, refreshing taste.",
+                nutritions: "Calories: 1 kcal, Sugar: 0g, Caffeine: 46mg",
+                review: "Light and refreshing, perfect for calorie-conscious consumers.",
+                rating: 4.5
+            },
+            {
+                id: 2,
+                name: 'Sprite Can',
+                price: 1.2,
+                volume: 520,
+                img: require('../assets/coke2.png'),
+                pieces: 1,
+                productdetails: "Caffeine-free lemon-lime soda with a bubbly, crisp flavor.",
+                nutritions: "Calories: 140 kcal, Sugar: 38g, Caffeine: 0mg",
+                review: "Tastes fresh and lively, great for all ages.",
+                rating: 4.3
+            },
+            {
+                id: 3,
+                name: 'Apple & Grape Juice',
+                price: 1.8,
+                volume: 300,
+                img: require('../assets/coke3.png'),
+                pieces: 1,
+                productdetails: "Sweet blend of apple and grape juices, no artificial flavors.",
+                nutritions: "Calories: 120 kcal, Sugar: 26g, Caffeine: 0mg",
+                review: "Smooth and fruity with natural sweetness.",
+                rating: 4.6
+            },
+            {
+                id: 4,
+                name: 'Orange Juice',
+                price: 3.0,
+                volume: 500,
+                img: require('../assets/coke4.png'),
+                pieces: 1,
+                productdetails: "Freshly squeezed orange juice packed with Vitamin C.",
+                nutritions: "Calories: 110 kcal, Sugar: 22g, Caffeine: 0mg",
+                review: "Zesty and refreshing, perfect for breakfast.",
+                rating: 4.7
+            },
+            {
+                id: 5,
+                name: 'Coca Cola Can',
+                price: 3.0,
+                volume: 330,
+                img: require('../assets/coke5.png'),
+                pieces: 1,
+                productdetails: "The iconic cola soda known for its classic taste and fizz.",
+                nutritions: "Calories: 140 kcal, Sugar: 39g, Caffeine: 34mg",
+                review: "Loved worldwide for its unique flavor and smoothness.",
+                rating: 4.4
+            },
+            {
+                id: 6,
+                name: 'Pepsi Can',
+                price: 3.0,
+                volume: 250,
+                img: require('../assets/coke6.png'),
+                pieces: 1,
+                productdetails: "Bold and sweet cola soda with a slightly sharper flavor.",
+                nutritions: "Calories: 150 kcal, Sugar: 41g, Caffeine: 38mg",
+                review: "Good alternative to classic cola, with a strong fan base.",
+                rating: 4.2
+            },
+            {
+                id: 7,
+                name: 'Mountain Dew',
+                price: 2.5,
+                volume: 355,
+                img: require('../assets/coke1.png'),
+                pieces: 1,
+                productdetails: "Citrus-flavored soda with a high caffeine content.",
+                nutritions: "Calories: 170 kcal, Sugar: 46g, Caffeine: 54mg",
+                review: "Energetic and flavorful, perfect for energy boosts.",
+                rating: 4.4
+            },
+            {
+                id: 8,
+                name: '7 Up',
+                price: 1.2,
+                volume: 355,
+                img: require('../assets/coke2.png'),
+                pieces: 1,
+                productdetails: "Clear lemon-lime soda, caffeine-free and crisp.",
+                nutritions: "Calories: 140 kcal, Sugar: 38g, Caffeine: 0mg",
+                review: "Light and refreshing, great for any occasion.",
+                rating: 4.2
+            },
+            {
+                id: 9,
+                name: 'Fanta Orange',
+                price: 1.8,
+                volume: 330,
+                img: require('../assets/coke3.png'),
+                pieces: 1,
+                productdetails: "Sweet and tangy orange soda with bold citrus flavor.",
+                nutritions: "Calories: 160 kcal, Sugar: 44g, Caffeine: 0mg",
+                review: "Bright and fruity, a favorite among soda lovers.",
+                rating: 4.3
+            },
+            {
+                id: 10,
+                name: 'Tropicana Apple Juice',
+                price: 3.0,
+                volume: 960,
+                img: require('../assets/coke4.png'),
+                pieces: 1,
+                productdetails: "Pure apple juice with no preservatives or added sugar.",
+                nutritions: "Calories: 120 kcal, Sugar: 26g, Caffeine: 0mg",
+                review: "Fresh taste and natural sweetness make it a great choice.",
+                rating: 4.8
+            },
+            {
+                id: 11,
+                name: 'Red Bull',
+                price: 3.0,
+                volume: 250,
+                img: require('../assets/coke5.png'),
+                pieces: 1,
+                productdetails: "Energy drink with caffeine, taurine, and B vitamins.",
+                nutritions: "Calories: 110 kcal, Sugar: 27g, Caffeine: 80mg",
+                review: "Effective energy booster with a distinctive taste.",
+                rating: 4.0
+            },
+            {
+                id: 12,
+                name: 'Monster Energy',
+                price: 3.0,
+                volume: 500,
+                img: require('../assets/coke6.png'),
+                pieces: 1,
+                productdetails: "Popular energy drink with high caffeine content.",
+                nutritions: "Calories: 210 kcal, Sugar: 54g, Caffeine: 160mg",
+                review: "Strong energy hit, tastes sweet and citrusy.",
+                rating: 4.1
+            }
+        ]
+    },
+
 
     {
         id: 6,
-        title: 'Beverages',
+        title: 'Aryuvedic Beverages',
         image: require('../assets/productListImg/category6.png'),
         data: [
             {
@@ -533,7 +796,11 @@ export const ProductListData = [
                 price: 1.99,
                 volume: 580,
                 img: require('../assets/coke1.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Classic low-calorie soda with a crisp, refreshing taste.",
+                nutritions: "Calories: 1 kcal, Sugar: 0g, Caffeine: 46mg",
+                review: "Light and refreshing, perfect for calorie-conscious consumers.",
+                rating: 4.5
             },
             {
                 id: 2,
@@ -541,31 +808,47 @@ export const ProductListData = [
                 price: 1.2,
                 volume: 520,
                 img: require('../assets/coke2.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Caffeine-free lemon-lime soda with a bubbly, crisp flavor.",
+                nutritions: "Calories: 140 kcal, Sugar: 38g, Caffeine: 0mg",
+                review: "Tastes fresh and lively, great for all ages.",
+                rating: 4.3
             },
             {
                 id: 3,
                 name: 'Apple & Grape Juice',
                 price: 1.8,
-                volume: 30,
+                volume: 300,
                 img: require('../assets/coke3.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Sweet blend of apple and grape juices, no artificial flavors.",
+                nutritions: "Calories: 120 kcal, Sugar: 26g, Caffeine: 0mg",
+                review: "Smooth and fruity with natural sweetness.",
+                rating: 4.6
             },
             {
                 id: 4,
                 name: 'Orange Juice',
                 price: 3.0,
-                volume: 50,
+                volume: 500,
                 img: require('../assets/coke4.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Freshly squeezed orange juice packed with Vitamin C.",
+                nutritions: "Calories: 110 kcal, Sugar: 22g, Caffeine: 0mg",
+                review: "Zesty and refreshing, perfect for breakfast.",
+                rating: 4.7
             },
             {
                 id: 5,
                 name: 'Coca Cola Can',
                 price: 3.0,
-                volume: 30,
+                volume: 330,
                 img: require('../assets/coke5.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "The iconic cola soda known for its classic taste and fizz.",
+                nutritions: "Calories: 140 kcal, Sugar: 39g, Caffeine: 34mg",
+                review: "Loved worldwide for its unique flavor and smoothness.",
+                rating: 4.4
             },
             {
                 id: 6,
@@ -573,62 +856,90 @@ export const ProductListData = [
                 price: 3.0,
                 volume: 250,
                 img: require('../assets/coke6.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Bold and sweet cola soda with a slightly sharper flavor.",
+                nutritions: "Calories: 150 kcal, Sugar: 41g, Caffeine: 38mg",
+                review: "Good alternative to classic cola, with a strong fan base.",
+                rating: 4.2
             },
-
             {
                 id: 7,
-                name: 'Apple',
+                name: 'Mountain Dew',
                 price: 2.5,
-                volume: 360,
+                volume: 355,
                 img: require('../assets/coke1.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Citrus-flavored soda with a high caffeine content.",
+                nutritions: "Calories: 170 kcal, Sugar: 46g, Caffeine: 54mg",
+                review: "Energetic and flavorful, perfect for energy boosts.",
+                rating: 4.4
             },
             {
                 id: 8,
-                name: 'Banana',
+                name: '7 Up',
                 price: 1.2,
-                volume: 50,
+                volume: 355,
                 img: require('../assets/coke2.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Clear lemon-lime soda, caffeine-free and crisp.",
+                nutritions: "Calories: 140 kcal, Sugar: 38g, Caffeine: 0mg",
+                review: "Light and refreshing, great for any occasion.",
+                rating: 4.2
             },
             {
                 id: 9,
-                name: 'Orange',
+                name: 'Fanta Orange',
                 price: 1.8,
-                volume: 78,
+                volume: 330,
                 img: require('../assets/coke3.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Sweet and tangy orange soda with bold citrus flavor.",
+                nutritions: "Calories: 160 kcal, Sugar: 44g, Caffeine: 0mg",
+                review: "Bright and fruity, a favorite among soda lovers.",
+                rating: 4.3
             },
             {
                 id: 10,
-                name: 'Pineapple',
+                name: 'Tropicana Apple Juice',
                 price: 3.0,
                 volume: 960,
                 img: require('../assets/coke4.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Pure apple juice with no preservatives or added sugar.",
+                nutritions: "Calories: 120 kcal, Sugar: 26g, Caffeine: 0mg",
+                review: "Fresh taste and natural sweetness make it a great choice.",
+                rating: 4.8
             },
             {
                 id: 11,
-                name: 'Pineapple',
+                name: 'Red Bull',
                 price: 3.0,
-                volume: 570,
+                volume: 250,
                 img: require('../assets/coke5.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Energy drink with caffeine, taurine, and B vitamins.",
+                nutritions: "Calories: 110 kcal, Sugar: 27g, Caffeine: 80mg",
+                review: "Effective energy booster with a distinctive taste.",
+                rating: 4.0
             },
             {
                 id: 12,
-                name: 'Pineapple',
+                name: 'Monster Energy',
                 price: 3.0,
-                volume: 50,
+                volume: 500,
                 img: require('../assets/coke6.png'),
-                pieces: 1
-            },
+                pieces: 1,
+                productdetails: "Popular energy drink with high caffeine content.",
+                nutritions: "Calories: 210 kcal, Sugar: 54g, Caffeine: 160mg",
+                review: "Strong energy hit, tastes sweet and citrusy.",
+                rating: 4.1
+            }
         ]
     },
+
     {
         id: 7,
-        title: 'Frash Fruits & Vegetable',
+        title: 'Dairy & Eggs',
         image: require('../assets/productListImg/category1.png'),
         data: [
             {
@@ -637,7 +948,11 @@ export const ProductListData = [
                 price: 1.99,
                 volume: 580,
                 img: require('../assets/coke1.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Classic low-calorie soda, refreshing and light.",
+                nutritions: "Calories: 1 kcal, Sugar: 0g, Caffeine: 46mg",
+                review: "Perfect for those who want flavor without the calories.",
+                rating: 4.5
             },
             {
                 id: 2,
@@ -645,31 +960,47 @@ export const ProductListData = [
                 price: 1.2,
                 volume: 520,
                 img: require('../assets/coke2.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Lemon-lime soda, caffeine-free and crisp.",
+                nutritions: "Calories: 140 kcal, Sugar: 38g, Caffeine: 0mg",
+                review: "Light and zesty, great thirst quencher.",
+                rating: 4.3
             },
             {
                 id: 3,
                 name: 'Apple & Grape Juice',
                 price: 1.8,
-                volume: 30,
+                volume: 300,
                 img: require('../assets/coke3.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Blend of natural apple and grape juices.",
+                nutritions: "Calories: 120 kcal, Sugar: 26g, Caffeine: 0mg",
+                review: "Sweet and smooth with real fruit flavor.",
+                rating: 4.6
             },
             {
                 id: 4,
                 name: 'Orange Juice',
                 price: 3.0,
-                volume: 50,
+                volume: 500,
                 img: require('../assets/coke4.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Freshly squeezed, rich in vitamin C.",
+                nutritions: "Calories: 110 kcal, Sugar: 22g, Caffeine: 0mg",
+                review: "Bright and fresh, perfect start to the day.",
+                rating: 4.7
             },
             {
                 id: 5,
                 name: 'Coca Cola Can',
                 price: 3.0,
-                volume: 30,
+                volume: 330,
                 img: require('../assets/coke5.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Famous cola soda with classic taste.",
+                nutritions: "Calories: 140 kcal, Sugar: 39g, Caffeine: 34mg",
+                review: "Iconic flavor, loved worldwide.",
+                rating: 4.4
             },
             {
                 id: 6,
@@ -677,57 +1008,84 @@ export const ProductListData = [
                 price: 3.0,
                 volume: 250,
                 img: require('../assets/coke6.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Sweet and bold cola flavor.",
+                nutritions: "Calories: 150 kcal, Sugar: 41g, Caffeine: 38mg",
+                review: "Good alternative to Coca Cola with distinct taste.",
+                rating: 4.2
             },
-
             {
                 id: 7,
-                name: 'Apple',
+                name: 'Mountain Dew',
                 price: 2.5,
-                volume: 360,
+                volume: 355,
                 img: require('../assets/coke1.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Citrus soda with high caffeine content.",
+                nutritions: "Calories: 170 kcal, Sugar: 46g, Caffeine: 54mg",
+                review: "Energizing and flavorful.",
+                rating: 4.4
             },
             {
                 id: 8,
-                name: 'Banana',
+                name: '7 Up',
                 price: 1.2,
-                volume: 50,
+                volume: 355,
                 img: require('../assets/coke2.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Clear, caffeine-free lemon-lime soda.",
+                nutritions: "Calories: 140 kcal, Sugar: 38g, Caffeine: 0mg",
+                review: "Refreshing and light.",
+                rating: 4.2
             },
             {
                 id: 9,
-                name: 'Orange',
+                name: 'Fanta Orange',
                 price: 1.8,
-                volume: 78,
+                volume: 330,
                 img: require('../assets/coke3.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Sweet and tangy orange soda.",
+                nutritions: "Calories: 160 kcal, Sugar: 44g, Caffeine: 0mg",
+                review: "Bright and fruity taste.",
+                rating: 4.3
             },
             {
                 id: 10,
-                name: 'Pineapple',
+                name: 'Tropicana Apple Juice',
                 price: 3.0,
                 volume: 960,
                 img: require('../assets/coke4.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "100% pure apple juice, no added sugar.",
+                nutritions: "Calories: 120 kcal, Sugar: 26g, Caffeine: 0mg",
+                review: "Fresh and natural flavor.",
+                rating: 4.8
             },
             {
                 id: 11,
-                name: 'Pineapple',
+                name: 'Red Bull',
                 price: 3.0,
-                volume: 570,
+                volume: 250,
                 img: require('../assets/coke5.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Energy drink with caffeine and taurine.",
+                nutritions: "Calories: 110 kcal, Sugar: 27g, Caffeine: 80mg",
+                review: "Good energy boost with distinctive taste.",
+                rating: 4.0
             },
             {
                 id: 12,
-                name: 'Pineapple',
+                name: 'Monster Energy',
                 price: 3.0,
-                volume: 50,
+                volume: 500,
                 img: require('../assets/coke6.png'),
-                pieces: 1
-            },
+                pieces: 1,
+                productdetails: "Popular energy drink with high caffeine.",
+                nutritions: "Calories: 210 kcal, Sugar: 54g, Caffeine: 160mg",
+                review: "Strong energy hit and sweet flavor.",
+                rating: 4.1
+            }
         ]
     },
     {
@@ -741,7 +1099,11 @@ export const ProductListData = [
                 price: 1.99,
                 volume: 580,
                 img: require('../assets/coke1.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Classic low-calorie soda, refreshing and light.",
+                nutritions: "Calories: 1 kcal, Sugar: 0g, Caffeine: 46mg",
+                review: "Perfect for those who want flavor without the calories.",
+                rating: 4.5
             },
             {
                 id: 2,
@@ -749,31 +1111,47 @@ export const ProductListData = [
                 price: 1.2,
                 volume: 520,
                 img: require('../assets/coke2.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Lemon-lime soda, caffeine-free and crisp.",
+                nutritions: "Calories: 140 kcal, Sugar: 38g, Caffeine: 0mg",
+                review: "Light and zesty, great thirst quencher.",
+                rating: 4.3
             },
             {
                 id: 3,
                 name: 'Apple & Grape Juice',
                 price: 1.8,
-                volume: 30,
+                volume: 300,
                 img: require('../assets/coke3.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Blend of natural apple and grape juices.",
+                nutritions: "Calories: 120 kcal, Sugar: 26g, Caffeine: 0mg",
+                review: "Sweet and smooth with real fruit flavor.",
+                rating: 4.6
             },
             {
                 id: 4,
                 name: 'Orange Juice',
                 price: 3.0,
-                volume: 50,
+                volume: 500,
                 img: require('../assets/coke4.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Freshly squeezed, rich in vitamin C.",
+                nutritions: "Calories: 110 kcal, Sugar: 22g, Caffeine: 0mg",
+                review: "Bright and fresh, perfect start to the day.",
+                rating: 4.7
             },
             {
                 id: 5,
                 name: 'Coca Cola Can',
                 price: 3.0,
-                volume: 30,
+                volume: 330,
                 img: require('../assets/coke5.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Famous cola soda with classic taste.",
+                nutritions: "Calories: 140 kcal, Sugar: 39g, Caffeine: 34mg",
+                review: "Iconic flavor, loved worldwide.",
+                rating: 4.4
             },
             {
                 id: 6,
@@ -781,475 +1159,85 @@ export const ProductListData = [
                 price: 3.0,
                 volume: 250,
                 img: require('../assets/coke6.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Sweet and bold cola flavor.",
+                nutritions: "Calories: 150 kcal, Sugar: 41g, Caffeine: 38mg",
+                review: "Good alternative to Coca Cola with distinct taste.",
+                rating: 4.2
             },
-
             {
                 id: 7,
-                name: 'Apple',
+                name: 'Mountain Dew',
                 price: 2.5,
-                volume: 360,
+                volume: 355,
                 img: require('../assets/coke1.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Citrus soda with high caffeine content.",
+                nutritions: "Calories: 170 kcal, Sugar: 46g, Caffeine: 54mg",
+                review: "Energizing and flavorful.",
+                rating: 4.4
             },
             {
                 id: 8,
-                name: 'Banana',
+                name: '7 Up',
                 price: 1.2,
-                volume: 50,
+                volume: 355,
                 img: require('../assets/coke2.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Clear, caffeine-free lemon-lime soda.",
+                nutritions: "Calories: 140 kcal, Sugar: 38g, Caffeine: 0mg",
+                review: "Refreshing and light.",
+                rating: 4.2
             },
             {
                 id: 9,
-                name: 'Orange',
+                name: 'Fanta Orange',
                 price: 1.8,
-                volume: 78,
+                volume: 330,
                 img: require('../assets/coke3.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Sweet and tangy orange soda.",
+                nutritions: "Calories: 160 kcal, Sugar: 44g, Caffeine: 0mg",
+                review: "Bright and fruity taste.",
+                rating: 4.3
             },
             {
                 id: 10,
-                name: 'Pineapple',
+                name: 'Tropicana Apple Juice',
                 price: 3.0,
                 volume: 960,
                 img: require('../assets/coke4.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "100% pure apple juice, no added sugar.",
+                nutritions: "Calories: 120 kcal, Sugar: 26g, Caffeine: 0mg",
+                review: "Fresh and natural flavor.",
+                rating: 4.8
             },
             {
                 id: 11,
-                name: 'Pineapple',
-                price: 3.0,
-                volume: 570,
-                img: require('../assets/coke5.png'),
-                pieces: 1
-            },
-            {
-                id: 12,
-                name: 'Pineapple',
-                price: 3.0,
-                volume: 50,
-                img: require('../assets/coke6.png'),
-                pieces: 1
-            },
-        ]
-    },
-    {
-        id: 9,
-        title: 'Frash Fruits & Vegetable',
-        image: require('../assets/productListImg/category3.png'),
-        data: [
-            {
-                id: 1,
-                name: 'Diet Coke',
-                price: 1.99,
-                volume: 580,
-                img: require('../assets/coke1.png'),
-                pieces: 1
-            },
-            {
-                id: 2,
-                name: 'Sprite Can',
-                price: 1.2,
-                volume: 520,
-                img: require('../assets/coke2.png'),
-                pieces: 1
-            },
-            {
-                id: 3,
-                name: 'Apple & Grape Juice',
-                price: 1.8,
-                volume: 30,
-                img: require('../assets/coke3.png'),
-                pieces: 1
-            },
-            {
-                id: 4,
-                name: 'Orange Juice',
-                price: 3.0,
-                volume: 50,
-                img: require('../assets/coke4.png'),
-                pieces: 1
-            },
-            {
-                id: 5,
-                name: 'Coca Cola Can',
-                price: 3.0,
-                volume: 30,
-                img: require('../assets/coke5.png'),
-                pieces: 1
-            },
-            {
-                id: 6,
-                name: 'Pepsi Can',
+                name: 'Red Bull',
                 price: 3.0,
                 volume: 250,
-                img: require('../assets/coke6.png'),
-                pieces: 1
-            },
-
-            {
-                id: 7,
-                name: 'Apple',
-                price: 2.5,
-                volume: 360,
-                img: require('../assets/coke1.png'),
-                pieces: 1
-            },
-            {
-                id: 8,
-                name: 'Banana',
-                price: 1.2,
-                volume: 50,
-                img: require('../assets/coke2.png'),
-                pieces: 1
-            },
-            {
-                id: 9,
-                name: 'Orange',
-                price: 1.8,
-                volume: 78,
-                img: require('../assets/coke3.png'),
-                pieces: 1
-            },
-            {
-                id: 10,
-                name: 'Pineapple',
-                price: 3.0,
-                volume: 960,
-                img: require('../assets/coke4.png'),
-                pieces: 1
-            },
-            {
-                id: 11,
-                name: 'Pineapple',
-                price: 3.0,
-                volume: 570,
                 img: require('../assets/coke5.png'),
-                pieces: 1
+                pieces: 1,
+                productdetails: "Energy drink with caffeine and taurine.",
+                nutritions: "Calories: 110 kcal, Sugar: 27g, Caffeine: 80mg",
+                review: "Good energy boost with distinctive taste.",
+                rating: 4.0
             },
             {
                 id: 12,
-                name: 'Pineapple',
+                name: 'Monster Energy',
                 price: 3.0,
-                volume: 50,
+                volume: 500,
                 img: require('../assets/coke6.png'),
-                pieces: 1
-            },
+                pieces: 1,
+                productdetails: "Popular energy drink with high caffeine.",
+                nutritions: "Calories: 210 kcal, Sugar: 54g, Caffeine: 160mg",
+                review: "Strong energy hit and sweet flavor.",
+                rating: 4.1
+            }
         ]
-    },
-    {
-        id: 10,
-        title: 'Frash Fruits & Vegetable',
-        image: require('../assets/productListImg/category4.png'),
-        data: [
-            {
-                id: 1,
-                name: 'Diet Coke',
-                price: 1.99,
-                volume: 580,
-                img: require('../assets/coke1.png'),
-                pieces: 1
-            },
-            {
-                id: 2,
-                name: 'Sprite Can',
-                price: 1.2,
-                volume: 520,
-                img: require('../assets/coke2.png'),
-                pieces: 1
-            },
-            {
-                id: 3,
-                name: 'Apple & Grape Juice',
-                price: 1.8,
-                volume: 30,
-                img: require('../assets/coke3.png'),
-                pieces: 1
-            },
-            {
-                id: 4,
-                name: 'Orange Juice',
-                price: 3.0,
-                volume: 50,
-                img: require('../assets/coke4.png'),
-                pieces: 1
-            },
-            {
-                id: 5,
-                name: 'Coca Cola Can',
-                price: 3.0,
-                volume: 30,
-                img: require('../assets/coke5.png'),
-                pieces: 1
-            },
-            {
-                id: 6,
-                name: 'Pepsi Can',
-                price: 3.0,
-                volume: 250,
-                img: require('../assets/coke6.png'),
-                pieces: 1
-            },
+    }
 
-            {
-                id: 7,
-                name: 'Apple',
-                price: 2.5,
-                volume: 360,
-                img: require('../assets/coke1.png'),
-                pieces: 1
-            },
-            {
-                id: 8,
-                name: 'Banana',
-                price: 1.2,
-                volume: 50,
-                img: require('../assets/coke2.png'),
-                pieces: 1
-            },
-            {
-                id: 9,
-                name: 'Orange',
-                price: 1.8,
-                volume: 78,
-                img: require('../assets/coke3.png'),
-                pieces: 1
-            },
-            {
-                id: 10,
-                name: 'Pineapple',
-                price: 3.0,
-                volume: 960,
-                img: require('../assets/coke4.png'),
-                pieces: 1
-            },
-            {
-                id: 11,
-                name: 'Pineapple',
-                price: 3.0,
-                volume: 570,
-                img: require('../assets/coke5.png'),
-                pieces: 1
-            },
-            {
-                id: 12,
-                name: 'Pineapple',
-                price: 3.0,
-                volume: 50,
-                img: require('../assets/coke6.png'),
-                pieces: 1
-            },
-        ]
-    },
-
-    {
-        id: 11,
-        title: 'Frash Fruits & Vegetable',
-        image: require('../assets/productListImg/category5.png'),
-        data: [
-            {
-                id: 1,
-                name: 'Diet Coke',
-                price: 1.99,
-                volume: 580,
-                img: require('../assets/coke1.png'),
-                pieces: 1
-            },
-            {
-                id: 2,
-                name: 'Sprite Can',
-                price: 1.2,
-                volume: 520,
-                img: require('../assets/coke2.png'),
-                pieces: 1
-            },
-            {
-                id: 3,
-                name: 'Apple & Grape Juice',
-                price: 1.8,
-                volume: 30,
-                img: require('../assets/coke3.png'),
-                pieces: 1
-            },
-            {
-                id: 4,
-                name: 'Orange Juice',
-                price: 3.0,
-                volume: 50,
-                img: require('../assets/coke4.png'),
-                pieces: 1
-            },
-            {
-                id: 5,
-                name: 'Coca Cola Can',
-                price: 3.0,
-                volume: 30,
-                img: require('../assets/coke5.png'),
-                pieces: 1
-            },
-            {
-                id: 6,
-                name: 'Pepsi Can',
-                price: 3.0,
-                volume: 250,
-                img: require('../assets/coke6.png'),
-                pieces: 1
-            },
-
-            {
-                id: 7,
-                name: 'Apple',
-                price: 2.5,
-                volume: 360,
-                img: require('../assets/coke1.png'),
-                pieces: 1
-            },
-            {
-                id: 8,
-                name: 'Banana',
-                price: 1.2,
-                volume: 50,
-                img: require('../assets/coke2.png'),
-                pieces: 1
-            },
-            {
-                id: 9,
-                name: 'Orange',
-                price: 1.8,
-                volume: 78,
-                img: require('../assets/coke3.png'),
-                pieces: 1
-            },
-            {
-                id: 10,
-                name: 'Pineapple',
-                price: 3.0,
-                volume: 960,
-                img: require('../assets/coke4.png'),
-                pieces: 1
-            },
-            {
-                id: 11,
-                name: 'Pineapple',
-                price: 3.0,
-                volume: 570,
-                img: require('../assets/coke5.png'),
-                pieces: 1
-            },
-            {
-                id: 12,
-                name: 'Pineapple',
-                price: 3.0,
-                volume: 50,
-                img: require('../assets/coke6.png'),
-                pieces: 1
-            },
-        ]
-    },
-
-    {
-        id: 12,
-        title: 'Frash Fruits & Vegetable',
-        image: require('../assets/productListImg/category6.png'),
-        data: [
-            {
-                id: 1,
-                name: 'Diet Coke',
-                price: 1.99,
-                volume: 580,
-                img: require('../assets/coke1.png'),
-                pieces: 1
-            },
-            {
-                id: 2,
-                name: 'Sprite Can',
-                price: 1.2,
-                volume: 520,
-                img: require('../assets/coke2.png'),
-                pieces: 1
-            },
-            {
-                id: 3,
-                name: 'Apple & Grape Juice',
-                price: 1.8,
-                volume: 30,
-                img: require('../assets/coke3.png'),
-                pieces: 1
-            },
-            {
-                id: 4,
-                name: 'Orange Juice',
-                price: 3.0,
-                volume: 50,
-                img: require('../assets/coke4.png'),
-                pieces: 1
-            },
-            {
-                id: 5,
-                name: 'Coca Cola Can',
-                price: 3.0,
-                volume: 30,
-                img: require('../assets/coke5.png'),
-                pieces: 1
-            },
-            {
-                id: 6,
-                name: 'Pepsi Can',
-                price: 3.0,
-                volume: 250,
-                img: require('../assets/coke6.png'),
-                pieces: 1
-            },
-
-            {
-                id: 7,
-                name: 'Apple',
-                price: 2.5,
-                volume: 360,
-                img: require('../assets/coke1.png'),
-                pieces: 1
-            },
-            {
-                id: 8,
-                name: 'Banana',
-                price: 1.2,
-                volume: 50,
-                img: require('../assets/coke2.png'),
-                pieces: 1
-            },
-            {
-                id: 9,
-                name: 'Orange',
-                price: 1.8,
-                volume: 78,
-                img: require('../assets/coke3.png'),
-                pieces: 1
-            },
-            {
-                id: 10,
-                name: 'Pineapple',
-                price: 3.0,
-                volume: 960,
-                img: require('../assets/coke4.png'),
-                pieces: 1
-            },
-            {
-                id: 11,
-                name: 'Pineapple',
-                price: 3.0,
-                volume: 570,
-                img: require('../assets/coke5.png'),
-                pieces: 1
-            },
-            {
-                id: 12,
-                name: 'Pineapple',
-                price: 3.0,
-                volume: 50,
-                img: require('../assets/coke6.png'),
-                pieces: 1
-            },
-        ]
-    },
 ];
