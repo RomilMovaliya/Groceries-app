@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         paddingHorizontal: 30,
         marginTop: 20,
+        zIndex: 1
     },
     safeArea: {
         flex: 1,
