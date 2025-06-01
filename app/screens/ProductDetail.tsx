@@ -1,12 +1,14 @@
 import {
     Image,
+    Pressable,
     SafeAreaView,
     ScrollView,
     StyleSheet,
     Text,
+    TouchableOpacity,
     View,
 } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import BackIcon from '../../assets/backIcon.svg';
 import ShareIcon from '../../assets/shareIcon.svg';
 import FavoriteIcon from '../../assets/tabIcons/favoriteIcon.svg';
@@ -14,17 +16,32 @@ import { router } from 'expo-router';
 import UpdateItemButton from '../../components/updateItemButton';
 import ProductDescription from '../../components/productDescription';
 import Button from '../../components/button';
+import { useSearchParams } from 'expo-router/build/hooks';
+import { fruits } from '../../store/FruitsData';
+import Icon from '@react-native-vector-icons/material-design-icons';
 
 const ProductDetail = () => {
+
+    const searchParams = useSearchParams();
+    const id = Number(searchParams.get('id'));
+
+    const filterProduct = fruits.find((item) => item.id == id);
+
+    const [like, setLike] = useState(false);
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={{ flex: 1 }}>
-                <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
+                <ScrollView
+                    contentContainerStyle={{ paddingBottom: 100 }}
+                    showsVerticalScrollIndicator={false}
+                >
                     <View style={styles.topBox}>
                         <Image
-                            style={{ width: '100%' }}
+                            style={{ width: '90%', height: '100%', alignSelf: 'center', marginBottom: 10 }}
                             resizeMode="contain"
-                            source={require('../../assets/appleIcon.png')}
+                            source={{
+                                uri: filterProduct.img
+                            }}
                         />
                     </View>
 
@@ -35,40 +52,50 @@ const ProductDetail = () => {
 
                     <View>
                         <View style={styles.titleRow}>
-                            <Text>Natural Red Apple</Text>
-                            <FavoriteIcon width={24} height={24} />
+                            <Text>{filterProduct.name}</Text>
+                            <TouchableOpacity onPress={() => setLike(!like)}>
+                                <Icon
+                                    name={like ? 'heart' : 'heart-outline'}
+                                    color={like ? 'red' : 'black'}
+                                    size={24}
+                                />
+                            </TouchableOpacity>
+
                         </View>
 
-                        <Text style={styles.subtitleText}>1kg, Price</Text>
+                        <Text style={styles.subtitleText}>1kg, Price ${filterProduct.price}</Text>
                     </View>
 
                     <UpdateItemButton />
 
                     <ProductDescription
                         title="Product Detail"
-                        description="Apple is a nutritious fruit rich in fiber and vitamin C. It is sweet, crisp, and perfect for snacking or adding to salads and desserts."
+                        description={filterProduct.productdetails}
                         weight={false}
                         rating={0}
                     />
 
                     <ProductDescription
                         title="Nutritions"
-                        description="Apple is a nutritious fruit rich in fiber and vitamin C. It is sweet, crisp, and perfect for snacking or adding to salads and desserts."
+                        description={filterProduct.nutritions}
                         weight={true}
                         rating={0}
                     />
 
                     <ProductDescription
                         title="Review"
-                        description="Apple is a nutritious fruit rich in fiber and vitamin C. It is sweet, crisp, and perfect for snacking or adding to salads and desserts."
+                        description={filterProduct.review}
                         weight={false}
-                        rating={5}
+                        rating={filterProduct.rating}
                     />
                 </ScrollView>
 
 
                 <View style={styles.bottomButton}>
-                    <Button title="Add To Basket" path="/screens/HomeScreen" />
+                    <Button
+                        title="Add To Basket"
+                        onPress={() => { router.navigate('/screens/HomeScreen') }}
+                    />
                 </View>
             </View>
         </SafeAreaView>
@@ -92,7 +119,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderTopWidth: 0,
         borderColor: '#E2E3E2',
-        height: 300,
+        height: 200,
         marginTop: 80,
         justifyContent: 'center',
         borderBottomLeftRadius: 25,

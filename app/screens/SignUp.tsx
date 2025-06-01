@@ -1,134 +1,201 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import {
+    KeyboardAvoidingView,
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
+    Platform,
+    StatusBar,
+} from 'react-native';
+import React, { useState } from 'react';
 import LogoIcon from "../../assets/colorlogo.svg";
 import Button from '../../components/button';
 import CustomTextInput from '../../components/textInput';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { TextInput } from 'react-native-paper';
 
 const SignUp = () => {
-    const [userName, setUserName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const [hidePassword, setHidePassword] = useState(true);
 
+    const handleSubmit = () => {
+        router.navigate("/screens/Verification?id=signup")
+    }
     const togglePasswordVisibility = () => {
         setHidePassword(!hidePassword);
-    }
+    };
+
+    const registerValidationSchema = Yup.object().shape({
+        username: Yup.string()
+            .min(3, 'Username must be at least 3 characters')
+            .required('Username is required'),
+        email: Yup.string()
+            .email('Please enter a valid email')
+            .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Please enter a valid email')
+            .required('Email is required'),
+        password: Yup.string()
+            .min(8, 'Password must be at least 8 characters')
+            .matches(/[A-Z]/, 'Must contain at least one uppercase letter')
+            .matches(/[a-z]/, 'Must contain at least one lowercase letter')
+            .matches(/\d/, 'Must contain at least one number')
+            .matches(/[@$!%*?&#^()_+\-=\[\]{};':"\\|,.<>\/?]/, 'Must contain at least one special character')
+            .required('Password is required'),
+    });
+
     return (
-        <View>
-            <View style={styles.logobox}>
-                <LogoIcon
-                    width={120}
-                    height={60} />
-            </View>
-
-            <View style={styles.titlebox}>
-                <Text
-                    style={{
-                        fontSize: 15,
-                        fontWeight: '600'
-                    }}
+        <View style={{ flex: 1 }}>
+            <StatusBar backgroundColor={'white'} />
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                style={{ flex: 1 }}
+            >
+                <ScrollView
+                    contentContainerStyle={{ flexGrow: 1 }}
+                    keyboardShouldPersistTaps="handled"
+                    showsVerticalScrollIndicator={false}
                 >
-                    Sign Up
-                </Text>
+                    <View style={styles.container}>
+                        <View style={styles.logobox}>
+                            <LogoIcon width={120} height={60} />
+                        </View>
 
-                <Text
-                    style={{
-                        color: '#7C7C7C',
-                        fontSize: 12
-                    }}>
-                    Enter your email and password
-                </Text>
-            </View>
+                        <View style={styles.titlebox}>
+                            <Text style={styles.title}>Sign Up</Text>
+                            <Text style={styles.subtitle}>Enter your email and password</Text>
+                        </View>
 
-            <View style={styles.form}>
+                        <View style={styles.form}>
+                            <Formik
+                                initialValues={{ username: '', email: '', password: '' }}
+                                validationSchema={registerValidationSchema}
+                                onSubmit={(values) => {
+                                    console.log(values);
+                                    router.navigate("/screens/Verification");
+                                }}
+                            >
+                                {({ handleChange, handleBlur, values, errors, touched }) => (
+                                    <>
+                                        <CustomTextInput
+                                            label={'Username'}
+                                            onChangeText={handleChange('username')}
+                                            onBlur={handleBlur('username')}
+                                            value={values.username}
+                                        />
+                                        {errors.username && touched.username && (
+                                            <Text style={styles.errorText}>{errors.username}</Text>
+                                        )}
 
+                                        <CustomTextInput
+                                            label={'Email'}
+                                            onChangeText={handleChange('email')}
+                                            onBlur={handleBlur('email')}
+                                            value={values.email}
+                                            right={
+                                                touched.email && !errors.email && (
+                                                    <TextInput.Icon
+                                                        icon={'check'}
+                                                        color={'green'}
+                                                        size={25}
+                                                        style={{
+                                                            marginTop: 35
+                                                        }}
+                                                    />
+                                                )}
 
-                <CustomTextInput
-                    label={'Username'}
+                                        />
+                                        {errors.email && touched.email && (
+                                            <Text style={styles.errorText}>{errors.email}</Text>
+                                        )}
 
-                    onChangeText={setUserName}
-                    hidePassword={hidePassword}
-                    toggleButton={null}
-                    value={userName}
-                />
+                                        <CustomTextInput
+                                            label={'Password'}
+                                            onChangeText={handleChange('password')}
+                                            onBlur={handleBlur('password')}
+                                            toggleButton={togglePasswordVisibility}
+                                            value={values.password}
+                                            hidePassword={hidePassword}
+                                            secureTextEntry={hidePassword}
+                                        />
+                                        {errors.password && touched.password && (
+                                            <Text style={styles.errorText}>{errors.password}</Text>
+                                        )}
 
-                <CustomTextInput
-                    label={'Email'}
+                                        <Text style={styles.termsText}>
+                                            By continuing you agree to our{' '}
+                                            <Link href={'/screens/SignUp'} style={styles.link}>
+                                                Terms of Service and Privacy Policy.
+                                            </Link>
+                                        </Text>
 
-                    onChangeText={setEmail}
-                    hidePassword={hidePassword}
-                    toggleButton={null}
-                    value={email}
-                />
+                                        <Button title={'Sign Up'} onPress={handleSubmit} />
 
-                <CustomTextInput
-                    label={'Password'}
-                    onChangeText={setPassword}
-                    style={styles.input}
-                    toggleButton={togglePasswordVisibility}
-                    value={password}
-                    hidePassword={hidePassword}
-                    secureTextEntry={hidePassword}
-                />
-
-                <Text style={{
-                    color: '#181725',
-                    fontSize: 10,
-                    marginBottom: 15
-                }}>
-                    By continuing you agree to our
-
-                    <Link
-                        href={'/screens/SignUp'}
-                        style={{ color: '#53B175' }}>
-                        Terms of Service and Privacy Policy.
-                    </Link>
-                </Text>
-
-
-                <Button title={'Sign Up'} path={'/screens/Verification'} />
-
-                <Text style={{
-                    textAlign: 'center',
-                    color: '#181725',
-                    fontWeight: '600',
-                    marginTop: 6,
-                    fontSize: 10,
-                    marginBottom: 15
-                }}>
-                    Already have an account?
-                    <Link style={{
-                        color: '#53B175'
-                    }} href={"/screens/Login"}> Login</Link>
-                </Text>
-            </View>
-
+                                        <Text style={styles.bottomText}>
+                                            Already have an account?
+                                            <Link href={"/screens/Login"} style={styles.link}> Login</Link>
+                                        </Text>
+                                    </>
+                                )}
+                            </Formik>
+                        </View>
+                    </View>
+                </ScrollView>
+            </KeyboardAvoidingView>
         </View>
-    )
-}
+    );
+};
 
-export default SignUp
+export default SignUp;
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        paddingHorizontal: 15,
+        paddingBottom: 20
+    },
     logobox: {
         width: '100%',
-        height: '50%',
-        justifyContent: 'center',
-        alignItems: 'center'
+        marginTop: 30,
+        alignItems: 'center',
+        marginBottom: 40,
     },
-
     titlebox: {
-        paddingHorizontal: 15,
+        marginBottom: 20,
     },
-
+    title: {
+        fontSize: 18,
+        fontWeight: '600',
+    },
+    subtitle: {
+        color: '#7C7C7C',
+        fontSize: 12,
+    },
     form: {
         flex: 1,
         gap: 10,
-        paddingHorizontal: 15,
-        paddingBlock: 20,
     },
-    input: {
-        marginTop: 5
+
+    errorText: {
+        color: 'red',
+        fontSize: 12,
+        marginTop: -8,
+        marginBottom: 10,
     },
-})
+    termsText: {
+        color: '#181725',
+        fontSize: 10,
+        marginBottom: 15,
+    },
+    bottomText: {
+        textAlign: 'center',
+        color: '#181725',
+        fontWeight: '600',
+        marginTop: 6,
+        fontSize: 10,
+        marginBottom: 15,
+    },
+    link: {
+        color: '#53B175',
+    },
+});

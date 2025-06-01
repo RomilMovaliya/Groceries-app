@@ -1,4 +1,4 @@
-import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
+import { KeyboardAvoidingView, Platform, Pressable, StatusBar, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useState } from 'react'
 import BackIcon from "../../assets/backIcon.svg";
 import LeftIcon from "../../assets/leftIcon.svg";
@@ -6,14 +6,20 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { primaryColor } from '../../utils/myColors';
 import Toast from 'react-native-toast-message';
+import { useSearchParams } from 'expo-router/build/hooks';
 const Verification = () => {
 
-
+    const searchParams = useSearchParams();
+    const id = searchParams.get('id');
 
     const [code, setCode] = useState('');
 
     const submitHandler = () => {
-        router.replace("/tabs");
+        if (id === 'signup') {
+            router.navigate("/screens/SelectLocation");
+        } else {
+            router.navigate("/tabs");
+        }
     }
 
     const SendCodeHandler = () => {
@@ -28,6 +34,7 @@ const Verification = () => {
     }
     return (
         <SafeAreaView style={styles.container}>
+            <StatusBar backgroundColor={'white'} />
             <KeyboardAvoidingView
                 style={styles.container}
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -47,20 +54,17 @@ const Verification = () => {
                         letterSpacing: -1
                     }}>Enter your 4-digit code</Text>
                     <Text style={{ color: '#7C7C7C', paddingTop: 30 }}>Code</Text>
-                    <TextInput
-                        keyboardType='number-pad'
-                        placeholder='- - - - - -'
-                        maxLength={6}
-                        onChangeText={setCode}
-                        value={code}
-                        textAlign='center'
-                        style={{
-                            fontSize: 18,
-                            letterSpacing: 10,
-                            borderBottomWidth: 1,
-                            borderBottomColor: '#E2E2E2'
-                        }}
-                    />
+                    <View style={styles.otpBox}>
+                        <TextInput
+                            keyboardType='number-pad'
+                            placeholder='- - - - - -'
+                            maxLength={6}
+                            onChangeText={setCode}
+                            value={code}
+                            style={styles.textInput}
+                        />
+                    </View>
+
 
 
                 </View>
@@ -101,9 +105,8 @@ const styles = StyleSheet.create({
     backbtn: {
         position: 'absolute',
         marginHorizontal: 10,
-        marginVertical: 2
+        marginVertical: 20
     },
-
     title: {
         marginTop: 100,
         paddingHorizontal: 20,
@@ -116,12 +119,24 @@ const styles = StyleSheet.create({
         marginHorizontal: 20
     },
 
+    textInput: {
+        width: '100%',
+        fontSize: 18,
+        letterSpacing: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#E2E2E2'
+    },
+
     circle: {
         backgroundColor: primaryColor,
         borderRadius: 40,
         width: 60,
         height: 60,
         justifyContent: 'center',
+        alignItems: 'center'
+    },
+    otpBox: {
+        width: '100%',
         alignItems: 'center'
     }
 })

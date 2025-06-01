@@ -3,6 +3,7 @@ import React from 'react'
 import Svg from 'react-native-svg';
 import LogoIcon from "../assets/logoicon.svg";
 import Button from '../components/button';
+import { router } from 'expo-router';
 
 
 const onboarding = () => {
@@ -27,7 +28,10 @@ const onboarding = () => {
                 <Text style={styles.description}>Get your groceries in as fast as one hour</Text>
 
                 <View style={{ width: '100%' }}>
-                    <Button title={'Get Started'} path={'/screens/Login'} />
+                    <Button
+                        title={'Get Started'}
+                        onPress={() => { router.replace('/screens/Login') }}
+                    />
                 </View>
 
             </View>

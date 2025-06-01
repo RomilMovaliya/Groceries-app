@@ -19,7 +19,8 @@ const ProductListBox = () => {
 
                         onPress={() => {
                             const id = String(item.id);
-                            router.push(`/screens/ProductList?id=${encodeURIComponent(id)}`);
+
+                            router.push(`/screens/ProductList?id=${item.id}`);
                         }}
                         style={styles.box}>
                         <Image

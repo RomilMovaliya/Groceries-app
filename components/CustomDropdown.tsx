@@ -34,6 +34,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({ data, onSelect }) => {
                 <View style={styles.dropdownList}>
                     <FlatList
                         data={data}
+                        showsVerticalScrollIndicator={false}
                         keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => (
                             <TouchableOpacity style={styles.dropdownItem} onPress={() => handleSelect(item)}>
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
     },
     dropdownList: {
         width: '100%',
-        maxHeight: 300,
+        maxHeight: 200,
         borderRadius: 6,
         borderWidth: 1,
         marginTop: 5,
