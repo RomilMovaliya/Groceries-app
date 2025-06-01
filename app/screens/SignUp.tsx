@@ -54,6 +54,7 @@ const SignUp = () => {
                 <ScrollView
                     contentContainerStyle={{ flexGrow: 1 }}
                     keyboardShouldPersistTaps="handled"
+                    showsVerticalScrollIndicator={false}
                 >
                     <View style={styles.container}>
                         <View style={styles.logobox}>
@@ -157,7 +158,7 @@ const styles = StyleSheet.create({
         width: '100%',
         marginTop: 30,
         alignItems: 'center',
-        marginBottom: 60,
+        marginBottom: 40,
     },
     titlebox: {
         marginBottom: 20,

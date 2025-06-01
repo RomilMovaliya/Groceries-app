@@ -49,13 +49,14 @@ const SelectLocation = () => {
                 style={styles.keyboardView}
                 behavior={Platform.OS === 'ios' ? 'padding' : undefined}
             >
-                <Backbtn
-                    onPress={backbtnHandler}
-                    style={styles.backbtn}
-                    height={28}
-                    width={28}
-                />
+
                 <View style={styles.container}>
+                    <Backbtn
+                        onPress={backbtnHandler}
+                        style={styles.backbtn}
+                        height={28}
+                        width={28}
+                    />
                     <ScrollView
                         contentContainerStyle={styles.scrollContent}
                         keyboardShouldPersistTaps="handled"
@@ -108,6 +109,7 @@ const SelectLocation = () => {
 export default SelectLocation;
 const styles = StyleSheet.create({
     backbtn: {
+        position: 'absolute',
         paddingHorizontal: 30,
         marginTop: 20,
     },
