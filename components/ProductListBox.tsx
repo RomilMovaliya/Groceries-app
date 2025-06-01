@@ -4,6 +4,20 @@ import { ProductListData } from '../store/ProductListData'
 import { router } from 'expo-router'
 
 const ProductListBox = () => {
+    const colorPalette = [
+        { borderColor: '#53B175', backgroundColor: '#d0fac8' },
+        { borderColor: '#F7A593', backgroundColor: '#ffe5d0' },
+        { borderColor: '#D3B0E0', backgroundColor: '#f7d0f7' },
+        { borderColor: '#FDE598', backgroundColor: '#fff9db' },
+        { borderColor: '#B7DFF5', backgroundColor: '#e5f6ff' },
+        { borderColor: '#FFBBCC', backgroundColor: '#ffe5ec' },
+        { borderColor: '#AED9E0', backgroundColor: '#e6f9ff' },
+        { borderColor: '#A0D8B3', backgroundColor: '#e6fff4' },
+        { borderColor: '#FFC78E', backgroundColor: '#fff4e0' },
+        { borderColor: '#D8BFD8', backgroundColor: '#f5e6ff' },
+        { borderColor: '#9EC1CF', backgroundColor: '#e9f6fa' },
+        { borderColor: '#F2C2CF', backgroundColor: '#fff0f5' }
+    ];
 
     return (
         <View style={{
@@ -14,23 +28,36 @@ const ProductListBox = () => {
                 contentContainerStyle={{
                     paddingVertical: 20
                 }}
-                renderItem={({ item }) => (
-                    <TouchableOpacity
+                renderItem={({ item, index }) => {
+                    const color = colorPalette[index % colorPalette.length];
+                    return (
+                        <TouchableOpacity
 
-                        onPress={() => {
-                            const id = String(item.id);
+                            onPress={() => {
+                                const id = String(item.id);
 
-                            router.push(`/screens/ProductList?id=${item.id}`);
-                        }}
-                        style={styles.box}>
-                        <Image
-                            source={item.image}
-                        />
-                        <Text style={{
-                            textAlign: 'center'
-                        }}>{item.title}</Text>
-                    </TouchableOpacity>
-                )}
+                                router.push(`/screens/ProductList?id=${item.id}`);
+                            }}
+                            // my border color and bg color comes with data so according that i want to show heer
+                            style={[styles.box,
+
+                            {
+                                borderColor: color.borderColor,
+                                backgroundColor: color.backgroundColor
+                            }
+                            ]}>
+                            <Image
+                                source={item.image}
+                            />
+                            <Text style={{
+                                textAlign: 'center'
+                            }}>{item.title}</Text>
+                        </TouchableOpacity>
+
+                    )
+                }
+
+                }
                 keyExtractor={(item) => item.id.toString()}
                 numColumns={2}
                 showsVerticalScrollIndicator={false}
