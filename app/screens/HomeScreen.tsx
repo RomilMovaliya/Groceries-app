@@ -1,4 +1,4 @@
-import { BackHandler, Platform, SectionList, StyleSheet, Text, View } from 'react-native'
+import { BackHandler, FlatList, Platform, SectionList, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
 import SearchBar from '../../components/searchbar'
 import MapIcon from "../../assets/mapIcon.svg"
@@ -10,12 +10,23 @@ import ProductCarousel from '../../components/ProductCarousel'
 import { fruits } from '../../store/FruitsData'
 import Car from '../../components/carousel'
 import { useLocalSearchParams, useSearchParams } from 'expo-router/build/hooks'
+import CarouselScetion from '../../components/carousel'
 
 const HomeScreen = () => {
-    const sections = [
-        { title: 'Exclusive Offers', data: fruits },
-        { title: 'Best Selling', data: fruits },
-        { title: 'Groceries', data: fruits }
+    const flatData = [
+        { type: 'logo' },
+        { type: 'location' },
+        { type: 'searchbar' },
+        { type: 'car' },
+
+        { type: 'section', title: 'Exclusive Offers' },
+        { type: 'carousel', data: fruits },
+
+        { type: 'section', title: 'Best Selling' },
+        { type: 'carousel', data: fruits },
+
+        { type: 'section', title: 'Groceries' },
+        { type: 'carousel', data: fruits },
     ];
 
     const { zone, area } = useLocalSearchParams();
@@ -39,37 +50,53 @@ const HomeScreen = () => {
         return () => backHandler.remove();
     }, []);
 
+
+    const renderItem = ({ item }: any) => {
+        switch (item.type) {
+            case 'logo':
+                return (
+                    <View style={styles.center}>
+                        <Logo width={70} height={70} />
+                    </View>
+                );
+            case 'location':
+                return (
+                    <View style={styles.title}>
+                        <MapIcon width={20} height={20} />
+                        <Text>{zone}, {area}</Text>
+                    </View>
+                );
+            case 'searchbar':
+                return <SearchBar />;
+            case 'car':
+                return <Car />;
+            case 'section':
+                return <ProductTitle title={item.title} />;
+            case 'carousel':
+                return (
+                    <ProductCarousel
+                        data={item.data}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                    />
+                );
+            default:
+                return null;
+        }
+    };
+
     return (
         <SafeAreaView style={styles.safeArea}>
-            <SectionList
-                ListHeaderComponent={() => (
-                    <View style={styles.header}>
-                        <Logo width={70} height={70} />
-                        <View style={styles.title}>
-                            <MapIcon width={20} height={20} />
-                            <Text>{zone}, {area}</Text>
-                        </View>
-                        <SearchBar />
-                        <Car />
-                    </View>
-                )}
-                sections={sections}
-                keyExtractor={(item, index) => `${item.id}-${index}`}
-                renderSectionHeader={({ section }) => (
-                    <View>
-                        <ProductTitle title={section.title} />
-                        <ProductCarousel
-                            data={section.data}
-                            horizontal
-                            showsHorizontalScrollIndicator={false}
 
-                        />
-                    </View>
-                )}
-                renderItem={() => null}
+            <FlatList
+                data={flatData}
+                renderItem={renderItem}
+                keyExtractor={(_, index) => `item-${index}`}
                 contentContainerStyle={styles.container}
                 showsVerticalScrollIndicator={false}
             />
+
+
         </SafeAreaView>
     )
 }
@@ -94,5 +121,11 @@ const styles = StyleSheet.create({
     header: {
         alignItems: 'center',
         paddingVertical: 10,
+    },
+
+    center: {
+        alignItems: 'center',
+        marginVertical: 10,
     }
+
 })

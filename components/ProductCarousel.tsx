@@ -22,7 +22,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ data, numColumns = 1,
                     <TouchableOpacity
                         style={styles.box}
                         activeOpacity={0.7}
-                        onPress={() => { router.push("/screens/ProductDetail") }}>
+                        onPress={() => { router.navigate(`/screens/ProductDetail?id=${item.id}`) }}>
                         <Image
                             source={{ uri: item.img }}
 
