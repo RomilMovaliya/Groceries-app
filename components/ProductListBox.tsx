@@ -33,12 +33,27 @@ const ProductListBox = () => {
                     return (
                         <TouchableOpacity
 
+<<<<<<< Updated upstream
                             onPress={() => {
                                 const id = String(item.id);
 
                                 router.push(`/screens/ProductList?id=${item.id}`);
                             }}
-                            // my border color and bg color comes with data so according that i want to show heer
+                            style={styles.box}>
+                            <Image
+                                source={item.image}
+                            />
+                            <Text style={{
+                                textAlign: 'center'
+                            }}>{item.title}</Text>
+                        </TouchableOpacity>
+                    )
+                }
+=======
+                            onPress={() => {
+                                router.push(`/screens/ProductList?id=${item.id}`);
+                            }}
+
                             style={[styles.box,
 
                             {
@@ -47,7 +62,9 @@ const ProductListBox = () => {
                             }
                             ]}>
                             <Image
+
                                 source={item.image}
+
                             />
                             <Text style={{
                                 textAlign: 'center'
@@ -58,6 +75,7 @@ const ProductListBox = () => {
                 }
 
                 }
+>>>>>>> Stashed changes
                 keyExtractor={(item) => item.id.toString()}
                 numColumns={2}
                 showsVerticalScrollIndicator={false}

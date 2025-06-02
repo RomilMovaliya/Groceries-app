@@ -19,13 +19,18 @@ import Button from '../../components/button';
 import { useSearchParams } from 'expo-router/build/hooks';
 import { fruits } from '../../store/FruitsData';
 import Icon from '@react-native-vector-icons/material-design-icons';
+import { ProductListData } from '../../store/ProductListData';
 
 const ProductDetail = () => {
 
     const searchParams = useSearchParams();
     const id = Number(searchParams.get('id'));
+    const parentId = Number(searchParams.get('parentid'));
+    console.log(id, parentId);
 
-    const filterProduct = fruits.find((item) => item.id == id);
+    const filterProduct = (ProductListData.find((item) => item.id == parentId));
+    const product = filterProduct.data.find((item) => item.id === id);
+    console.log(product);
 
     const [like, setLike] = useState(false);
     return (
@@ -39,9 +44,7 @@ const ProductDetail = () => {
                         <Image
                             style={{ width: '90%', height: '100%', alignSelf: 'center', marginBottom: 10 }}
                             resizeMode="contain"
-                            source={{
-                                uri: filterProduct.img
-                            }}
+                            source={typeof product.img === 'string' ? { uri: product.img } : product.img}
                         />
                     </View>
 
@@ -52,7 +55,7 @@ const ProductDetail = () => {
 
                     <View>
                         <View style={styles.titleRow}>
-                            <Text>{filterProduct.name}</Text>
+                            <Text>{product.name}</Text>
                             <TouchableOpacity onPress={() => setLike(!like)}>
                                 <Icon
                                     name={like ? 'heart' : 'heart-outline'}
@@ -63,30 +66,30 @@ const ProductDetail = () => {
 
                         </View>
 
-                        <Text style={styles.subtitleText}>1kg, Price ${filterProduct.price}</Text>
+                        <Text style={styles.subtitleText}>1kg, Price ${product.price}</Text>
                     </View>
 
                     <UpdateItemButton />
 
                     <ProductDescription
                         title="Product Detail"
-                        description={filterProduct.productdetails}
+                        description={product.productdetails}
                         weight={false}
                         rating={0}
                     />
 
                     <ProductDescription
                         title="Nutritions"
-                        description={filterProduct.nutritions}
+                        description={product.nutritions}
                         weight={true}
                         rating={0}
                     />
 
                     <ProductDescription
                         title="Review"
-                        description={filterProduct.review}
+                        description={product.review}
                         weight={false}
-                        rating={filterProduct.rating}
+                        rating={Math.round(product.rating)}
                     />
                 </ScrollView>
 

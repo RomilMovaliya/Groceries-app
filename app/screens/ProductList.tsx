@@ -17,6 +17,7 @@ const ProductList = () => {
 
     const productData = ProductListData.find(item => item.id === Number(id));
 
+
     const snapPoints = useMemo(() =>
         ['25%', '50%', '70%']
         , []);
@@ -63,7 +64,6 @@ const ProductList = () => {
                 <Text>Beverages</Text>
                 <ManuBtn
                     onPress={() =>
-                        // console.log("bottom sheet clicked!");
                         <FilterBottomSheet />
                     }
                     width={25}
@@ -80,6 +80,9 @@ const ProductList = () => {
                 showsHorizontalScrollIndicator={false}
                 renderItem={({ item }) => (
                     <TouchableOpacity
+                        onPress={() => {
+                            router.navigate(`/screens/ProductDetail?id=${item.id}&parentid=${id}`);
+                        }}
                         activeOpacity={0.5}
                         style={styles.container}>
 
