@@ -12,10 +12,10 @@ import { ProductListData } from '../../store/ProductListData'
 import GroceriesList from '../../components/GroceriesList'
 
 const HomeScreen = () => {
-    const label = ProductListData.find((item) => item.label === "Exclusive Offers");
-    console.log('-------------------------------------------------------');
+    // const label = ProductListData.find((item) => item.label === "Exclusive Offers");
+    // console.log('-------------------------------------------------------');
 
-    console.log('label', label);
+    // console.log('label', label);
 
     const flatData = [
         { type: 'logo' },

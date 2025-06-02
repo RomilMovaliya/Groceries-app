@@ -130,7 +130,7 @@ export const ProductListData: ProductItem[] = [
     {
         id: 2,
         title: 'Fresh Fruits & Vegetable',
-        label: 'Exclusive Offer',
+        label: 'Exclusive Offers',
         image: require('../assets/productListImg/category2.png'),
         data: [
             {
