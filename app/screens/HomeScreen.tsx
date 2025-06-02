@@ -1,36 +1,41 @@
-import { BackHandler, FlatList, Platform, SectionList, StyleSheet, Text, View } from 'react-native'
+import { BackHandler, FlatList, Platform, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
 import SearchBar from '../../components/searchbar'
 import MapIcon from "../../assets/mapIcon.svg"
 import Logo from "../../assets/colorlogo.svg"
 import { SafeAreaView } from 'react-native-safe-area-context'
-
 import ProductTitle from '../../components/ProductTitle'
 import ProductCarousel from '../../components/ProductCarousel'
-import { fruits } from '../../store/FruitsData'
 import Car from '../../components/carousel'
 import { useLocalSearchParams, useSearchParams } from 'expo-router/build/hooks'
-import CarouselScetion from '../../components/carousel'
+import { ProductListData } from '../../store/ProductListData'
+import GroceriesList from '../../components/GroceriesList'
 
 const HomeScreen = () => {
+    const label = ProductListData.find((item) => item.label === "Exclusive Offers");
+    console.log('-------------------------------------------------------');
+
+    console.log('label', label);
+
     const flatData = [
         { type: 'logo' },
         { type: 'location' },
         { type: 'searchbar' },
-        { type: 'car' },
+        { type: 'carouselSection' },
 
         { type: 'section', title: 'Exclusive Offers' },
-        { type: 'carousel', data: fruits },
+        { type: 'carousel', data: ProductListData[1], parentid: ProductListData[1].id },
 
         { type: 'section', title: 'Best Selling' },
-        { type: 'carousel', data: fruits },
+        { type: 'carousel', data: ProductListData[1], parentid: ProductListData[1].id },
 
         { type: 'section', title: 'Groceries' },
-        { type: 'carousel', data: fruits },
+        { type: 'Groceries List', data: ProductListData[1], parentid: ProductListData[1].id },
     ];
-
+    console.log(flatData[5].data)
     const { zone, area } = useLocalSearchParams();
 
+    console.log("parentid", flatData[5].parentid)
 
     useEffect(() => {
         const backAction = () => {
@@ -68,17 +73,22 @@ const HomeScreen = () => {
                 );
             case 'searchbar':
                 return <SearchBar />;
-            case 'car':
+            case 'carouselSection':
                 return <Car />;
             case 'section':
                 return <ProductTitle title={item.title} />;
             case 'carousel':
                 return (
                     <ProductCarousel
-                        data={item.data}
+                        id={item.parentid}
+                        data={item.data.data}
                         horizontal
                         showsHorizontalScrollIndicator={false}
                     />
+                );
+            case 'Groceries List':
+                return (
+                    <GroceriesList />
                 );
             default:
                 return null;

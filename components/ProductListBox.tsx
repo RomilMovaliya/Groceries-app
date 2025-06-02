@@ -17,6 +17,7 @@ const ProductListBox = () => {
                 renderItem={({ item }) => (
                     <TouchableOpacity
 
+<<<<<<< Updated upstream
                         onPress={() => {
                             const id = String(item.id);
 
@@ -31,6 +32,33 @@ const ProductListBox = () => {
                         }}>{item.title}</Text>
                     </TouchableOpacity>
                 )}
+=======
+                            onPress={() => {
+                                router.push(`/screens/ProductList?id=${item.id}`);
+                            }}
+
+                            style={[styles.box,
+
+                            {
+                                borderColor: color.borderColor,
+                                backgroundColor: color.backgroundColor
+                            }
+                            ]}>
+                            <Image
+
+                                source={item.image}
+
+                            />
+                            <Text style={{
+                                textAlign: 'center'
+                            }}>{item.title}</Text>
+                        </TouchableOpacity>
+
+                    )
+                }
+
+                }
+>>>>>>> Stashed changes
                 keyExtractor={(item) => item.id.toString()}
                 numColumns={2}
                 showsVerticalScrollIndicator={false}
