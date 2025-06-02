@@ -4,6 +4,7 @@ import { ProductListData } from '../store/ProductListData'
 import { router } from 'expo-router'
 
 const ProductListBox = () => {
+
     const colorPalette = [
         { borderColor: '#53B175', backgroundColor: '#d0fac8' },
         { borderColor: '#F7A593', backgroundColor: '#ffe5d0' },
@@ -18,7 +19,6 @@ const ProductListBox = () => {
         { borderColor: '#9EC1CF', backgroundColor: '#e9f6fa' },
         { borderColor: '#F2C2CF', backgroundColor: '#fff0f5' }
     ];
-
     return (
         <View style={{
             backgroundColor: 'white'
@@ -30,26 +30,10 @@ const ProductListBox = () => {
                 }}
                 renderItem={({ item, index }) => {
                     const color = colorPalette[index % colorPalette.length];
+
                     return (
                         <TouchableOpacity
 
-<<<<<<< Updated upstream
-                            onPress={() => {
-                                const id = String(item.id);
-
-                                router.push(`/screens/ProductList?id=${item.id}`);
-                            }}
-                            style={styles.box}>
-                            <Image
-                                source={item.image}
-                            />
-                            <Text style={{
-                                textAlign: 'center'
-                            }}>{item.title}</Text>
-                        </TouchableOpacity>
-                    )
-                }
-=======
                             onPress={() => {
                                 router.push(`/screens/ProductList?id=${item.id}`);
                             }}
@@ -70,12 +54,11 @@ const ProductListBox = () => {
                                 textAlign: 'center'
                             }}>{item.title}</Text>
                         </TouchableOpacity>
-
                     )
                 }
-
                 }
->>>>>>> Stashed changes
+
+
                 keyExtractor={(item) => item.id.toString()}
                 numColumns={2}
                 showsVerticalScrollIndicator={false}
@@ -108,5 +91,4 @@ const styles = StyleSheet.create({
         backgroundColor: '#sffebe0'
     }
 })
-
 
