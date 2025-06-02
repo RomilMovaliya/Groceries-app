@@ -25,7 +25,7 @@ export const ProductListData: ProductItem[] = [
 
     {
         id: 1,
-        title: 'Beverages',
+        title: 'Dairy & Eggs',
         image: require('../assets/productListImg/category1.png'),
         data: [
             {

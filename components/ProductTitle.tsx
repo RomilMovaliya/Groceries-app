@@ -2,6 +2,7 @@ import { StyleSheet, Text, TextProps, View } from 'react-native'
 import React from 'react'
 import { primaryColor } from '../utils/myColors'
 import { MyProductTitle } from '../types/types'
+import { Link } from 'expo-router'
 
 
 const ProductTitle: React.FC<MyProductTitle> = ({ title }) => {
@@ -21,7 +22,9 @@ const ProductTitle: React.FC<MyProductTitle> = ({ title }) => {
             <Text style={{
                 color: primaryColor,
                 fontWeight: '600'
-            }}>See all</Text>
+            }}>
+
+                <Link href={'/screens/Explore'}>See all</Link></Text>
         </View>
     )
 }

@@ -61,7 +61,7 @@ const ProductList = () => {
                     width={25}
                     height={25}
                 />
-                <Text>Beverages</Text>
+                <Text>{productData.title}</Text>
                 <ManuBtn
                     onPress={() =>
                         <FilterBottomSheet />
@@ -77,7 +77,7 @@ const ProductList = () => {
                 }}
                 numColumns={2}
                 data={productData?.data}
-                showsHorizontalScrollIndicator={false}
+                showsVerticalScrollIndicator={false}
                 renderItem={({ item }) => (
                     <TouchableOpacity
                         onPress={() => {
@@ -87,10 +87,12 @@ const ProductList = () => {
                         style={styles.container}>
 
                         <Image
-                            resizeMode='cover'
+                            resizeMode='contain'
                             style={{
                                 alignSelf: 'center'
                             }}
+                            height={100}
+                            width={100}
                             source={item.img}
                         />
                         <Text>{item.name}</Text>
