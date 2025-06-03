@@ -25,7 +25,7 @@ export const ProductListData: ProductItem[] = [
 
     {
         id: 1,
-        title: 'Dairy & Eggs',
+        title: 'Beverages',
         image: require('../assets/productListImg/category1.png'),
         data: [
             {
@@ -130,7 +130,7 @@ export const ProductListData: ProductItem[] = [
     {
         id: 2,
         title: 'Fresh Fruits & Vegetable',
-        label: 'Exclusive Offers',
+        label: 'Exclusive Offer',
         image: require('../assets/productListImg/category2.png'),
         data: [
             {
@@ -392,218 +392,218 @@ export const ProductListData: ProductItem[] = [
 
     },
 
+    // {
+    //     id: 5,
+    //     title: 'Beverages',
+    //     image: require('../assets/productListImg/category5.png'),
+    //     data: [
+    //         {
+    //             id: 1,
+    //             name: 'Diet Coke',
+    //             price: 1.99,
+    //             volume: 580,
+    //             img: require('../assets/coke1.png'),
+    //             pieces: 1,
+    //             productdetails: "Classic low-calorie soda with a crisp, refreshing taste.",
+    //             nutritions: "Calories: 1 kcal, Sugar: 0g, Caffeine: 46mg",
+    //             review: "Light and refreshing, perfect for calorie-conscious consumers.",
+    //             rating: 4.5
+    //         },
+    //         {
+    //             id: 2,
+    //             name: 'Sprite Can',
+    //             price: 1.2,
+    //             volume: 520,
+    //             img: require('../assets/coke2.png'),
+    //             pieces: 1,
+    //             productdetails: "Caffeine-free lemon-lime soda with a bubbly, crisp flavor.",
+    //             nutritions: "Calories: 140 kcal, Sugar: 38g, Caffeine: 0mg",
+    //             review: "Tastes fresh and lively, great for all ages.",
+    //             rating: 4.3
+    //         },
+    //         {
+    //             id: 3,
+    //             name: 'Apple & Grape Juice',
+    //             price: 1.8,
+    //             volume: 300,
+    //             img: require('../assets/coke3.png'),
+    //             pieces: 1,
+    //             productdetails: "Sweet blend of apple and grape juices, no artificial flavors.",
+    //             nutritions: "Calories: 120 kcal, Sugar: 26g, Caffeine: 0mg",
+    //             review: "Smooth and fruity with natural sweetness.",
+    //             rating: 4.6
+    //         },
+    //         {
+    //             id: 4,
+    //             name: 'Orange Juice',
+    //             price: 3.0,
+    //             volume: 500,
+    //             img: require('../assets/coke4.png'),
+    //             pieces: 1,
+    //             productdetails: "Freshly squeezed orange juice packed with Vitamin C.",
+    //             nutritions: "Calories: 110 kcal, Sugar: 22g, Caffeine: 0mg",
+    //             review: "Zesty and refreshing, perfect for breakfast.",
+    //             rating: 4.7
+    //         },
+    //         {
+    //             id: 5,
+    //             name: 'Coca Cola Can',
+    //             price: 3.0,
+    //             volume: 330,
+    //             img: require('../assets/coke5.png'),
+    //             pieces: 1,
+    //             productdetails: "The iconic cola soda known for its classic taste and fizz.",
+    //             nutritions: "Calories: 140 kcal, Sugar: 39g, Caffeine: 34mg",
+    //             review: "Loved worldwide for its unique flavor and smoothness.",
+    //             rating: 4.4
+    //         },
+    //         {
+    //             id: 6,
+    //             name: 'Pepsi Can',
+    //             price: 3.0,
+    //             volume: 250,
+    //             img: require('../assets/coke6.png'),
+    //             pieces: 1,
+    //             productdetails: "Bold and sweet cola soda with a slightly sharper flavor.",
+    //             nutritions: "Calories: 150 kcal, Sugar: 41g, Caffeine: 38mg",
+    //             review: "Good alternative to classic cola, with a strong fan base.",
+    //             rating: 4.2
+    //         },
+    //         {
+    //             id: 7,
+    //             name: 'Mountain Dew',
+    //             price: 2.5,
+    //             volume: 355,
+    //             img: require('../assets/coke1.png'),
+    //             pieces: 1,
+    //             productdetails: "Citrus-flavored soda with a high caffeine content.",
+    //             nutritions: "Calories: 170 kcal, Sugar: 46g, Caffeine: 54mg",
+    //             review: "Energetic and flavorful, perfect for energy boosts.",
+    //             rating: 4.4
+    //         },
+    //         {
+    //             id: 8,
+    //             name: '7 Up',
+    //             price: 1.2,
+    //             volume: 355,
+    //             img: require('../assets/coke2.png'),
+    //             pieces: 1,
+    //             productdetails: "Clear lemon-lime soda, caffeine-free and crisp.",
+    //             nutritions: "Calories: 140 kcal, Sugar: 38g, Caffeine: 0mg",
+    //             review: "Light and refreshing, great for any occasion.",
+    //             rating: 4.2
+    //         },
+
+    //     ]
+    // },
+
+
+    // {
+    //     id: 6,
+    //     title: 'Aryuvedic Beverages',
+    //     image: require('../assets/productListImg/category6.png'),
+    //     data: [
+    //         {
+    //             id: 1,
+    //             name: 'Diet Coke',
+    //             price: 1.99,
+    //             volume: 580,
+    //             img: require('../assets/coke1.png'),
+    //             pieces: 1,
+    //             productdetails: "Classic low-calorie soda with a crisp, refreshing taste.",
+    //             nutritions: "Calories: 1 kcal, Sugar: 0g, Caffeine: 46mg",
+    //             review: "Light and refreshing, perfect for calorie-conscious consumers.",
+    //             rating: 4.5
+    //         },
+    //         {
+    //             id: 2,
+    //             name: 'Sprite Can',
+    //             price: 1.2,
+    //             volume: 520,
+    //             img: require('../assets/coke2.png'),
+    //             pieces: 1,
+    //             productdetails: "Caffeine-free lemon-lime soda with a bubbly, crisp flavor.",
+    //             nutritions: "Calories: 140 kcal, Sugar: 38g, Caffeine: 0mg",
+    //             review: "Tastes fresh and lively, great for all ages.",
+    //             rating: 4.3
+    //         },
+    //         {
+    //             id: 3,
+    //             name: 'Apple & Grape Juice',
+    //             price: 1.8,
+    //             volume: 300,
+    //             img: require('../assets/coke3.png'),
+    //             pieces: 1,
+    //             productdetails: "Sweet blend of apple and grape juices, no artificial flavors.",
+    //             nutritions: "Calories: 120 kcal, Sugar: 26g, Caffeine: 0mg",
+    //             review: "Smooth and fruity with natural sweetness.",
+    //             rating: 4.6
+    //         },
+    //         {
+    //             id: 4,
+    //             name: 'Orange Juice',
+    //             price: 3.0,
+    //             volume: 500,
+    //             img: require('../assets/coke4.png'),
+    //             pieces: 1,
+    //             productdetails: "Freshly squeezed orange juice packed with Vitamin C.",
+    //             nutritions: "Calories: 110 kcal, Sugar: 22g, Caffeine: 0mg",
+    //             review: "Zesty and refreshing, perfect for breakfast.",
+    //             rating: 4.7
+    //         },
+    //         {
+    //             id: 5,
+    //             name: 'Coca Cola Can',
+    //             price: 3.0,
+    //             volume: 330,
+    //             img: require('../assets/coke5.png'),
+    //             pieces: 1,
+    //             productdetails: "The iconic cola soda known for its classic taste and fizz.",
+    //             nutritions: "Calories: 140 kcal, Sugar: 39g, Caffeine: 34mg",
+    //             review: "Loved worldwide for its unique flavor and smoothness.",
+    //             rating: 4.4
+    //         },
+    //         {
+    //             id: 6,
+    //             name: 'Pepsi Can',
+    //             price: 3.0,
+    //             volume: 250,
+    //             img: require('../assets/coke6.png'),
+    //             pieces: 1,
+    //             productdetails: "Bold and sweet cola soda with a slightly sharper flavor.",
+    //             nutritions: "Calories: 150 kcal, Sugar: 41g, Caffeine: 38mg",
+    //             review: "Good alternative to classic cola, with a strong fan base.",
+    //             rating: 4.2
+    //         },
+    //         {
+    //             id: 7,
+    //             name: 'Mountain Dew',
+    //             price: 2.5,
+    //             volume: 355,
+    //             img: require('../assets/coke1.png'),
+    //             pieces: 1,
+    //             productdetails: "Citrus-flavored soda with a high caffeine content.",
+    //             nutritions: "Calories: 170 kcal, Sugar: 46g, Caffeine: 54mg",
+    //             review: "Energetic and flavorful, perfect for energy boosts.",
+    //             rating: 4.4
+    //         },
+    //         {
+    //             id: 8,
+    //             name: '7 Up',
+    //             price: 1.2,
+    //             volume: 355,
+    //             img: require('../assets/coke2.png'),
+    //             pieces: 1,
+    //             productdetails: "Clear lemon-lime soda, caffeine-free and crisp.",
+    //             nutritions: "Calories: 140 kcal, Sugar: 38g, Caffeine: 0mg",
+    //             review: "Light and refreshing, great for any occasion.",
+    //             rating: 4.2
+    //         },
+    //     ]
+    // },
+
     {
         id: 5,
-        title: 'Beverages',
-        image: require('../assets/productListImg/category5.png'),
-        data: [
-            {
-                id: 1,
-                name: 'Diet Coke',
-                price: 1.99,
-                volume: 580,
-                img: require('../assets/coke1.png'),
-                pieces: 1,
-                productdetails: "Classic low-calorie soda with a crisp, refreshing taste.",
-                nutritions: "Calories: 1 kcal, Sugar: 0g, Caffeine: 46mg",
-                review: "Light and refreshing, perfect for calorie-conscious consumers.",
-                rating: 4.5
-            },
-            {
-                id: 2,
-                name: 'Sprite Can',
-                price: 1.2,
-                volume: 520,
-                img: require('../assets/coke2.png'),
-                pieces: 1,
-                productdetails: "Caffeine-free lemon-lime soda with a bubbly, crisp flavor.",
-                nutritions: "Calories: 140 kcal, Sugar: 38g, Caffeine: 0mg",
-                review: "Tastes fresh and lively, great for all ages.",
-                rating: 4.3
-            },
-            {
-                id: 3,
-                name: 'Apple & Grape Juice',
-                price: 1.8,
-                volume: 300,
-                img: require('../assets/coke3.png'),
-                pieces: 1,
-                productdetails: "Sweet blend of apple and grape juices, no artificial flavors.",
-                nutritions: "Calories: 120 kcal, Sugar: 26g, Caffeine: 0mg",
-                review: "Smooth and fruity with natural sweetness.",
-                rating: 4.6
-            },
-            {
-                id: 4,
-                name: 'Orange Juice',
-                price: 3.0,
-                volume: 500,
-                img: require('../assets/coke4.png'),
-                pieces: 1,
-                productdetails: "Freshly squeezed orange juice packed with Vitamin C.",
-                nutritions: "Calories: 110 kcal, Sugar: 22g, Caffeine: 0mg",
-                review: "Zesty and refreshing, perfect for breakfast.",
-                rating: 4.7
-            },
-            {
-                id: 5,
-                name: 'Coca Cola Can',
-                price: 3.0,
-                volume: 330,
-                img: require('../assets/coke5.png'),
-                pieces: 1,
-                productdetails: "The iconic cola soda known for its classic taste and fizz.",
-                nutritions: "Calories: 140 kcal, Sugar: 39g, Caffeine: 34mg",
-                review: "Loved worldwide for its unique flavor and smoothness.",
-                rating: 4.4
-            },
-            {
-                id: 6,
-                name: 'Pepsi Can',
-                price: 3.0,
-                volume: 250,
-                img: require('../assets/coke6.png'),
-                pieces: 1,
-                productdetails: "Bold and sweet cola soda with a slightly sharper flavor.",
-                nutritions: "Calories: 150 kcal, Sugar: 41g, Caffeine: 38mg",
-                review: "Good alternative to classic cola, with a strong fan base.",
-                rating: 4.2
-            },
-            {
-                id: 7,
-                name: 'Mountain Dew',
-                price: 2.5,
-                volume: 355,
-                img: require('../assets/coke1.png'),
-                pieces: 1,
-                productdetails: "Citrus-flavored soda with a high caffeine content.",
-                nutritions: "Calories: 170 kcal, Sugar: 46g, Caffeine: 54mg",
-                review: "Energetic and flavorful, perfect for energy boosts.",
-                rating: 4.4
-            },
-            {
-                id: 8,
-                name: '7 Up',
-                price: 1.2,
-                volume: 355,
-                img: require('../assets/coke2.png'),
-                pieces: 1,
-                productdetails: "Clear lemon-lime soda, caffeine-free and crisp.",
-                nutritions: "Calories: 140 kcal, Sugar: 38g, Caffeine: 0mg",
-                review: "Light and refreshing, great for any occasion.",
-                rating: 4.2
-            },
-
-        ]
-    },
-
-
-    {
-        id: 6,
-        title: 'Aryuvedic Beverages',
-        image: require('../assets/productListImg/category6.png'),
-        data: [
-            {
-                id: 1,
-                name: 'Diet Coke',
-                price: 1.99,
-                volume: 580,
-                img: require('../assets/coke1.png'),
-                pieces: 1,
-                productdetails: "Classic low-calorie soda with a crisp, refreshing taste.",
-                nutritions: "Calories: 1 kcal, Sugar: 0g, Caffeine: 46mg",
-                review: "Light and refreshing, perfect for calorie-conscious consumers.",
-                rating: 4.5
-            },
-            {
-                id: 2,
-                name: 'Sprite Can',
-                price: 1.2,
-                volume: 520,
-                img: require('../assets/coke2.png'),
-                pieces: 1,
-                productdetails: "Caffeine-free lemon-lime soda with a bubbly, crisp flavor.",
-                nutritions: "Calories: 140 kcal, Sugar: 38g, Caffeine: 0mg",
-                review: "Tastes fresh and lively, great for all ages.",
-                rating: 4.3
-            },
-            {
-                id: 3,
-                name: 'Apple & Grape Juice',
-                price: 1.8,
-                volume: 300,
-                img: require('../assets/coke3.png'),
-                pieces: 1,
-                productdetails: "Sweet blend of apple and grape juices, no artificial flavors.",
-                nutritions: "Calories: 120 kcal, Sugar: 26g, Caffeine: 0mg",
-                review: "Smooth and fruity with natural sweetness.",
-                rating: 4.6
-            },
-            {
-                id: 4,
-                name: 'Orange Juice',
-                price: 3.0,
-                volume: 500,
-                img: require('../assets/coke4.png'),
-                pieces: 1,
-                productdetails: "Freshly squeezed orange juice packed with Vitamin C.",
-                nutritions: "Calories: 110 kcal, Sugar: 22g, Caffeine: 0mg",
-                review: "Zesty and refreshing, perfect for breakfast.",
-                rating: 4.7
-            },
-            {
-                id: 5,
-                name: 'Coca Cola Can',
-                price: 3.0,
-                volume: 330,
-                img: require('../assets/coke5.png'),
-                pieces: 1,
-                productdetails: "The iconic cola soda known for its classic taste and fizz.",
-                nutritions: "Calories: 140 kcal, Sugar: 39g, Caffeine: 34mg",
-                review: "Loved worldwide for its unique flavor and smoothness.",
-                rating: 4.4
-            },
-            {
-                id: 6,
-                name: 'Pepsi Can',
-                price: 3.0,
-                volume: 250,
-                img: require('../assets/coke6.png'),
-                pieces: 1,
-                productdetails: "Bold and sweet cola soda with a slightly sharper flavor.",
-                nutritions: "Calories: 150 kcal, Sugar: 41g, Caffeine: 38mg",
-                review: "Good alternative to classic cola, with a strong fan base.",
-                rating: 4.2
-            },
-            {
-                id: 7,
-                name: 'Mountain Dew',
-                price: 2.5,
-                volume: 355,
-                img: require('../assets/coke1.png'),
-                pieces: 1,
-                productdetails: "Citrus-flavored soda with a high caffeine content.",
-                nutritions: "Calories: 170 kcal, Sugar: 46g, Caffeine: 54mg",
-                review: "Energetic and flavorful, perfect for energy boosts.",
-                rating: 4.4
-            },
-            {
-                id: 8,
-                name: '7 Up',
-                price: 1.2,
-                volume: 355,
-                img: require('../assets/coke2.png'),
-                pieces: 1,
-                productdetails: "Clear lemon-lime soda, caffeine-free and crisp.",
-                nutritions: "Calories: 140 kcal, Sugar: 38g, Caffeine: 0mg",
-                review: "Light and refreshing, great for any occasion.",
-                rating: 4.2
-            },
-        ]
-    },
-
-    {
-        id: 7,
         title: 'Dairy & Eggs',
         image: require('../assets/productListImg/category1.png'),
         data: [
@@ -707,7 +707,7 @@ export const ProductListData: ProductItem[] = [
         ]
     },
     {
-        id: 8,
+        id: 6,
         title: 'Frash Fruits & Vegetable',
         image: require('../assets/productListImg/category2.png'),
         data: [

@@ -24,7 +24,6 @@ const RootLayout = () => {
     return (
         <Tabs
             screenOptions={{
-                headerShown: false,
                 tabBarActiveTintColor: primaryColor,
                 tabBarInactiveTintColor: 'black',
                 tabBarStyle: {
@@ -37,6 +36,7 @@ const RootLayout = () => {
             <Tabs.Screen
                 name='shop'
                 options={{
+                    headerShown: false,
                     tabBarLabel: 'Shop',
                     tabBarLabelStyle: {
                         fontWeight: '500',
@@ -53,7 +53,9 @@ const RootLayout = () => {
 
             <Tabs.Screen
                 name='explore'
+
                 options={{
+                    headerShown: false,
                     tabBarLabel: 'Explore',
                     tabBarLabelStyle: {
                         fontWeight: '500',
@@ -70,6 +72,8 @@ const RootLayout = () => {
             <Tabs.Screen
                 name='cart'
                 options={{
+                    headerTitleAlign: 'center',
+                    headerTitle: 'My Cart',
                     tabBarLabel: 'Cart',
                     tabBarLabelStyle: {
                         fontWeight: '500',
@@ -86,6 +90,8 @@ const RootLayout = () => {
             <Tabs.Screen
                 name='favorite'
                 options={{
+                    headerTitleAlign: 'center',
+                    headerTitle: 'Favorite',
                     tabBarLabel: 'Favorite',
                     tabBarLabelStyle: {
                         fontWeight: '500',
@@ -102,6 +108,7 @@ const RootLayout = () => {
             <Tabs.Screen
                 name='account'
                 options={{
+                    headerShown: false,
                     tabBarLabel: 'Account',
                     tabBarLabelStyle: {
                         fontWeight: '600',
