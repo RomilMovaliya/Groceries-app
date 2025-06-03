@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { SafeAreaView, FlatList, TouchableOpacity, Text, View, Image, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import BottomSheet, { BottomSheetBackdrop, BottomSheetFooter, BottomSheetView } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetFooter, BottomSheetFooterProps, BottomSheetView } from '@gorhom/bottom-sheet';
 import BackBtn from '../../assets/backIcon.svg';
 import ManuBtn from '../../assets/filterIcon.svg';
 import AddIcon from '../../assets/plusIcon.svg';
@@ -22,12 +22,12 @@ const ProductList = () => {
     console.log(productData?.title);
 
     const renderBackdrop = useCallback(
-        (props: any) => <BottomSheetBackdrop appearsOnIndex={1} disappearsOnIndex={-1} {...props} />,
+        (props: BottomSheetBackdropProps) => <BottomSheetBackdrop appearsOnIndex={1} disappearsOnIndex={-1} {...props} />,
         []
     );
 
     const renderFooter = useCallback(
-        (props: any) => (
+        (props: BottomSheetFooterProps) => (
             <BottomSheetFooter {...props}>
                 <View style={{ marginHorizontal: 20, marginBottom: 20 }}>
                     {/* <Button
