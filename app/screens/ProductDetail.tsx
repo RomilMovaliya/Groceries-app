@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BackIcon from '../../assets/backIcon.svg';
 import ShareIcon from '../../assets/shareIcon.svg';
 import FavoriteIcon from '../../assets/tabIcons/favoriteIcon.svg';
@@ -20,19 +20,39 @@ import { useSearchParams } from 'expo-router/build/hooks';
 import { fruits } from '../../store/FruitsData';
 import Icon from '@react-native-vector-icons/material-design-icons';
 import { ProductListData } from '../../store/ProductListData';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart } from '../Redux/CartSlice';
+import { RootState } from '../Redux/Store';
 
 const ProductDetail = () => {
 
     const searchParams = useSearchParams();
     const id = Number(searchParams.get('id'));
     const parentId = Number(searchParams.get('parentid'));
-    console.log(id, parentId);
+    const data = searchParams.get('data');
+    const [quantity, setQuantity] = useState(1);
+    console.log('prodid', id, parentId);
+    console.log("full data", JSON.parse(data));
 
-    const filterProduct = (ProductListData.find((item) => item.id == parentId));
-    const product = filterProduct.data.find((item) => item.id === id);
-    console.log(product);
+    const filterProduct = (ProductListData.find((item) => item?.id == parentId));
+    console.log("filterProduct", filterProduct.data);
+
+    const product = filterProduct.data.find((item) => item?.id === id);
+    console.log("product in productdetail", JSON.stringify(product));
+
 
     const [like, setLike] = useState(false);
+    const cartItems = useSelector((state: RootState) => state.cart.items);
+    console.log("cart Item", JSON.stringify(cartItems));
+    let itemInCart = cartItems.find((item) => item?.id === product.id);
+    console.log("itemInCart", itemInCart);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        console.log({ quantity });
+
+    }, [quantity])
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={{ flex: 1 }}>
@@ -69,7 +89,12 @@ const ProductDetail = () => {
                         <Text style={styles.subtitleText}>1kg, Price ${product.price}</Text>
                     </View>
 
-                    <UpdateItemButton />
+                    <UpdateItemButton
+                        itemData={itemInCart}
+                        addQuantity={() => setQuantity((prev) => prev + 1)}
+                        removeQuantity={() => setQuantity((prev) => prev - 1)}
+                        quantity={quantity}
+                    />
 
                     <ProductDescription
                         title="Product Detail"
@@ -97,7 +122,10 @@ const ProductDetail = () => {
                 <View style={styles.bottomButton}>
                     <Button
                         title="Add To Basket"
-                        onPress={() => { router.navigate('/screens/HomeScreen') }}
+                        onPress={() => {
+                            dispatch(addToCart({ ...product, quantity: quantity }))
+                            router.navigate('/tabs/cart')
+                        }}
                     />
                 </View>
             </View>

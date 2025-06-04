@@ -11,6 +11,7 @@ export interface ProductSubItem {
     nutritions: string;
     review: string;
     rating: number;
+    quantity?: number;
 }
 
 export interface ProductItem {
@@ -144,6 +145,7 @@ export const ProductListData: ProductItem[] = [
                 nutritions: "Calories: 100 kcal per 100g. Rich in fiber and vitamin C.",
                 review: "Loved by most customers for its crispness and natural sweetness.",
                 rating: 5,
+                quantity: 1
             },
             {
                 id: 2,
@@ -156,6 +158,7 @@ export const ProductListData: ProductItem[] = [
                 nutritions: "Calories: 100 kcal per 100g. Rich in fiber and vitamin C.",
                 review: "Popular for its creamy texture and quick energy boost.",
                 rating: 4,
+                quantity: 1
             },
             {
                 id: 3,
@@ -168,6 +171,7 @@ export const ProductListData: ProductItem[] = [
                 nutritions: "Calories: 100 kcal per 100g. Rich in fiber and vitamin C.",
                 review: "Praised for its juicy segments and refreshing citrus flavor.",
                 rating: 3,
+                quantity: 1
             },
             {
                 id: 4,
@@ -180,6 +184,7 @@ export const ProductListData: ProductItem[] = [
                 nutritions: "Calories: 100 kcal per 100g. Rich in fiber and vitamin C.",
                 review: "Favored for its tropical flavor and excellent digestive properties.",
                 rating: 5,
+                quantity: 1
             },
         ]
     },

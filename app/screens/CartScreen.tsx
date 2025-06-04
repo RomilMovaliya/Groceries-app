@@ -1,0 +1,104 @@
+import { FlatList, Image, SafeAreaView, StyleSheet, Text, View } from 'react-native'
+import React, { useState } from 'react'
+import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
+import CancelIcon from "../../assets/cancelIcon.svg";
+import UpdateItemButton from '../../components/updateItemButton';
+import { useDispatch, useSelector } from 'react-redux';
+import CartSlice, { removeFromCart } from "../Redux/CartSlice";
+import { RootState } from '../Redux/Store';
+const CartScreen = () => {
+    const storedData = useSelector((state: RootState) => state.cart.items);
+    const dispatch = useDispatch();
+    console.log("storedData", storedData);
+
+
+    return (
+        <SafeAreaView>
+
+            <FlatList
+                keyExtractor={(item) => item.id.toString()}
+                scrollEnabled={true}
+                showsVerticalScrollIndicator={false}
+                ItemSeparatorComponent={() => (
+                    <View style={{
+                        borderColor: 'grey',
+                        borderWidth: 1
+                    }} />
+                )}
+                contentContainerStyle={{
+                    gap: 5,
+                    borderColor: 'red',
+                    borderWidth: 1,
+                    paddingHorizontal: 20
+                }}
+                data={storedData}
+                renderItem={({ item, index }) => {
+                    console.log('Rendering item:', item);
+                    return (
+                        <View style={{
+                            height: responsiveHeight(20),
+                            flexDirection: 'row',
+                        }}>
+
+                            <View style={{
+                                flex: 0.3,
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}>
+
+                                <Image
+                                    style={{
+                                        width: responsiveWidth(25)
+                                    }}
+                                    resizeMode='contain'
+                                    source={item.img}
+                                />
+                            </View>
+
+                            <View style={{
+                                flex: 0.7,
+                                paddingHorizontal: 10,
+                                paddingVertical: 10
+                            }}>
+                                <View style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center'
+                                }}>
+                                    <Text>{item.name}</Text>
+                                    <CancelIcon onPress={() => {
+                                        dispatch(removeFromCart({ name: item.name }))
+                                    }} height={20} width={20} />
+                                </View>
+
+                                <Text>1Kg Price</Text>
+
+                                <View style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center'
+                                }}>
+                                    <UpdateItemButton itemData={item} />
+                                    <Text style={{
+                                        marginTop: 5,
+                                        fontSize: 18
+                                    }}>${item.price}</Text>
+                                </View>
+
+                            </View>
+                        </View>
+
+                    )
+                }}
+            />
+
+
+
+
+        </SafeAreaView >
+    )
+}
+
+export default CartScreen
+
+const styles = StyleSheet.create({})

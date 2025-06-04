@@ -24,7 +24,10 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ data, id, numColumns 
                     <TouchableOpacity
                         style={styles.box}
                         activeOpacity={0.7}
-                        onPress={() => { router.navigate(`/screens/ProductDetail?id=${item.id}&parentid=${id}`) }}>
+                        onPress={() => {
+                            const data = JSON.stringify(item)
+                            router.navigate(`/screens/ProductDetail?id=${item.id}&parentid=${id}&data=${data}`)
+                        }}>
                         <Image
                             source={typeof item.img === 'string' ? { uri: item.img } : item.img}
                             style={{

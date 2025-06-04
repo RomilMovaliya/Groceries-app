@@ -1,34 +1,77 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 
 import IncrementIcon from '../assets/IncrementIcon.svg';
 import DecrementIcon from '../assets/decrementIcon.svg';
+import { useDispatch, useSelector } from 'react-redux';
+import { decrementQuantity, IncremetQuantity } from '../app/Redux/CartSlice';
+import { RootState } from '../app/Redux/Store';
 
-const UpdateItemButton: React.FC = () => {
+interface UpdateItemButtonProps {
+    itemData: {
+        id: number;
+        name: string;
+        quantity: number;
 
-    const [count, setCount] = useState(1);
-
-    const handleIncrement = () => {
-        setCount(count + 1);
     }
-    const handleDecrement = () => {
-        if (count === 1) {
-            return;
-        }
-        setCount(count - 1);
+    addQuantity?: () => void;
+    quantity: number;
+    removeQuantity?: () => void;
+}
+const UpdateItemButton: React.FC<UpdateItemButtonProps> = ({ itemData, addQuantity, removeQuantity, quantity }) => {
+
+    const dispatch = useDispatch();
+    const storedData = useSelector((state: RootState) => state.cart.items);
+    console.log(storedData);
+
+    let itemInCart = useMemo(() => storedData.find((item) => item?.id === itemData?.id), [storedData])
+
+
+    // console.log("stored Data", JSON.stringify(storedData, null, 2));
+    // console.log("item Data", itemData);
+    console.log('itemincart', itemInCart)
+
+
+    if (!itemData) {
+
+        console.warn("itemData is undefined");
+
+        return (
+            <View style={styles.container}>
+                <TouchableOpacity
+                    onPress={() => {
+                        removeQuantity()
+                    }}
+                    style={styles.btnbox}>
+                    <DecrementIcon height={20} width={20} />
+                </TouchableOpacity>
+                <Text style={styles.rectangleBox}>{quantity ?? 1}</Text>
+                <TouchableOpacity
+                    onPress={() => {
+                        addQuantity()
+                    }}
+                    style={styles.btnbox} >
+                    <IncrementIcon height={20} width={20} />
+                </TouchableOpacity>
+            </View>
+        );
     }
     return (
         <View style={styles.container}>
             <TouchableOpacity
                 style={styles.btnbox}
-                onPress={handleDecrement}
+                onPress={() => {
+                    dispatch(decrementQuantity(itemData))
+                }}
             >
                 <DecrementIcon height={20} width={20} />
             </TouchableOpacity>
-            <Text style={styles.rectangleBox}>{count}</Text>
+            <Text style={styles.rectangleBox}>{itemInCart.quantity}</Text>
             <TouchableOpacity
                 style={styles.btnbox}
-                onPress={handleIncrement}
+                onPress={() => {
+                    dispatch(IncremetQuantity(itemData))
+                }}
             >
                 <IncrementIcon height={20} width={20} />
             </TouchableOpacity>
@@ -50,7 +93,6 @@ const styles = StyleSheet.create({
 
     container: {
         marginTop: 10,
-        paddingHorizontal: 20,
         borderColor: 'red',
         flexDirection: 'row',
         alignItems: 'center',
