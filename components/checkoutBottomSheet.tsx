@@ -5,6 +5,7 @@ import Button from './button';
 import CancelIcon from "../assets/cancelIcon.svg";
 import CreditCartIcon from "../assets/creditCardIcon.svg";
 import LeftIcon from "../assets/leftColorIcon.svg";
+import { router } from 'expo-router';
 
 interface CheckoutBottomSheetProps {
     totalprice: string;
@@ -25,6 +26,9 @@ const CheckoutBottomSheet = React.forwardRef<BottomSheet, CheckoutBottomSheetPro
                 <View style={{ marginHorizontal: 20, marginBottom: 20 }}>
                     <Button
                         title='Place Order'
+                        onPress={() => {
+                            router.navigate("/screens/OrderAccepted/")
+                        }}
                     />
                 </View>
             </BottomSheetFooter>
@@ -52,7 +56,7 @@ const CheckoutBottomSheet = React.forwardRef<BottomSheet, CheckoutBottomSheetPro
         {
             id: 4,
             key: "Total Price",
-            value: `$${props.totalprice}`
+            value: `${props.totalprice}`
         }
     ]
     return (
