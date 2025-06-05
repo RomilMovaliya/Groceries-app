@@ -25,7 +25,9 @@ const TabLayout = () => {
     return (
         <Provider store={Store}>
             <Tabs
+
                 screenOptions={{
+                    headerShown: false,
                     tabBarActiveTintColor: primaryColor,
                     tabBarInactiveTintColor: 'black',
                     tabBarStyle: {
