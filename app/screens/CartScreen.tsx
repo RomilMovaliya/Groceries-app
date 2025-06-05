@@ -1,101 +1,135 @@
-import { FlatList, Image, SafeAreaView, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import { FlatList, Image, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
 import CancelIcon from "../../assets/cancelIcon.svg";
 import UpdateItemButton from '../../components/updateItemButton';
 import { useDispatch, useSelector } from 'react-redux';
 import CartSlice, { removeFromCart } from "../Redux/CartSlice";
 import { RootState } from '../Redux/Store';
+import Button from '../../components/button';
+import CheckoutBottomSheet from '../../components/checkoutBottomSheet';
+import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetFooter, BottomSheetFooterProps, BottomSheetView } from '@gorhom/bottom-sheet';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 const CartScreen = () => {
     const storedData = useSelector((state: RootState) => state.cart.items);
     const dispatch = useDispatch();
-    console.log("storedData", storedData);
+    const total = storedData.reduce((sum, item) => sum + item.price * item.quantity, 0)
+
+    const snapPoints = useMemo(() => ['25%', '50%', '60%'], []);
+    const bottomSheetRef = useRef<BottomSheet>(null);
 
 
     return (
-        <SafeAreaView>
+        <>
+            <GestureHandlerRootView>
+                <SafeAreaView style={{ flex: 1 }}>
+                    <FlatList
+                        keyExtractor={(item) => item.id.toString()}
+                        scrollEnabled={true}
+                        showsVerticalScrollIndicator={false}
+                        ItemSeparatorComponent={() => (
+                            <View style={{
+                                borderColor: 'grey',
+                                borderWidth: 1
+                            }} />
+                        )}
+                        contentContainerStyle={{
+                            gap: 5,
+                            paddingHorizontal: 20,
+                        }}
+                        data={storedData}
+                        renderItem={({ item, index }) => {
+                            console.log('Rendering item:', item);
+                            return (
+                                <View style={{
+                                    height: responsiveHeight(20),
+                                    flexDirection: 'row',
+                                }}>
 
-            <FlatList
-                keyExtractor={(item) => item.id.toString()}
-                scrollEnabled={true}
-                showsVerticalScrollIndicator={false}
-                ItemSeparatorComponent={() => (
+                                    <View style={{
+                                        flex: 0.3,
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
+                                    }}>
+
+                                        <Image
+                                            style={{
+                                                width: responsiveWidth(25)
+                                            }}
+                                            resizeMode='contain'
+                                            source={typeof item.img === 'string' ? { uri: item.img } : item.img}
+                                        />
+                                    </View>
+
+                                    <View style={{
+                                        flex: 0.7,
+                                        paddingHorizontal: 10,
+                                        paddingVertical: 10
+                                    }}>
+                                        <View style={{
+                                            flexDirection: 'row',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center'
+                                        }}>
+                                            <Text>{item.name}</Text>
+                                            <CancelIcon onPress={() => {
+                                                dispatch(removeFromCart({ name: item.name }))
+                                            }} height={20} width={20} />
+                                        </View>
+
+                                        <Text>1Kg Price</Text>
+
+                                        <View style={{
+                                            flexDirection: 'row',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center'
+                                        }}>
+                                            <UpdateItemButton itemData={item} />
+                                            <Text style={{
+                                                marginTop: 5,
+                                                fontSize: 18
+                                            }}>${(item.price * item.quantity).toFixed(2)}</Text>
+                                        </View>
+
+                                    </View>
+                                </View>
+
+                            )
+                        }}
+                    />
+
                     <View style={{
-                        borderColor: 'grey',
-                        borderWidth: 1
-                    }} />
-                )}
-                contentContainerStyle={{
-                    gap: 5,
-                    borderColor: 'red',
-                    borderWidth: 1,
-                    paddingHorizontal: 20
-                }}
-                data={storedData}
-                renderItem={({ item, index }) => {
-                    console.log('Rendering item:', item);
-                    return (
-                        <View style={{
-                            height: responsiveHeight(20),
-                            flexDirection: 'row',
-                        }}>
+                        marginHorizontal: 10,
+                        justifyContent: 'flex-end',
+                        marginVertical: 10
+                    }}>
+                        <Button
+                            onPress={() => {
+                                console.log("bottom sheet will open");
+                                bottomSheetRef.current.expand()
+                            }}
+                            title='Go To Checkout'
+                        />
+                        <Text style={{
+                            position: 'absolute',
+                            color: 'white',
+                            right: 30,
+                            bottom: 15,
+                            borderRadius: 9,
+                            paddingHorizontal: 10,
+                            backgroundColor: 'rgba(0,0,0,0.2)'
 
-                            <View style={{
-                                flex: 0.3,
-                                alignItems: 'center',
-                                justifyContent: 'center'
-                            }}>
+                        }}>${total.toFixed(2)}</Text>
+                    </View>
 
-                                <Image
-                                    style={{
-                                        width: responsiveWidth(25)
-                                    }}
-                                    resizeMode='contain'
-                                    source={item.img}
-                                />
-                            </View>
+                    <CheckoutBottomSheet ref={bottomSheetRef} children={''} />
 
-                            <View style={{
-                                flex: 0.7,
-                                paddingHorizontal: 10,
-                                paddingVertical: 10
-                            }}>
-                                <View style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center'
-                                }}>
-                                    <Text>{item.name}</Text>
-                                    <CancelIcon onPress={() => {
-                                        dispatch(removeFromCart({ name: item.name }))
-                                    }} height={20} width={20} />
-                                </View>
-
-                                <Text>1Kg Price</Text>
-
-                                <View style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center'
-                                }}>
-                                    <UpdateItemButton itemData={item} />
-                                    <Text style={{
-                                        marginTop: 5,
-                                        fontSize: 18
-                                    }}>${item.price}</Text>
-                                </View>
-
-                            </View>
-                        </View>
-
-                    )
-                }}
-            />
+                </SafeAreaView >
 
 
 
-
-        </SafeAreaView >
+            </GestureHandlerRootView>
+        </>
     )
 }
 

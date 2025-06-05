@@ -1,6 +1,5 @@
 import {
     Image,
-    Pressable,
     SafeAreaView,
     ScrollView,
     StyleSheet,
@@ -32,7 +31,9 @@ const ProductDetail = () => {
     const data = searchParams.get('data');
     const [quantity, setQuantity] = useState(1);
     console.log('prodid', id, parentId);
-    console.log("full data", JSON.parse(data));
+    useEffect(() => {
+        console.log("full data", JSON.parse(data));
+    }, []);
 
     const filterProduct = (ProductListData.find((item) => item?.id == parentId));
     console.log("filterProduct", filterProduct.data);
@@ -122,8 +123,15 @@ const ProductDetail = () => {
                 <View style={styles.bottomButton}>
                     <Button
                         title="Add To Basket"
+
+
                         onPress={() => {
-                            dispatch(addToCart({ ...product, quantity: quantity }))
+                            itemInCart ? (
+                                dispatch(addToCart({ ...product, quantity: quantity - 1 }))
+                            ) : (
+                                dispatch(addToCart({ ...product, quantity: quantity }))
+                            )
+
                             router.navigate('/tabs/cart')
                         }}
                     />

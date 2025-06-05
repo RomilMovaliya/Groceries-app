@@ -15,7 +15,7 @@ interface UpdateItemButtonProps {
 
     }
     addQuantity?: () => void;
-    quantity: number;
+    quantity?: number;
     removeQuantity?: () => void;
 }
 const UpdateItemButton: React.FC<UpdateItemButtonProps> = ({ itemData, addQuantity, removeQuantity, quantity }) => {
@@ -29,7 +29,7 @@ const UpdateItemButton: React.FC<UpdateItemButtonProps> = ({ itemData, addQuanti
 
     // console.log("stored Data", JSON.stringify(storedData, null, 2));
     // console.log("item Data", itemData);
-    console.log('itemincart', itemInCart)
+    console.log('itemincart in updateitem', itemInCart)
 
 
     if (!itemData) {
@@ -61,7 +61,9 @@ const UpdateItemButton: React.FC<UpdateItemButtonProps> = ({ itemData, addQuanti
             <TouchableOpacity
                 style={styles.btnbox}
                 onPress={() => {
+                    console.log("decrement");
                     dispatch(decrementQuantity(itemData))
+
                 }}
             >
                 <DecrementIcon height={20} width={20} />
@@ -71,6 +73,7 @@ const UpdateItemButton: React.FC<UpdateItemButtonProps> = ({ itemData, addQuanti
                 style={styles.btnbox}
                 onPress={() => {
                     dispatch(IncremetQuantity(itemData))
+                    console.log("increment");
                 }}
             >
                 <IncrementIcon height={20} width={20} />
