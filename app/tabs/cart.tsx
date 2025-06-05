@@ -4,9 +4,9 @@ import CartScreen from '../screens/CartScreen'
 
 const Cart = () => {
     return (
-        <View>
-            <CartScreen />
-        </View>
+
+        <CartScreen />
+
     )
 }
 
