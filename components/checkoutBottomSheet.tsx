@@ -1,11 +1,17 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { FlatList, StyleSheet, Text, View } from 'react-native'
 import React, { forwardRef, useCallback, useMemo, useRef } from 'react'
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetFooter, BottomSheetFooterProps, BottomSheetProps, BottomSheetView } from '@gorhom/bottom-sheet'
 import Button from './button';
+import CancelIcon from "../assets/cancelIcon.svg";
+import CreditCartIcon from "../assets/creditCardIcon.svg";
+import LeftIcon from "../assets/leftColorIcon.svg";
 
+interface CheckoutBottomSheetProps {
+    totalprice: string;
+    children: React.ReactNode;
+}
 
-
-const CheckoutBottomSheet = forwardRef<BottomSheet, BottomSheetProps>(({ ...props }, ref) => {
+const CheckoutBottomSheet = React.forwardRef<BottomSheet, CheckoutBottomSheetProps>((props, ref) => {
 
     const snapPoints = useMemo(() => ['25%', '50%', '70%'], []);
     const renderBackdrop = useCallback(
@@ -25,6 +31,30 @@ const CheckoutBottomSheet = forwardRef<BottomSheet, BottomSheetProps>(({ ...prop
         ),
         []
     );
+
+    const bottomSheetList = [
+        {
+            id: 1,
+            key: "Delivery",
+            value: "Select Method"
+        },
+        {
+            id: 2,
+            key: "payment",
+            value: "Select Method",
+            icon: "yes"
+        },
+        {
+            id: 3,
+            key: "Promo Code",
+            value: "Pick discount"
+        },
+        {
+            id: 4,
+            key: "Total Price",
+            value: `$${props.totalprice}`
+        }
+    ]
     return (
 
         <BottomSheet
@@ -38,16 +68,76 @@ const CheckoutBottomSheet = forwardRef<BottomSheet, BottomSheetProps>(({ ...prop
             enablePanDownToClose={true}
         >
             <BottomSheetView>
-                <View>
-                    <Text>Delivery</Text>
-                    <Text>Payment</Text>
-                    <Text>Promo Code</Text>
-                    <Text>Total Cost</Text>
-                    <Text>By placing an order you agree to our
-                        Terms And Conditions</Text>
+                <View style={{
+                    paddingHorizontal: 20,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    paddingBottom: 15,
+                    borderBottomColor: '#E2E2E2',
+                    borderBottomWidth: 1.5
+                }}>
+                    <Text style={{
+                        fontSize: 20,
+                        fontWeight: '600',
+                    }}>Checkout</Text>
+
+                    <CancelIcon
+                        onPress={() => {
+                            if (ref && typeof ref !== 'function' && ref?.current) {
+                                ref.current.close();
+                            }
+                        }}
+                        height={20}
+                        width={20}
+                    />
+
                 </View>
+
+                <FlatList
+                    keyExtractor={(item) => item.id.toString()}
+                    data={bottomSheetList}
+                    renderItem={({ item }) => (
+                        <View style={{
+                            flexDirection: 'row',
+                            borderBottomWidth: 1.5,
+                            borderColor: '#E2E2E2',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            paddingVertical: 12,
+                            marginHorizontal: 10
+                        }}>
+                            <Text>{item.key}</Text>
+
+                            <View style={{
+                                flexDirection: 'row',
+                                gap: 15,
+                                alignItems: 'center'
+                            }}>
+                                {item.icon ? (
+                                    <CreditCartIcon />
+                                ) : (
+                                    <Text>{item.value}</Text>
+                                )}
+
+                                <LeftIcon />
+                            </View>
+                        </View>
+                    )}
+
+                />
+
+
+                <Text style={{
+                    color: 'grey',
+                    textAlign: 'left',
+                    paddingHorizontal: 10,
+                    paddingVertical: 20
+                }}>By placing an order you agree to our
+                    <Text style={{ color: 'black' }}> Terms</Text> And <Text style={{ color: 'black' }}>Conditions</Text>.</Text>
+
             </BottomSheetView>
-        </BottomSheet>
+        </BottomSheet >
     )
 });
 

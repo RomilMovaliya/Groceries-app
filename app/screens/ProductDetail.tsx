@@ -123,15 +123,12 @@ const ProductDetail = () => {
                 <View style={styles.bottomButton}>
                     <Button
                         title="Add To Basket"
-
-
                         onPress={() => {
                             itemInCart ? (
                                 dispatch(addToCart({ ...product, quantity: quantity - 1 }))
                             ) : (
                                 dispatch(addToCart({ ...product, quantity: quantity }))
                             )
-
                             router.navigate('/tabs/cart')
                         }}
                     />

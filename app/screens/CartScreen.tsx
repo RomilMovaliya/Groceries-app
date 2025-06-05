@@ -15,7 +15,6 @@ const CartScreen = () => {
     const dispatch = useDispatch();
     const total = storedData.reduce((sum, item) => sum + item.price * item.quantity, 0)
 
-    const snapPoints = useMemo(() => ['25%', '50%', '60%'], []);
     const bottomSheetRef = useRef<BottomSheet>(null);
 
 
@@ -23,14 +22,27 @@ const CartScreen = () => {
         <>
             <GestureHandlerRootView>
                 <SafeAreaView style={{ flex: 1 }}>
+
+                    <View>
+                        <Text style={{
+                            textAlign: 'center',
+                            fontSize: 20,
+                            paddingVertical: 12,
+                            borderBottomColor: 'grey',
+                            borderBottomWidth: 0.5
+                        }}>My Cart</Text>
+                    </View>
                     <FlatList
                         keyExtractor={(item) => item.id.toString()}
                         scrollEnabled={true}
+                        style={{
+                            marginTop: 10
+                        }}
                         showsVerticalScrollIndicator={false}
                         ItemSeparatorComponent={() => (
                             <View style={{
                                 borderColor: 'grey',
-                                borderWidth: 1
+                                borderWidth: 0.6
                             }} />
                         )}
                         contentContainerStyle={{
@@ -122,7 +134,9 @@ const CartScreen = () => {
                         }}>${total.toFixed(2)}</Text>
                     </View>
 
-                    <CheckoutBottomSheet ref={bottomSheetRef} children={''} />
+                    <CheckoutBottomSheet
+                        ref={bottomSheetRef}
+                        totalprice={total.toFixed(2)} children={''} />
 
                 </SafeAreaView >
 
