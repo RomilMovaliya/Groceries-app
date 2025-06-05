@@ -1,19 +1,26 @@
-import { FlatList, Image, SafeAreaView, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import { FlatList, Image, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
+import React, { useEffect, useMemo, useState } from 'react'
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
 import CancelIcon from "../../assets/cancelIcon.svg";
 import UpdateItemButton from '../../components/updateItemButton';
 import { useDispatch, useSelector } from 'react-redux';
 import CartSlice, { removeFromCart } from "../Redux/CartSlice";
 import { RootState } from '../Redux/Store';
+import Button from '../../components/button';
 const CartScreen = () => {
     const storedData = useSelector((state: RootState) => state.cart.items);
     const dispatch = useDispatch();
-    console.log("storedData", storedData);
+
+
+    const total = storedData.reduce((sum, item) => sum + item.price * item.quantity, 0)
+
+
+
 
 
     return (
         <SafeAreaView>
+
 
             <FlatList
                 keyExtractor={(item) => item.id.toString()}
@@ -27,9 +34,7 @@ const CartScreen = () => {
                 )}
                 contentContainerStyle={{
                     gap: 5,
-                    borderColor: 'red',
-                    borderWidth: 1,
-                    paddingHorizontal: 20
+                    paddingHorizontal: 20,
                 }}
                 data={storedData}
                 renderItem={({ item, index }) => {
@@ -51,7 +56,7 @@ const CartScreen = () => {
                                         width: responsiveWidth(25)
                                     }}
                                     resizeMode='contain'
-                                    source={item.img}
+                                    source={typeof item.img === 'string' ? { uri: item.img } : item.img}
                                 />
                             </View>
 
@@ -82,7 +87,7 @@ const CartScreen = () => {
                                     <Text style={{
                                         marginTop: 5,
                                         fontSize: 18
-                                    }}>${item.price}</Text>
+                                    }}>${(item.price * item.quantity).toFixed(2)}</Text>
                                 </View>
 
                             </View>
@@ -93,7 +98,24 @@ const CartScreen = () => {
             />
 
 
+            <View style={{
+                marginHorizontal: 10,
+                marginTop: 10,
+                justifyContent: 'center',
+            }}>
+                <Button
+                    title='Go To Checkout'
+                />
+                <Text style={{
+                    position: 'absolute',
+                    color: 'white',
+                    right: 30,
+                    borderRadius: 9,
+                    paddingHorizontal: 10,
+                    backgroundColor: 'rgba(0,0,0,0.2)'
 
+                }}>${total.toFixed(2)}</Text>
+            </View>
 
         </SafeAreaView >
     )
