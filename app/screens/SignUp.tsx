@@ -20,9 +20,6 @@ import { TextInput } from 'react-native-paper';
 const SignUp = () => {
     const [hidePassword, setHidePassword] = useState(true);
 
-    const handleSubmit = () => {
-        router.navigate("/screens/Verification?id=signup")
-    }
     const togglePasswordVisibility = () => {
         setHidePassword(!hidePassword);
     };
@@ -72,26 +69,29 @@ const SignUp = () => {
                                 validationSchema={registerValidationSchema}
                                 onSubmit={(values) => {
                                     console.log(values);
-                                    router.navigate("/screens/Verification");
+                                    router.navigate("/screens/Verification?id=signup")
                                 }}
                             >
-                                {({ handleChange, handleBlur, values, errors, touched }) => (
+                                {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
                                     <>
                                         <CustomTextInput
                                             label={'Username'}
                                             onChangeText={handleChange('username')}
                                             onBlur={handleBlur('username')}
                                             value={values.username}
+                                            name='username'
+                                            errors={errors}
+                                            touched={touched}
                                         />
-                                        {errors.username && touched.username && (
-                                            <Text style={styles.errorText}>{errors.username}</Text>
-                                        )}
 
                                         <CustomTextInput
                                             label={'Email'}
                                             onChangeText={handleChange('email')}
                                             onBlur={handleBlur('email')}
                                             value={values.email}
+                                            name='email'
+                                            touched={touched}
+                                            errors={errors}
                                             right={
                                                 touched.email && !errors.email && (
                                                     <TextInput.Icon
@@ -103,11 +103,7 @@ const SignUp = () => {
                                                         }}
                                                     />
                                                 )}
-
                                         />
-                                        {errors.email && touched.email && (
-                                            <Text style={styles.errorText}>{errors.email}</Text>
-                                        )}
 
                                         <CustomTextInput
                                             label={'Password'}
@@ -117,10 +113,10 @@ const SignUp = () => {
                                             value={values.password}
                                             hidePassword={hidePassword}
                                             secureTextEntry={hidePassword}
+                                            name='password'
+                                            touched={touched}
+                                            errors={errors}
                                         />
-                                        {errors.password && touched.password && (
-                                            <Text style={styles.errorText}>{errors.password}</Text>
-                                        )}
 
                                         <Text style={styles.termsText}>
                                             By continuing you agree to our{' '}
@@ -129,7 +125,7 @@ const SignUp = () => {
                                             </Link>
                                         </Text>
 
-                                        <Button title={'Sign Up'} onPress={handleSubmit} />
+                                        <Button title={'Sign Up'} onPress={() => handleSubmit()} />
 
                                         <Text style={styles.bottomText}>
                                             Already have an account?

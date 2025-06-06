@@ -20,9 +20,6 @@ import { TextInput } from 'react-native-paper';
 const Login = () => {
     const [hidePassword, setHidePassword] = useState(true);
 
-    const handleSubmit = () => {
-        router.navigate("/screens/Verification")
-    }
     const togglePasswordVisibility = () => {
         setHidePassword(!hidePassword);
     };
@@ -71,22 +68,25 @@ const Login = () => {
                                 validationSchema={loginValidationSchema}
                                 onSubmit={(values) => {
                                     console.log(values);
-                                    router.replace('/tabs');
+                                    router.navigate("/screens/Verification");
                                 }}
                             >
                                 {({
                                     handleChange,
                                     handleBlur,
+                                    handleSubmit,
                                     values,
                                     errors,
                                     touched,
                                 }) => (
                                     <>
+
                                         <CustomTextInput
                                             label="Email"
                                             onChangeText={handleChange('email')}
                                             onBlur={handleBlur('email')}
                                             value={values.email}
+                                            name='email'
                                             right={
                                                 touched.email && !errors.email && (
                                                     <TextInput.Icon
@@ -97,16 +97,11 @@ const Login = () => {
                                                             marginTop: 35
                                                         }}
                                                     />
-                                                )}
-
-
+                                                )
+                                            }
+                                            errors={errors}
+                                            touched={touched}
                                         />
-                                        {errors.email && touched.email && (
-                                            <Text style={styles.errorText}>
-                                                {errors.email}
-
-                                            </Text>
-                                        )}
 
                                         <CustomTextInput
                                             label="Password"
@@ -116,18 +111,16 @@ const Login = () => {
                                             value={values.password}
                                             hidePassword={hidePassword}
                                             secureTextEntry={hidePassword}
+                                            errors={errors}
+                                            name={"password"}
+                                            touched={touched}
                                         />
-                                        {errors.password && touched.password && (
-                                            <Text style={styles.errorText}>
-                                                {errors.password}
-                                            </Text>
-                                        )}
 
                                         <Text style={styles.forgotText}>
                                             Forgot Password?
                                         </Text>
 
-                                        <Button title="Log In" onPress={handleSubmit} />
+                                        <Button title="Log In" onPress={() => handleSubmit()} />
 
                                         <Text style={styles.signupText}>
                                             Don’t have an account?
