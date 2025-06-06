@@ -15,6 +15,7 @@ const FavoriteScreen = () => {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
+
             <View>
                 <Text style={{
                     textAlign: 'center',
@@ -24,6 +25,7 @@ const FavoriteScreen = () => {
                     borderBottomWidth: 0.5
                 }}>Favorite</Text>
             </View>
+
             <View style={{
                 flex: 1,
                 justifyContent: 'space-between',

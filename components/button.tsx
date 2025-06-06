@@ -4,11 +4,11 @@ import { MyButtonProps } from '../types/types'
 
 
 
-const Button: React.FC<MyButtonProps> = ({ title, ...props }) => {
+const Button: React.FC<MyButtonProps> = ({ title, textStyle, ...props }) => {
 
     return (
         <TouchableOpacity style={styles.btn} {...props}>
-            <Text style={styles.title}>{title}</Text>
+            <Text style={[styles.title, textStyle]} {...props}>{title}</Text>
         </TouchableOpacity>
     )
 }
