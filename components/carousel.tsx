@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         left: 20,
         right: 20,
-        bottom: 20
+        bottom: 60
     },
     dot: {
         width: 10,

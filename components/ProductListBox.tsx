@@ -1,4 +1,4 @@
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { ProductListData } from '../store/ProductListData'
 import { router } from 'expo-router'
@@ -20,35 +20,30 @@ const ProductListBox = () => {
         { borderColor: '#F2C2CF', backgroundColor: '#fff0f5' }
     ];
     return (
-        <View style={{
-            backgroundColor: 'white'
+        <SafeAreaView style={{
+            flex: 1,
         }}>
             <FlatList
                 data={ProductListData}
                 contentContainerStyle={{
-                    paddingVertical: 20
+                    paddingVertical: 20,
                 }}
                 renderItem={({ item, index }) => {
                     const color = colorPalette[index % colorPalette.length];
-
                     return (
                         <TouchableOpacity
-
                             onPress={() => {
                                 router.push(`/screens/ProductList?id=${item.id}`);
                             }}
 
                             style={[styles.box,
-
                             {
                                 borderColor: color.borderColor,
                                 backgroundColor: color.backgroundColor
                             }
                             ]}>
                             <Image
-
                                 source={item.image}
-
                             />
                             <Text style={{
                                 textAlign: 'center'
@@ -65,7 +60,7 @@ const ProductListBox = () => {
                 columnWrapperStyle={styles.row}
 
             />
-        </View>
+        </SafeAreaView>
     )
 }
 
