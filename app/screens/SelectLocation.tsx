@@ -22,7 +22,7 @@ const SelectLocation = () => {
     const [selectedArea, setSelectedArea] = useState<Area | null>(null);
 
     const handleSubmit = () => {
-        router.replace(`/tabs?zone=${selectedZone?.name}&area=${selectedArea?.name}`);
+        router.push(`/tabs?zone=${selectedZone?.name}&area=${selectedArea?.name}`);
     };
 
     const backbtnHandler = () => {

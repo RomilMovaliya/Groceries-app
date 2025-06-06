@@ -18,7 +18,7 @@ const Verification = () => {
         if (id === 'signup') {
             router.navigate("/screens/SelectLocation");
         } else {
-            router.navigate("/tabs");
+            router.push("/tabs");
         }
     }
 
