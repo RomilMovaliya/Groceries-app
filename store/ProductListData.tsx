@@ -195,10 +195,10 @@ export const ProductListData: ProductItem[] = [
         data: [
             {
                 id: 1,
-                name: 'Diet Coke',
+                name: 'Eggs',
                 price: 1.99,
                 volume: 580,
-                img: require('../assets/coke1.png'),
+                img: require('../assets/egg.png'),
                 pieces: 1,
                 productdetails: "Classic low-calorie cola with crisp flavor.",
                 nutritions: "Calories: 1 kcal per 100ml. Contains caffeine.",
@@ -299,7 +299,7 @@ export const ProductListData: ProductItem[] = [
 
             {
                 id: 1,
-                name: 'Diet Coke',
+                name: 'Bread',
                 price: 1.99,
                 volume: 580,
                 img: require('../assets/coke1.png'),

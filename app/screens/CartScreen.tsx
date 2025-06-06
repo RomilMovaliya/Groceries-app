@@ -17,6 +17,11 @@ const CartScreen = () => {
 
     const bottomSheetRef = useRef<BottomSheet>(null);
 
+    useEffect(() => {
+        console.log("storedData from state", storedData);
+    }, [storedData])
+
+
 
     return (
         <>
@@ -33,7 +38,7 @@ const CartScreen = () => {
                         }}>My Cart</Text>
                     </View>
                     <FlatList
-                        keyExtractor={(item) => item.id.toString()}
+                        keyExtractor={(item, index) => `${item.id}-${index}`}
                         scrollEnabled={true}
                         style={{
                             marginTop: 10

@@ -16,7 +16,6 @@ const ProductList = () => {
     const searchParams = useSearchParams();
     const id = searchParams.get('id');
     const productData = ProductListData.find(item => item.id === Number(id));
-
     const snapPoints = useMemo(() => ['25%', '50%', '70%'], []);
     const bottomSheetRef = useRef<BottomSheet>(null);
     console.log(productData?.title);
