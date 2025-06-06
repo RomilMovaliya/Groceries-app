@@ -1,4 +1,4 @@
-import { ButtonProps, TextInputProps, TextProps, TextStyle, TouchableOpacityProps } from "react-native";
+import { ButtonProps, ImageSourcePropType, TextInputProps, TextProps, TextStyle, TouchableOpacityProps } from "react-native";
 
 export interface DropdownItem {
     id: number;
@@ -32,7 +32,7 @@ export interface MyProductTitle extends TextProps {
 export interface ProductData {
     id: number,
     name: string,
-    pieces: string,
+    pieces: number,
     price: number,
-    img: string
+    img: ImageSourcePropType
 }

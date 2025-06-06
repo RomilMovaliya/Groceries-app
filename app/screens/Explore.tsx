@@ -4,11 +4,7 @@ import ProductListBox from '../../components/ProductListBox'
 
 const ExplorePage = () => {
     return (
-        <SafeAreaView>
-            <View>
-                <ProductListBox />
-            </View>
-        </SafeAreaView>
+        <ProductListBox />
     )
 }
 
