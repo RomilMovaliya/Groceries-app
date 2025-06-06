@@ -10,30 +10,31 @@ import {
 import React, { useEffect, useState } from 'react';
 import BackIcon from '../../assets/backIcon.svg';
 import ShareIcon from '../../assets/shareIcon.svg';
-import FavoriteIcon from '../../assets/tabIcons/favoriteIcon.svg';
 import { router } from 'expo-router';
 import UpdateItemButton from '../../components/updateItemButton';
 import ProductDescription from '../../components/productDescription';
 import Button from '../../components/button';
 import { useSearchParams } from 'expo-router/build/hooks';
-import { fruits } from '../../store/FruitsData';
 import Icon from '@react-native-vector-icons/material-design-icons';
 import { ProductListData } from '../../store/ProductListData';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../Redux/CartSlice';
 import { RootState } from '../Redux/Store';
+import { addToFavorite } from '../Redux/FavoriteSlice';
+import { removeFromFavorite } from '../Redux/FavoriteSlice';
 
 const ProductDetail = () => {
 
     const searchParams = useSearchParams();
     const id = Number(searchParams.get('id'));
     const parentId = Number(searchParams.get('parentid'));
-    const data = searchParams.get('data');
+    //const data = searchParams.get('data');
+    //const dataItem = JSON.parse(data);
     const [quantity, setQuantity] = useState(1);
     console.log('prodid', id, parentId);
-    useEffect(() => {
-        console.log("full data", JSON.parse(data));
-    }, []);
+    // useEffect(() => {
+    //     console.log("full data", (data));
+    // }, []);
 
     const filterProduct = (ProductListData.find((item) => item?.id == parentId));
     console.log("filterProduct", filterProduct.data);
@@ -44,6 +45,7 @@ const ProductDetail = () => {
 
     const [like, setLike] = useState(false);
     const cartItems = useSelector((state: RootState) => state.cart.items);
+
     console.log("cart Item", JSON.stringify(cartItems));
     let itemInCart = cartItems.find((item) => item?.id === product.id);
     console.log("itemInCart", itemInCart);
@@ -54,6 +56,26 @@ const ProductDetail = () => {
         console.log({ quantity });
 
     }, [quantity])
+
+
+    const favoriteItems = useSelector((state: RootState) => state.favorite.items);
+
+    useEffect(() => {
+        const isFavorite = favoriteItems.some((item) => item.name === product.name);
+        setLike(isFavorite);
+    }, [favoriteItems, product.name]);
+
+    const isItemInFavorite = favoriteItems.some((item) => item.name === product.name);
+    console.log("isItemAvailable", isItemInFavorite);
+
+    const favoriteItemHandler = () => {
+        if (isItemInFavorite) {
+            dispatch(removeFromFavorite(product.name));
+        } else {
+            dispatch(addToFavorite({ ...product }));
+        }
+    };
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={{ flex: 1 }}>
@@ -77,7 +99,7 @@ const ProductDetail = () => {
                     <View>
                         <View style={styles.titleRow}>
                             <Text>{product.name}</Text>
-                            <TouchableOpacity onPress={() => setLike(!like)}>
+                            <TouchableOpacity onPress={favoriteItemHandler}>
                                 <Icon
                                     name={like ? 'heart' : 'heart-outline'}
                                     color={like ? 'red' : 'black'}

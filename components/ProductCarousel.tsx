@@ -11,8 +11,7 @@ interface ProductCarouselProps extends Omit<FlatListProps<ProductData>, 'data' |
 }
 
 const ProductCarousel: React.FC<ProductCarouselProps> = ({ data, id, numColumns = 1, ...rest }) => {
-    // console.log("pa", id);
-    // console.log("data", data);
+
 
     return (
         <View style={{ height: 220 }}>
@@ -26,7 +25,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ data, id, numColumns 
                         activeOpacity={0.7}
                         onPress={() => {
                             const data = JSON.stringify(item)
-                            router.navigate(`/screens/ProductDetail?id=${item.id}&parentid=${id}&data=${data}`)
+                            router.navigate(`/screens/ProductDetail?id=${item.id}&parentid=${id}`)
                         }}>
                         <Image
                             source={typeof item.img === 'string' ? { uri: item.img } : item.img}
