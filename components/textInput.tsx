@@ -1,11 +1,15 @@
+import { FormikFormProps, FormikProps } from 'formik';
 import React from 'react';
-import { StyleSheet, View, StyleProp, ViewStyle } from 'react-native';
+import { StyleSheet, View, StyleProp, ViewStyle, Text } from 'react-native';
 import { TextInput, TextInputProps } from 'react-native-paper';
 
 interface MyTextInputProps extends TextInputProps {
+    name: string;
     hidePassword?: boolean;
     toggleButton?: () => void;
     customstyle?: StyleProp<ViewStyle>;
+    errors?: { [key: string]: string };
+    touched?: { [key: string]: boolean };
 }
 
 const MyTextInput: React.FC<MyTextInputProps> = ({
@@ -15,6 +19,9 @@ const MyTextInput: React.FC<MyTextInputProps> = ({
     hidePassword,
     toggleButton,
     customstyle,
+    errors,
+    touched,
+    name,
     ...restProps
 }) => {
     return (
@@ -26,7 +33,7 @@ const MyTextInput: React.FC<MyTextInputProps> = ({
                 mode="flat"
                 activeUnderlineColor="#7C7C7C"
                 style={[styles.input, customstyle]}
-                contentStyle={styles.inputContent} // this controls internal padding
+                contentStyle={styles.inputContent}
                 secureTextEntry={hidePassword}
                 right={
                     toggleButton && typeof hidePassword === 'boolean' ? (
@@ -42,6 +49,13 @@ const MyTextInput: React.FC<MyTextInputProps> = ({
                 }
                 {...restProps}
             />
+
+            {!!name && !!errors?.[name] && !!touched?.[name] && (
+                <Text style={styles.errorText}>
+                    {errors[name]}
+                </Text>
+            )}
+
         </View>
     );
 };
@@ -55,7 +69,13 @@ const styles = StyleSheet.create({
         marginVertical: 8,
     },
     inputContent: {
-        paddingTop: 30,       // more space for floating label
-        paddingBottom: 5,    // give a breathing room
-    }
+        paddingTop: 30,
+        paddingBottom: 5,
+    },
+    errorText: {
+        color: 'red',
+        fontSize: 12,
+        marginTop: -8,
+        marginBottom: 10,
+    },
 });

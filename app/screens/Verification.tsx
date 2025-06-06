@@ -11,6 +11,7 @@ const Verification = () => {
 
     const searchParams = useSearchParams();
     const id = searchParams.get('id');
+    console.log("id", id);
 
     const [code, setCode] = useState('');
 
@@ -37,8 +38,6 @@ const Verification = () => {
             <StatusBar backgroundColor={'white'} />
             <KeyboardAvoidingView
                 style={styles.container}
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
             >
 
                 <BackIcon
@@ -52,7 +51,7 @@ const Verification = () => {
                     <Text style={{
                         fontSize: 25,
                         letterSpacing: -1
-                    }}>Enter your 4-digit code</Text>
+                    }}>Enter your 6-digit code</Text>
                     <Text style={{ color: '#7C7C7C', paddingTop: 30 }}>Code</Text>
                     <View style={styles.otpBox}>
                         <TextInput
