@@ -6,6 +6,9 @@ import CancelIcon from "../assets/cancelIcon.svg";
 import CreditCartIcon from "../assets/creditCardIcon.svg";
 import LeftIcon from "../assets/leftColorIcon.svg";
 import { router } from 'expo-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../app/Redux/Store';
+import { removeFromCart } from '../app/Redux/CartSlice';
 
 interface CheckoutBottomSheetProps {
     totalprice: string;
@@ -14,6 +17,8 @@ interface CheckoutBottomSheetProps {
 
 const CheckoutBottomSheet = React.forwardRef<BottomSheet, CheckoutBottomSheetProps>((props, ref) => {
 
+    const storeData = useSelector((state: RootState) => state.cart.items);
+    const dispatch = useDispatch();
     const snapPoints = useMemo(() => ['25%', '50%', '70%'], []);
     const renderBackdrop = useCallback(
         (props: BottomSheetBackdropProps) => <BottomSheetBackdrop appearsOnIndex={1} disappearsOnIndex={-1} {...props} />,
@@ -27,7 +32,12 @@ const CheckoutBottomSheet = React.forwardRef<BottomSheet, CheckoutBottomSheetPro
                     <Button
                         title='Place Order'
                         onPress={() => {
-                            router.navigate("/screens/OrderAccepted/")
+                            storeData.length !== 0 && router.navigate("/screens/OrderAccepted/")
+
+                            storeData.forEach((item) => {
+                                dispatch(removeFromCart({ ...item }));
+                            })
+
                         }}
                     />
                 </View>
