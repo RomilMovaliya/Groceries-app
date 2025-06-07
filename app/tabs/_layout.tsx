@@ -15,6 +15,7 @@ import { primaryColor } from '../../utils/myColors';
 import { useSearchParams } from 'expo-router/build/hooks';
 import { Provider } from 'react-redux';
 import { Store } from '../Redux/Store';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const TabLayout = () => {
 
@@ -23,106 +24,108 @@ const TabLayout = () => {
     const area = searchParams.get('area') || 'area';
 
     return (
-        <Provider store={Store}>
-            <Tabs
-
-                screenOptions={{
-                    headerShown: false,
-                    tabBarActiveTintColor: primaryColor,
-                    tabBarInactiveTintColor: 'black',
-                    tabBarStyle: {
-                        paddingTop: 15,
-                        paddingBottom: 10,
-                        height: 80,
-                    }
-                }}
-            >
-                <Tabs.Screen
-                    name='shop'
-                    options={{
+        <SafeAreaProvider>
+            <Provider store={Store}>
+                <Tabs
+                    initialRouteName='shop'
+                    screenOptions={{
                         headerShown: false,
-                        tabBarLabel: 'Shop',
-                        tabBarLabelStyle: {
-                            fontWeight: '500',
-                        },
-                        tabBarIcon: ({ focused }) =>
-                            focused ? (
-                                <ShopIconColor width={27} height={27} />
-                            ) : (
-                                <ShopIcon width={27} height={27} />
-                            )
+                        tabBarActiveTintColor: primaryColor,
+                        tabBarInactiveTintColor: 'black',
+                        tabBarStyle: {
+                            paddingTop: 15,
+                            paddingBottom: 10,
+                            height: 80,
+                        }
                     }}
-                    initialParams={{ zone, area }}
-                />
+                >
+                    <Tabs.Screen
+                        name='shop'
+                        options={{
+                            headerShown: false,
+                            tabBarLabel: 'Shop',
+                            tabBarLabelStyle: {
+                                fontWeight: '500',
+                            },
+                            tabBarIcon: ({ focused }) =>
+                                focused ? (
+                                    <ShopIconColor width={27} height={27} />
+                                ) : (
+                                    <ShopIcon width={27} height={27} />
+                                )
+                        }}
+                        initialParams={{ zone, area }}
+                    />
 
-                <Tabs.Screen
-                    name='explore'
-                    options={{
-                        headerShown: false,
-                        tabBarLabel: 'Explore',
-                        tabBarLabelStyle: {
-                            fontWeight: '500',
-                        },
-                        tabBarIcon: ({ focused }) =>
-                            focused ? (
-                                <ExploreIconColor width={27} height={27} />
-                            ) : (
-                                <ExploreIcon width={27} height={27} />
-                            )
-                    }}
-                />
+                    <Tabs.Screen
+                        name='explore'
+                        options={{
+                            headerShown: false,
+                            tabBarLabel: 'Explore',
+                            tabBarLabelStyle: {
+                                fontWeight: '500',
+                            },
+                            tabBarIcon: ({ focused }) =>
+                                focused ? (
+                                    <ExploreIconColor width={27} height={27} />
+                                ) : (
+                                    <ExploreIcon width={27} height={27} />
+                                )
+                        }}
+                    />
 
-                <Tabs.Screen
-                    name='cart'
-                    options={{
-                        headerTitle: 'My Cart',
-                        headerTitleAlign: 'center',
-                        tabBarLabel: 'Cart',
-                        tabBarLabelStyle: {
-                            fontWeight: '500',
-                        },
-                        tabBarIcon: ({ focused }) =>
-                            focused ? (
-                                <CartIconColor width={27} height={27} />
-                            ) : (
-                                <CartIcon width={27} height={27} />
-                            )
-                    }}
-                />
+                    <Tabs.Screen
+                        name='cart'
+                        options={{
+                            headerTitle: 'My Cart',
+                            headerTitleAlign: 'center',
+                            tabBarLabel: 'Cart',
+                            tabBarLabelStyle: {
+                                fontWeight: '500',
+                            },
+                            tabBarIcon: ({ focused }) =>
+                                focused ? (
+                                    <CartIconColor width={27} height={27} />
+                                ) : (
+                                    <CartIcon width={27} height={27} />
+                                )
+                        }}
+                    />
 
-                <Tabs.Screen
-                    name='favorite'
-                    options={{
-                        tabBarLabel: 'Favorite',
-                        tabBarLabelStyle: {
-                            fontWeight: '500',
-                        },
-                        tabBarIcon: ({ focused }) =>
-                            focused ? (
-                                <FavoriteIconColor width={27} height={27} />
-                            ) : (
-                                <FavoriteIcon width={27} height={27} />
-                            )
-                    }}
-                />
+                    <Tabs.Screen
+                        name='favorite'
+                        options={{
+                            tabBarLabel: 'Favorite',
+                            tabBarLabelStyle: {
+                                fontWeight: '500',
+                            },
+                            tabBarIcon: ({ focused }) =>
+                                focused ? (
+                                    <FavoriteIconColor width={27} height={27} />
+                                ) : (
+                                    <FavoriteIcon width={27} height={27} />
+                                )
+                        }}
+                    />
 
-                <Tabs.Screen
-                    name='account'
-                    options={{
-                        tabBarLabel: 'Account',
-                        tabBarLabelStyle: {
-                            fontWeight: '600',
-                        },
-                        tabBarIcon: ({ focused }) =>
-                            focused ? (
-                                <AccountIconColor width={27} height={27} />
-                            ) : (
-                                <AccountIcon width={27} height={27} />
-                            )
-                    }}
-                />
-            </Tabs>
-        </Provider>
+                    <Tabs.Screen
+                        name='account'
+                        options={{
+                            tabBarLabel: 'Account',
+                            tabBarLabelStyle: {
+                                fontWeight: '600',
+                            },
+                            tabBarIcon: ({ focused }) =>
+                                focused ? (
+                                    <AccountIconColor width={27} height={27} />
+                                ) : (
+                                    <AccountIcon width={27} height={27} />
+                                )
+                        }}
+                    />
+                </Tabs>
+            </Provider>
+        </SafeAreaProvider>
 
     )
 }

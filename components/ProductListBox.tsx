@@ -1,7 +1,8 @@
-import { FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { ProductListData } from '../store/ProductListData'
 import { router } from 'expo-router'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const ProductListBox = () => {
 
