@@ -86,7 +86,6 @@ const Login = () => {
                                             onChangeText={handleChange('email')}
                                             onBlur={handleBlur('email')}
                                             value={values.email}
-                                            name='email'
                                             right={
                                                 touched.email && !errors.email && (
                                                     <TextInput.Icon
@@ -99,8 +98,7 @@ const Login = () => {
                                                     />
                                                 )
                                             }
-                                            errors={errors}
-                                            touched={touched}
+                                            errors={errors.email && touched.email ? errors.email : undefined}
                                         />
 
                                         <CustomTextInput
@@ -111,9 +109,7 @@ const Login = () => {
                                             value={values.password}
                                             hidePassword={hidePassword}
                                             secureTextEntry={hidePassword}
-                                            errors={errors}
-                                            name={"password"}
-                                            touched={touched}
+                                            errors={errors.password && touched.password ? errors.password : undefined}
                                         />
 
                                         <Text style={styles.forgotText}>

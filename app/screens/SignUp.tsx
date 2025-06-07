@@ -42,7 +42,7 @@ const SignUp = () => {
     });
 
     return (
-        <View style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 }}>
             <StatusBar backgroundColor={'white'} />
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -79,9 +79,8 @@ const SignUp = () => {
                                             onChangeText={handleChange('username')}
                                             onBlur={handleBlur('username')}
                                             value={values.username}
-                                            name='username'
-                                            errors={errors}
-                                            touched={touched}
+                                            errors={errors.username && touched.username ? errors.username : undefined}
+
                                         />
 
                                         <CustomTextInput
@@ -89,9 +88,7 @@ const SignUp = () => {
                                             onChangeText={handleChange('email')}
                                             onBlur={handleBlur('email')}
                                             value={values.email}
-                                            name='email'
-                                            touched={touched}
-                                            errors={errors}
+                                            errors={errors.email && touched.email ? errors.email : undefined}
                                             right={
                                                 touched.email && !errors.email && (
                                                     <TextInput.Icon
@@ -113,9 +110,7 @@ const SignUp = () => {
                                             value={values.password}
                                             hidePassword={hidePassword}
                                             secureTextEntry={hidePassword}
-                                            name='password'
-                                            touched={touched}
-                                            errors={errors}
+                                            errors={errors.password && touched.password ? errors.password : undefined}
                                         />
 
                                         <Text style={styles.termsText}>
@@ -138,7 +133,7 @@ const SignUp = () => {
                     </View>
                 </ScrollView>
             </KeyboardAvoidingView>
-        </View>
+        </SafeAreaView>
     );
 };
 
