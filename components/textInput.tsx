@@ -4,12 +4,10 @@ import { StyleSheet, View, StyleProp, ViewStyle, Text } from 'react-native';
 import { TextInput, TextInputProps } from 'react-native-paper';
 
 interface MyTextInputProps extends TextInputProps {
-    name: string;
     hidePassword?: boolean;
     toggleButton?: () => void;
     customstyle?: StyleProp<ViewStyle>;
-    errors?: { [key: string]: string };
-    touched?: { [key: string]: boolean };
+    errors?: string;
 }
 
 const MyTextInput: React.FC<MyTextInputProps> = ({
@@ -20,8 +18,6 @@ const MyTextInput: React.FC<MyTextInputProps> = ({
     toggleButton,
     customstyle,
     errors,
-    touched,
-    name,
     ...restProps
 }) => {
     return (
@@ -50,12 +46,11 @@ const MyTextInput: React.FC<MyTextInputProps> = ({
                 {...restProps}
             />
 
-            {!!name && !!errors?.[name] && !!touched?.[name] && (
+            {errors && (
                 <Text style={styles.errorText}>
-                    {errors[name]}
+                    {errors}
                 </Text>
             )}
-
         </View>
     );
 };
