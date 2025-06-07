@@ -24,7 +24,7 @@ const UpdateItemButton: React.FC<UpdateItemButtonProps> = ({ itemData, addQuanti
     const storedData = useSelector((state: RootState) => state.cart.items);
     console.log(storedData);
 
-    let itemInCart = useMemo(() => storedData.find((item) => item?.id === itemData?.id), [storedData])
+    let itemInCart = useMemo(() => storedData.find((item) => item?.name === itemData?.name), [storedData])
 
 
     // console.log("stored Data", JSON.stringify(storedData, null, 2));

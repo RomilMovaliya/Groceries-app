@@ -55,7 +55,7 @@ const CartScreen = () => {
                             paddingHorizontal: 20,
                         }}
                         data={storedData}
-                        renderItem={({ item, index }) => {
+                        renderItem={({ item }) => {
                             console.log('Rendering item:', item);
                             return (
                                 <View style={{
@@ -90,6 +90,8 @@ const CartScreen = () => {
                                         }}>
                                             <Text>{item.name}</Text>
                                             <CancelIcon onPress={() => {
+                                                console.log("item.id", item.id);
+
                                                 dispatch(removeFromCart({ name: item.name }))
                                             }} height={20} width={20} />
                                         </View>

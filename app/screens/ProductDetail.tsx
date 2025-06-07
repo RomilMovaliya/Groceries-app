@@ -47,7 +47,7 @@ const ProductDetail = () => {
     const cartItems = useSelector((state: RootState) => state.cart.items);
 
     console.log("cart Item", JSON.stringify(cartItems));
-    let itemInCart = cartItems.find((item) => item?.id === product.id);
+    let itemInCart = cartItems.find((item) => item?.name === product.name);
     console.log("itemInCart", itemInCart);
 
     const dispatch = useDispatch();
@@ -70,7 +70,7 @@ const ProductDetail = () => {
 
     const favoriteItemHandler = () => {
         if (isItemInFavorite) {
-            dispatch(removeFromFavorite(product.name));
+            dispatch(removeFromFavorite(product.id));
         } else {
             dispatch(addToFavorite({ ...product }));
         }

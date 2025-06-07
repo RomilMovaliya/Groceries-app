@@ -36,8 +36,8 @@ const cartSlice = createSlice({
             }
         },
         removeFromCart: (state, action) => {
-            const newList = state.items.filter((value) => value.name != action.payload.name);
-            state.items = newList
+            console.log("calling");
+            state.items = state.items.filter((value) => value.name != action.payload.name);
         },
         IncremetQuantity: (state, action) => {
             const isAvailable = state.items.find((value) => value.name == action.payload.name);
