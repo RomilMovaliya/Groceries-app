@@ -27,7 +27,6 @@ const TabLayout = () => {
         <SafeAreaProvider>
             <Provider store={Store}>
                 <Tabs
-                    initialRouteName='shop'
                     screenOptions={{
                         headerShown: false,
                         tabBarActiveTintColor: primaryColor,

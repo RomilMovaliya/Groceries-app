@@ -70,7 +70,7 @@ const ProductDetail = () => {
 
     const favoriteItemHandler = () => {
         if (isItemInFavorite) {
-            dispatch(removeFromFavorite(product.id));
+            dispatch(removeFromFavorite(product.name));
         } else {
             dispatch(addToFavorite({ ...product }));
         }
