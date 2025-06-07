@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { SafeAreaView, FlatList, TouchableOpacity, Text, View, Image, StyleSheet } from 'react-native';
+import { FlatList, TouchableOpacity, Text, View, Image, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetFooter, BottomSheetFooterProps, BottomSheetView } from '@gorhom/bottom-sheet';
 import BackBtn from '../../assets/backIcon.svg';
@@ -11,6 +11,7 @@ import { primaryColor } from '../../utils/myColors';
 import { useSearchParams } from 'expo-router/build/hooks';
 import CheckBoxSection from '../../components/CheckBox';
 import CloseBtn from "../../assets/cancelIcon.svg";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ProductList = () => {
     const searchParams = useSearchParams();
@@ -42,7 +43,7 @@ const ProductList = () => {
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <SafeAreaView style={{ flex: 1 }}>
+            <SafeAreaView style={{ flex: 1, }}>
                 <View
                     style={{
                         flexDirection: 'row',

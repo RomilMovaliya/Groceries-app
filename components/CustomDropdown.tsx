@@ -33,6 +33,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({ data, onSelect }) => {
             {isOpen && (
                 <View style={styles.dropdownList}>
                     <FlatList
+                        scrollEnabled={false}
                         data={data}
                         showsVerticalScrollIndicator={false}
                         keyExtractor={(item) => item.id.toString()}
