@@ -1,4 +1,5 @@
 import {
+    BackHandler,
     KeyboardAvoidingView,
     Platform,
     ScrollView,
@@ -7,7 +8,7 @@ import {
     Text,
     View,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LogoIcon from '../../assets/colorlogo.svg';
 import Button from '../../components/button';
 import CustomTextInput from '../../components/textInput';
@@ -16,12 +17,40 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TextInput } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = () => {
     const [hidePassword, setHidePassword] = useState(true);
 
     const togglePasswordVisibility = () => {
         setHidePassword(!hidePassword);
+    };
+
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            return true; // Disable back button
+        });
+        return () => backHandler.remove(); // Clean up
+    }, []);
+
+    const handleUserLogin = async (values: { email: string, password: string }) => {
+        try {
+            const user = await AsyncStorage.getItem('user');
+            if (user) {
+                const userData = JSON.parse(user);
+                if (userData.email === values.email && userData.password === values.password) {
+                    console.log("Login successful");
+                    await AsyncStorage.setItem('isLoggedIn', 'true');
+                    router.navigate("/screens/Verification");
+                } else {
+                    console.log("Invalid credentials");
+                }
+            } else {
+                console.log("No user data found");
+            }
+        } catch (error) {
+            console.error("Error retrieving user data:", error);
+        }
     };
 
     const loginValidationSchema = Yup.object().shape({
@@ -67,8 +96,7 @@ const Login = () => {
                                 initialValues={{ email: '', password: '' }}
                                 validationSchema={loginValidationSchema}
                                 onSubmit={(values) => {
-                                    console.log(values);
-                                    router.navigate("/screens/Verification");
+                                    handleUserLogin(values);
                                 }}
                             >
                                 {({

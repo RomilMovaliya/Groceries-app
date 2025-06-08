@@ -1,42 +1,35 @@
-import { Image, ImageBackground, StatusBar, StyleSheet, Text, View } from 'react-native'
+import { ImageBackground, StatusBar, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import Svg from 'react-native-svg';
 import LogoIcon from "../assets/logoicon.svg";
 import Button from '../components/button';
 import { router } from 'expo-router';
 
-
 const onboarding = () => {
-
     return (
-
-
-        <ImageBackground
-            source={require('../assets/onbording.png')}
-            style={styles.background}
-            resizeMode='cover'
-        >
-
-
-            <View style={styles.overlay} />
-
-            <View style={styles.container}>
-                <LogoIcon style={{ alignSelf: 'center' }} width={120} height={50} />
-
-                <Text style={styles.title}>Welcome to our store</Text>
-
-                <Text style={styles.description}>Get your groceries in as fast as one hour</Text>
-
-                <View style={{ width: '100%' }}>
-                    <Button
-                        title={'Get Started'}
-                        onPress={() => { router.replace('/screens/Login') }}
-                    />
+        <>
+            <StatusBar
+                barStyle='light-content'
+                backgroundColor='transparent'
+                translucent={true}
+            />
+            <ImageBackground
+                source={require('../assets/onbording.png')}
+                style={styles.background}
+                resizeMode='cover'
+            >
+                <View style={styles.overlay} />
+                <View style={styles.container}>
+                    <LogoIcon style={{ alignSelf: 'center' }} width={120} height={50} />
+                    <Text style={styles.title}>Welcome to our store</Text>
+                    <Text style={styles.description}>Get your groceries in as fast as one hour</Text>
+                    <View style={{ width: '100%' }}>
+                        <Button
+                            title={'Get Started'}
+                            onPress={() => { router.replace('/screens/Login'); }} />
+                    </View>
                 </View>
-
-            </View>
-
-        </ImageBackground>
+            </ImageBackground>
+        </>
     )
 }
 

@@ -16,6 +16,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TextInput } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignUp = () => {
     const [hidePassword, setHidePassword] = useState(true);
@@ -23,6 +24,19 @@ const SignUp = () => {
     const togglePasswordVisibility = () => {
         setHidePassword(!hidePassword);
     };
+
+    const signupHandler = async (values: {
+        username: string,
+        email: string,
+        password: string
+    }) => {
+        try {
+            await AsyncStorage.setItem('user', JSON.stringify(values));
+            await AsyncStorage.setItem('isLoggedIn', 'true');
+        } catch (error) {
+            console.error("Error saving user data:", error);
+        }
+    }
 
     const registerValidationSchema = Yup.object().shape({
         username: Yup.string()
@@ -68,7 +82,8 @@ const SignUp = () => {
                                 initialValues={{ username: '', email: '', password: '' }}
                                 validationSchema={registerValidationSchema}
                                 onSubmit={(values) => {
-                                    console.log(values);
+                                    signupHandler(values);
+                                    AsyncStorage.setItem('user', JSON.stringify(values));
                                     router.navigate("/screens/Verification?id=signup")
                                 }}
                             >

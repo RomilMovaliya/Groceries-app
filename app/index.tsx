@@ -3,11 +3,18 @@ import React, { useEffect } from 'react'
 import { router } from 'expo-router';
 import LogoIcon from '../assets/logoicon.svg';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const SplashScreen = ({ navigation }) => {
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            router.replace('/OnBoarding')
+        const timer = setTimeout(async () => {
+
+            const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
+            if (isLoggedIn === 'true') {
+                router.push("/tabs");
+            } else {
+                router.replace('/OnBoarding')
+            }
         }, 3000);
 
         return () => clearTimeout(timer)

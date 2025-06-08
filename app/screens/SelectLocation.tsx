@@ -16,12 +16,15 @@ import { LocationData } from '../../store/LocationData';
 import { Area, Zone } from '../../types/types';
 import { router } from 'expo-router';
 import Backbtn from "../../assets/backIcon.svg";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SelectLocation = () => {
     const [selectedZone, setSelectedZone] = useState<Zone | null>(null);
     const [selectedArea, setSelectedArea] = useState<Area | null>(null);
 
     const handleSubmit = () => {
+        AsyncStorage.setItem('selectedZone', JSON.stringify(selectedZone));
+        AsyncStorage.setItem('selectedArea', JSON.stringify(selectedArea));
         router.push(`/tabs?zone=${selectedZone?.name}&area=${selectedArea?.name}`);
     };
 
