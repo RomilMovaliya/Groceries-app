@@ -12,8 +12,15 @@ import LeftIcon from "../../assets/leftColorIcon.svg";
 import Button from '../../components/button';
 import LogoutIcon from '../../assets/ProfileIcons/LogoutIcon.svg';
 import { primaryColor } from '../../utils/myColors';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { router } from 'expo-router';
 
 const AccountScreen = () => {
+
+    const handleLogout = () => {
+        AsyncStorage.removeItem('isLoggedIn');
+        router.push('/screens/Login');
+    }
 
     const profileOptions = [
         {
@@ -109,6 +116,7 @@ const AccountScreen = () => {
                 <View style={styles.btn}>
                     <Button
                         title='Log Out'
+                        onPress={handleLogout}
                         textStyle={{ color: primaryColor, backgroundColor: '#ebebeb' }}
                     />
                     <LogoutIcon style={{

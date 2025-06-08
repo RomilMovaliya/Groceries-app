@@ -1,5 +1,5 @@
 import { BackHandler, FlatList, Platform, ScrollView, StyleSheet, Text, View } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import SearchBar from '../../components/searchbar'
 import MapIcon from "../../assets/mapIcon.svg"
 import Logo from "../../assets/colorlogo.svg"
@@ -10,10 +10,29 @@ import CarouselScetion from '../../components/carousel'
 import { useLocalSearchParams, useSearchParams } from 'expo-router/build/hooks'
 import { ProductListData } from '../../store/ProductListData'
 import GroceriesList from '../../components/GroceriesList'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const HomeScreen = () => {
 
-    const { zone, area } = useLocalSearchParams();
+    const [zone, setZone] = useState(null);
+    const [area, setArea] = useState(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const zoneName = await AsyncStorage.getItem('selectedZone');
+                const areaName = await AsyncStorage.getItem('selectedArea');
+
+                setZone(JSON.parse(zoneName));
+                setArea(JSON.parse(areaName));
+            } catch (error) {
+                console.error('Error reading from AsyncStorage:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
 
     return (
 
@@ -25,7 +44,7 @@ const HomeScreen = () => {
 
                 <View style={styles.title}>
                     <MapIcon width={20} height={20} />
-                    <Text>{zone}, {area}</Text>
+                    <Text>{zone?.name}, {area?.name}</Text>
                 </View>
                 <SearchBar />
                 <CarouselScetion />
