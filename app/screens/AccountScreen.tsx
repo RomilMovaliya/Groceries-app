@@ -1,5 +1,5 @@
-import { FlatList, Image, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import { FlatList, Image, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import OrderIcon from "../../assets/ProfileIcons/OrdersIcon.svg";
 import MyDetailIcon from "../../assets/ProfileIcons/MyDetailsIcon.svg";
 import DeliveryAddressIcon from "../../assets/ProfileIcons/DeliceryAddress.svg";
@@ -14,8 +14,23 @@ import LogoutIcon from '../../assets/ProfileIcons/LogoutIcon.svg';
 import { primaryColor } from '../../utils/myColors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const AccountScreen = () => {
+
+    const [user, setUser] = useState({ username: '', email: '' });
+
+    const getUserData = async () => {
+        const userData = await AsyncStorage.getItem('user');
+        if (userData) {
+            setUser(JSON.parse(userData));
+        }
+    }
+
+    useEffect(() => {
+        getUserData();
+    }, [])
+
 
     const handleLogout = () => {
         AsyncStorage.removeItem('isLoggedIn');
@@ -88,11 +103,11 @@ const AccountScreen = () => {
 
 
                     <View>
-                        <Text>Romil Movaliya</Text>
+                        <Text>{user.username}</Text>
 
                         <Text style={{
                             color: 'grey'
-                        }}>romil123@gmail.com</Text>
+                        }}>{user.email}</Text>
                     </View>
                 </View>
 
