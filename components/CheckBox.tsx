@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Checkbox } from 'react-native-paper';
 import { BottomSheetView } from '@gorhom/bottom-sheet';
@@ -8,19 +8,23 @@ import { primaryColor } from '../utils/myColors';
 import Button from './button';
 
 interface FilterContentProps {
-    parentid: string;
     title: string;
 }
 
-const FilterContent: React.FC<FilterContentProps> = ({ parentid, title }) => {
+const FilterContent: React.FC<FilterContentProps> = ({ title }) => {
 
     const allTitles = ProductListData.map((item) => item.title);
 
-    const [selectedItem, setSelectedItem] = useState(title);
+    const [selectedOption, setSelectedOption] = useState<string | null>(null);
+
+
+    useEffect(() => {
+        setSelectedOption(title);
+    }, [title]);
 
     const handleApplyFilter = () => {
 
-        const selectedCategory = ProductListData.find((item) => item.title === selectedItem);
+        const selectedCategory = ProductListData.find((item) => item.title === selectedOption);
 
         const selectedId = selectedCategory?.id;
 
@@ -39,8 +43,8 @@ const FilterContent: React.FC<FilterContentProps> = ({ parentid, title }) => {
                 {allTitles.map((item) => (
                     <View key={item} style={styles.checkBoxItem}>
                         <Checkbox
-                            status={selectedItem === item ? 'checked' : 'unchecked'}
-                            onPress={() => setSelectedItem(item)}
+                            status={selectedOption === item ? 'checked' : 'unchecked'}
+                            onPress={() => setSelectedOption(item)}
                         />
                         <Text style={styles.label}>{item}</Text>
                     </View>
