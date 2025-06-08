@@ -1,7 +1,6 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { FlatList, TouchableOpacity, Text, View, Image, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetFooter, BottomSheetFooterProps, BottomSheetView } from '@gorhom/bottom-sheet';
 import BackBtn from '../../assets/backIcon.svg';
 import ManuBtn from '../../assets/filterIcon.svg';
 import AddIcon from '../../assets/plusIcon.svg';
@@ -9,35 +8,16 @@ import { router } from 'expo-router';
 import { ProductListData } from '../../store/ProductListData';
 import { primaryColor } from '../../utils/myColors';
 import { useSearchParams } from 'expo-router/build/hooks';
-import CheckBoxSection from '../../components/CheckBox';
-import CloseBtn from "../../assets/cancelIcon.svg";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import FilterBottomSheet from '../../components/filterBottomSheet';
+import BottomSheet from '@gorhom/bottom-sheet';
 
 const ProductList = () => {
     const searchParams = useSearchParams();
     const id = searchParams.get('id');
     const productData = ProductListData.find(item => item.id === Number(id));
-    const snapPoints = useMemo(() => ['25%', '50%', '70%'], []);
     const bottomSheetRef = useRef<BottomSheet>(null);
     console.log(productData?.title);
-
-    const renderBackdrop = useCallback(
-        (props: BottomSheetBackdropProps) => <BottomSheetBackdrop appearsOnIndex={1} disappearsOnIndex={-1} {...props} />,
-        []
-    );
-
-    const renderFooter = useCallback(
-        (props: BottomSheetFooterProps) => (
-            <BottomSheetFooter {...props}>
-                <View style={{ marginHorizontal: 20, marginBottom: 20 }}>
-                    {/* <Button
-                        title='Apply Filter'
-                    /> */}
-                </View>
-            </BottomSheetFooter>
-        ),
-        []
-    );
 
     const openBottomSheet = () => bottomSheetRef.current?.expand();
 
@@ -111,30 +91,12 @@ const ProductList = () => {
                     keyExtractor={(item) => item.id.toString()}
                 />
 
-
-                <BottomSheet
+                <FilterBottomSheet
+                    title={productData?.title}
+                    parentid={id}
                     ref={bottomSheetRef}
-                    index={-1}
-                    snapPoints={snapPoints}
-                    backgroundStyle={{ backgroundColor: '#F2F3F2' }}
-                    handleIndicatorStyle={{ backgroundColor: 'black' }}
-                    enablePanDownToClose
-                    backdropComponent={renderBackdrop}
-                    footerComponent={renderFooter}
-                >
-                    <BottomSheetView>
+                />
 
-
-                        <View style={styles.sheetHeader}>
-                            <CloseBtn height={20} width={20} onPress={() => bottomSheetRef.current?.close()} />
-                        </View>
-                        <CheckBoxSection
-                            title={productData?.title}
-                            parentid={id}
-                        />
-
-                    </BottomSheetView>
-                </BottomSheet>
             </SafeAreaView>
         </GestureHandlerRootView>
     );
@@ -143,12 +105,7 @@ const ProductList = () => {
 export default ProductList;
 
 const styles = StyleSheet.create({
-    sheetHeader: {
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        alignItems: 'flex-end',
-        borderColor: '#ccc',
-    },
+
 
 
     container: {
