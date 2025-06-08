@@ -39,6 +39,7 @@ const UpdateItemButton: React.FC<UpdateItemButtonProps> = ({ itemData, addQuanti
         return (
             <View style={styles.container}>
                 <TouchableOpacity
+                    disabled={quantity === 1}
                     onPress={() => {
                         removeQuantity()
                     }}
@@ -60,10 +61,10 @@ const UpdateItemButton: React.FC<UpdateItemButtonProps> = ({ itemData, addQuanti
         <View style={styles.container}>
             <TouchableOpacity
                 style={styles.btnbox}
+                disabled={itemInCart.quantity === 1}
                 onPress={() => {
                     console.log("decrement");
                     dispatch(decrementQuantity(itemData))
-
                 }}
             >
                 <DecrementIcon height={20} width={20} />
