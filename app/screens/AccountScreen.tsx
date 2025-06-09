@@ -31,10 +31,9 @@ const AccountScreen = () => {
         getUserData();
     }, [])
 
-
     const handleLogout = () => {
         AsyncStorage.removeItem('isLoggedIn');
-        router.push('/screens/Login');
+        router.dismissTo("/screens/Login");
     }
 
     const profileOptions = [
