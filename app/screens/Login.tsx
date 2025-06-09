@@ -25,32 +25,22 @@ const Login = () => {
     const togglePasswordVisibility = () => {
         setHidePassword(!hidePassword);
     };
-
-    useEffect(() => {
-        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-            return true; // Disable back button
-        });
-        return () => backHandler.remove(); // Clean up
-    }, []);
-
     const handleUserLogin = async (values: { email: string, password: string }) => {
-        try {
-            const user = await AsyncStorage.getItem('user');
-            if (user) {
-                const userData = JSON.parse(user);
-                if (userData.email === values.email && userData.password === values.password) {
-                    console.log("Login successful");
-                    await AsyncStorage.setItem('isLoggedIn', 'true');
-                    router.navigate("/screens/Verification");
-                } else {
-                    console.log("Invalid credentials");
-                }
+
+        const user = await AsyncStorage.getItem('user');
+        if (user) {
+            const userData = JSON.parse(user);
+            if (userData.email === values.email && userData.password === values.password) {
+                console.log("Login successful");
+                await AsyncStorage.setItem('isLoggedIn', 'true');
+                router.navigate("/screens/Verification");
             } else {
-                console.log("No user data found");
+                console.log("Your credentials are Invalid");
             }
-        } catch (error) {
-            console.error("Error retrieving user data:", error);
+        } else {
+            console.log("No user data found");
         }
+
     };
 
     const loginValidationSchema = Yup.object().shape({
