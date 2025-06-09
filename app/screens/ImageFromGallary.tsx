@@ -3,7 +3,6 @@ import { Button, Image, View, StyleSheet, FlatList, Dimensions } from 'react-nat
 import * as ImagePicker from 'expo-image-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
-
 const numColumns = 3;
 
 export default function ImagePickerExample() {
