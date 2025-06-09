@@ -77,7 +77,9 @@ const AccountScreen = () => {
             icon: AboutIcon,
             title: 'About'
         }
-    ]
+    ];
+
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <StatusBar backgroundColor={'white'} />
@@ -87,19 +89,20 @@ const AccountScreen = () => {
                 justifyContent: 'space-between'
             }}>
                 <View style={styles.header}>
-
-                    <Image
-                        style={{
-                            height: 80,
-                            width: 80,
-                            borderRadius: 100,
-                            borderWidth: 0.1,
-                        }}
-                        source={require('../../assets/profile.png')}
-                        resizeMode='contain'
-
-                    />
-
+                    <TouchableOpacity onPress={() => {
+                        router.push('/screens/CameraScreen');
+                    }}>
+                        <Image
+                            style={{
+                                height: 80,
+                                width: 80,
+                                borderRadius: 100,
+                                borderWidth: 0.1,
+                            }}
+                            source={require('../../assets/profile.png')}
+                            resizeMode="contain"
+                        />
+                    </TouchableOpacity>
 
                     <View>
                         <Text>{user.username}</Text>
