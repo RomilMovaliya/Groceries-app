@@ -8,7 +8,7 @@ import { router } from 'expo-router';
 
 const numColumns = 3;
 
-export default function ImagePickerExample() {
+const ImagePickerExample = () => {
     const [img, setImg] = useState<string | undefined>();
     const [imgUploaded, setImgUploaded] = useState<boolean>(false);
 
@@ -52,7 +52,7 @@ export default function ImagePickerExample() {
         </SafeAreaView>
     );
 }
-
+export default ImagePickerExample;
 const styles = StyleSheet.create({
     container: {
         flex: 1,

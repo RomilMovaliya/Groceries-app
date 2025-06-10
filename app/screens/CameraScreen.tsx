@@ -5,7 +5,7 @@ import Feather from '@expo/vector-icons/Feather';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
-export default function App() {
+const CameraScreen = () => {
     const [facing, setFacing] = useState<CameraType>('back');
     const [permission, requestPermission] = useCameraPermissions();
     const cameraRef = useRef(null);
@@ -53,7 +53,7 @@ export default function App() {
         </View>
     );
 }
-
+export default CameraScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
