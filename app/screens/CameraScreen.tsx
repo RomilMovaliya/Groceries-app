@@ -3,6 +3,8 @@ import { useRef, useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Feather from '@expo/vector-icons/Feather';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { router } from 'expo-router';
 export default function App() {
     const [facing, setFacing] = useState<CameraType>('back');
     const [permission, requestPermission] = useCameraPermissions();
@@ -30,9 +32,9 @@ export default function App() {
                 quality: 0.5,
                 skipProcessing: true,
             });
-
-            console.log('Captured Photo:', photo);
-
+            console.log('Captured Photo:', photo.uri);
+            AsyncStorage.setItem('capturedPhoto', photo.uri);
+            router.replace("/tabs/account");
         }
     };
 
