@@ -1,4 +1,4 @@
-import { FlatList, Image, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, Image, Modal, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import OrderIcon from "../../assets/ProfileIcons/OrdersIcon.svg";
 import MyDetailIcon from "../../assets/ProfileIcons/MyDetailsIcon.svg";
@@ -18,12 +18,17 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const AccountScreen = () => {
 
-    const [user, setUser] = useState({ username: '', email: '' });
-
+    const [user, setUser] = useState({ username: '', email: '' })
+    const [uri, setUri] = useState('');
+    const [modeVisible, setModeVisible] = useState(false);
     const getUserData = async () => {
         const userData = await AsyncStorage.getItem('user');
+        const imageUri = await AsyncStorage.getItem('capturedPhoto');
         if (userData) {
             setUser(JSON.parse(userData));
+        }
+        if (imageUri) {
+            setUri(imageUri);
         }
     }
 
@@ -36,6 +41,9 @@ const AccountScreen = () => {
         router.dismissTo("/screens/Login");
     }
 
+    const handleModeToggle = () => {
+        setModeVisible(!modeVisible);
+    }
     const profileOptions = [
         {
             id: 1,
@@ -89,8 +97,48 @@ const AccountScreen = () => {
                 justifyContent: 'space-between'
             }}>
                 <View style={styles.header}>
+
+                    {modeVisible && (
+                        <Modal visible={true} transparent={true} animationType="fade">
+                            <TouchableOpacity
+                                activeOpacity={1}
+                                onPressOut={() => setModeVisible(false)}
+                                style={styles.modalOverlay}
+                            >
+                                <TouchableOpacity
+                                    activeOpacity={1}
+                                    style={styles.modalContent}
+                                    onPress={() => { }}
+                                >
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            setModeVisible(false);
+                                            router.navigate('/screens/ImageFromGallary');
+                                        }}
+                                    >
+                                        <Text style={styles.modalText}>Select from Gallery</Text>
+                                    </TouchableOpacity>
+
+                                    <View style={styles.modalDivider} />
+
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            setModeVisible(false);
+                                            router.navigate('/screens/CameraScreen');
+                                        }}
+                                    >
+                                        <Text style={styles.modalText}>Select from Camera</Text>
+                                    </TouchableOpacity>
+                                </TouchableOpacity>
+                            </TouchableOpacity>
+                        </Modal>
+                    )}
+
+
+
+
                     <TouchableOpacity onPress={() => {
-                        router.push('/screens/CameraScreen');
+                        setModeVisible(!modeVisible);
                     }}>
                         <Image
                             style={{
@@ -99,11 +147,11 @@ const AccountScreen = () => {
                                 borderRadius: 100,
                                 borderWidth: 0.1,
                             }}
-                            source={require('../../assets/profile.png')}
+                            source={{ uri: uri }}
                             resizeMode="contain"
                         />
-                    </TouchableOpacity>
 
+                    </TouchableOpacity>
                     <View>
                         <Text>{user.username}</Text>
 
@@ -132,6 +180,7 @@ const AccountScreen = () => {
 
                 <View style={styles.btn}>
                     <Button
+                        style={styles.logout}
                         title='Log Out'
                         onPress={handleLogout}
                         textStyle={{ color: primaryColor, backgroundColor: '#ebebeb' }}
@@ -139,7 +188,7 @@ const AccountScreen = () => {
                     <LogoutIcon style={{
                         position: 'absolute',
                         left: 20,
-                        top: 20
+                        top: 25
                     }} height={20} width={20} />
 
                 </View>
@@ -185,8 +234,40 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         textAlign: 'center',
         backgroundColor: '#ebebeb',
-        padding: 15,
+        padding: 10,
         justifyContent: 'center',
         borderRadius: 15
+    },
+
+    modalOverlay: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+
+    modalContent: {
+        backgroundColor: 'white',
+        padding: 20,
+        borderRadius: 10,
+        width: '80%',
+        elevation: 5, // For Android shadow
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+    },
+
+    modalText: {
+        fontWeight: 'bold',
+        fontSize: 16,
+        marginBottom: 10,
+    },
+
+    modalDivider: {
+        height: 1,
+        backgroundColor: '#ccc',
+        marginVertical: 10,
     }
+
 })
