@@ -15,29 +15,35 @@ import { primaryColor } from '../../utils/myColors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { getUserData, logout } from '../../lib/auth/authFunction';
+import { supabase } from '../../supabase/supabase';
 
 const AccountScreen = () => {
 
-    const [user, setUser] = useState({ username: '', email: '' })
+    const [name, setName] = useState("userName");
+    const [email, setEmail] = useState("youmail@gmail.com");
     const [uri, setUri] = useState('');
     const [modeVisible, setModeVisible] = useState(false);
-    const getUserData = async () => {
-        const userData = await AsyncStorage.getItem('user');
+    const getUserData1 = async () => {
         const imageUri = await AsyncStorage.getItem('capturedPhoto');
-        if (userData) {
-            setUser(JSON.parse(userData));
-        }
         if (imageUri) {
             setUri(imageUri);
         }
     }
 
     useEffect(() => {
-        getUserData();
+        const fetchUserInfo = async () => {
+            const userInfo = await getUserData();
+            setName(userInfo.data.session.user.user_metadata.display_name);
+            setEmail(userInfo.data.session.user.user_metadata.email)
+            console.log("userInfo", userInfo.data.session.user.user_metadata.display_name);
+        };
+        fetchUserInfo();
+        getUserData1();
     }, [])
 
-    const handleLogout = () => {
-        AsyncStorage.removeItem('isLoggedIn');
+    const handleLogout = async () => {
+        await supabase.auth.signOut();
         router.dismissTo("/screens/Login");
     }
 
@@ -153,11 +159,11 @@ const AccountScreen = () => {
 
                     </TouchableOpacity>
                     <View>
-                        <Text>{user.username}</Text>
+                        <Text>{name}</Text>
 
                         <Text style={{
                             color: 'grey'
-                        }}>{user.email}</Text>
+                        }}>{email}</Text>
                     </View>
                 </View>
 

@@ -1,5 +1,5 @@
-import { KeyboardAvoidingView, Platform, Pressable, StatusBar, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useState } from 'react'
+import { ActivityIndicator, KeyboardAvoidingView, StatusBar, StyleSheet, Text, TextInput, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import BackIcon from "../../assets/backIcon.svg";
 import LeftIcon from "../../assets/leftIcon.svg";
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -7,27 +7,59 @@ import { router } from 'expo-router';
 import { primaryColor } from '../../utils/myColors';
 import Toast from 'react-native-toast-message';
 import { useSearchParams } from 'expo-router/build/hooks';
+import { verifyOTP } from '../../lib/auth/authFunction';
 const Verification = () => {
 
     const searchParams = useSearchParams();
-    const id = searchParams.get('id');
-    console.log("id", id);
+    const email = searchParams.get('email');
 
     const [code, setCode] = useState('');
+    const [countdown, setCountDown] = useState(60);
+    const [loader, setLoader] = useState(false);
 
-    const submitHandler = () => {
-        if (id === 'signup') {
-            router.navigate("/screens/SelectLocation");
+    useEffect(() => {
+        if (countdown <= 0) return;
+
+        const timer = setInterval(() => {
+            setCountDown(prev => prev - 1);
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, [countdown]);
+
+    const timeFormat = (second: number) => {
+        const min = Math.floor(second / 60);
+        const sec = second % 60;
+        return `${min < 10 ? '0' + min : min}:${sec < 10 ? '0' + sec : sec}`;
+    }
+    const submitHandler = async () => {
+        setLoader(true);
+        const status = await verifyOTP(email, code);
+        if (!status.success) {
+            setLoader(false);
+            Toast.show({
+                type: 'error',
+                text2: `${status.messsage}`
+            })
         } else {
-            router.push("/tabs");
+            setLoader(false);
+            router.navigate("/screens/SelectLocation");
         }
+
     }
 
     const SendCodeHandler = () => {
-        Toast.show({
-            type: 'success',
-            text1: 'code sended to your mail.'
-        })
+        if (countdown > 0) {
+            Toast.show({
+                type: 'success',
+                text1: `wait ${countdown} seconds.`
+            });
+        } else {
+            Toast.show({
+                type: 'success',
+                text1: 'code sended to your mail.'
+            })
+        }
     }
 
     const BackButtonHandler = () => {
@@ -64,19 +96,26 @@ const Verification = () => {
                         />
                     </View>
 
-
-
+                    {loader && (
+                        <ActivityIndicator
+                            style={styles.loader}
+                            size="large" color="green"
+                        />
+                    )}
                 </View>
 
                 <View style={styles.bottomLine}>
-                    <Text
-                        onPress={SendCodeHandler}
-                        style={{
-                            color: primaryColor,
-                            fontSize: 15,
+                    <View>
+                        <Text
+                            onPress={SendCodeHandler}
+                            style={{
+                                color: primaryColor,
+                                fontSize: 15,
 
-                        }}>Resend code</Text>
+                            }}>Resend code</Text>
 
+                        <Text>{countdown > 0 && timeFormat(countdown)}</Text>
+                    </View>
                     <View style={styles.circle}>
                         <LeftIcon
                             height={20}
@@ -85,6 +124,7 @@ const Verification = () => {
                         />
                     </View>
                 </View>
+
 
                 <Toast />
             </KeyboardAvoidingView>
@@ -137,5 +177,8 @@ const styles = StyleSheet.create({
     otpBox: {
         width: '100%',
         alignItems: 'center'
+    },
+    loader: {
+        marginTop: 20
     }
 })

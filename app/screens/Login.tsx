@@ -8,39 +8,61 @@ import {
     Text,
     View,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import LogoIcon from '../../assets/colorlogo.svg';
 import Button from '../../components/button';
 import CustomTextInput from '../../components/textInput';
-import { Link, router } from 'expo-router';
+import { Link, router, useLocalSearchParams } from 'expo-router';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TextInput } from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { signInWithEmail } from '../../lib/auth/authFunction';
+import { supabase } from '../../supabase/supabase';
+import Toast from 'react-native-toast-message';
 
 const Login = () => {
     const [hidePassword, setHidePassword] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const params = useLocalSearchParams();
+    const formikRef = useRef(null);
+
+    useEffect(() => {
+        // Handle deep link parameters
+        if (params.email) {
+            // Pre-fill the email field if it comes from deep link
+            formikRef.current?.setFieldValue('email', params.email);
+        }
+    }, [params]);
 
     const togglePasswordVisibility = () => {
         setHidePassword(!hidePassword);
     };
     const handleUserLogin = async (values: { email: string, password: string }) => {
+        setLoading(true);
+        const status = await signInWithEmail(values.email, values.password);
 
-        const user = await AsyncStorage.getItem('user');
-        if (user) {
-            const userData = JSON.parse(user);
-            if (userData.email === values.email && userData.password === values.password) {
-                console.log("Login successful");
-                await AsyncStorage.setItem('isLoggedIn', 'true');
-                router.navigate("/screens/Verification");
-            } else {
-                console.log("Your credentials are Invalid");
-            }
-        } else {
-            console.log("No user data found");
+        if (!status.success) {
+
+            console.warn(status.error);
+
+            Toast.show({
+                type: 'error',
+                text1: `${status.error}`
+            })
         }
 
+        setLoading(false);
+        const { data: { user } } = await supabase.auth.getUser();
+        console.log("user", user);
+        if (user) {
+            router.navigate({
+                pathname: "/tabs/shop",
+                params: {
+                    email: values.email,
+                }
+            });
+        }
     };
 
     const loginValidationSchema = Yup.object().shape({
@@ -83,6 +105,7 @@ const Login = () => {
 
                         <View style={styles.form}>
                             <Formik
+                                innerRef={formikRef}
                                 initialValues={{ email: '', password: '' }}
                                 validationSchema={loginValidationSchema}
                                 onSubmit={(values) => {
@@ -134,15 +157,20 @@ const Login = () => {
                                             Forgot Password?
                                         </Text>
 
-                                        <Button title="Log In" onPress={() => handleSubmit()} />
+                                        <Button
+                                            title="Log In"
+                                            onPress={() => handleSubmit()}
+                                            disabled={loading} />
 
                                         <Text style={styles.signupText}>
-                                            Don’t have an account?
+                                            Don't have an account?
                                             <Link href="/screens/SignUp" style={styles.linkText}>
                                                 {' '}
                                                 Sign Up
                                             </Link>
                                         </Text>
+
+
                                     </>
                                 )}
                             </Formik>
