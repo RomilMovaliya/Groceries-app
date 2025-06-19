@@ -6,6 +6,8 @@ import {
     View,
     Platform,
     StatusBar,
+    Alert,
+    ActivityIndicator,
 } from 'react-native';
 import React, { useState } from 'react';
 import LogoIcon from "../../assets/colorlogo.svg";
@@ -16,11 +18,12 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TextInput } from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { signUpWithEmail } from '../../supabase/auth/authFunction';
+import Toast from 'react-native-toast-message';
 
 const SignUp = () => {
     const [hidePassword, setHidePassword] = useState(true);
-
+    const [loading, setLoading] = useState(true);
     const togglePasswordVisibility = () => {
         setHidePassword(!hidePassword);
     };
@@ -30,12 +33,13 @@ const SignUp = () => {
         email: string,
         password: string
     }) => {
-        try {
-            await AsyncStorage.setItem('user', JSON.stringify(values));
-            await AsyncStorage.setItem('isLoggedIn', 'true');
-        } catch (error) {
-            console.error("Error saving user data:", error);
-        }
+
+        await signUpWithEmail(values.username, values.email, values.password);
+
+        router.navigate({
+            pathname: "/screens/Verification",
+            params: { id: 'signup', email: values.email }
+        });
     }
 
     const registerValidationSchema = Yup.object().shape({
@@ -83,8 +87,6 @@ const SignUp = () => {
                                 validationSchema={registerValidationSchema}
                                 onSubmit={(values) => {
                                     signupHandler(values);
-                                    AsyncStorage.setItem('user', JSON.stringify(values));
-                                    router.navigate("/screens/Verification?id=signup")
                                 }}
                             >
                                 {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
@@ -135,7 +137,18 @@ const SignUp = () => {
                                             </Link>
                                         </Text>
 
-                                        <Button title={'Sign Up'} onPress={() => handleSubmit()} />
+                                        <Button
+                                            title={'Sign Up'}
+                                            onPress={() => handleSubmit()}
+                                        // disabled={loading}
+                                        />
+
+                                        {/* {loading && (
+                                            <ActivityIndicator
+                                                style={styles.loader}
+                                                size="large" color="green"
+                                            />
+                                        )} */}
 
                                         <Text style={styles.bottomText}>
                                             Already have an account?
@@ -204,4 +217,10 @@ const styles = StyleSheet.create({
     link: {
         color: '#53B175',
     },
+    loader: {
+        position: 'absolute',
+        top: 150,
+        left: 0,
+        right: 0,
+    }
 });

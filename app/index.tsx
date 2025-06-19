@@ -1,25 +1,23 @@
-import { Image, StatusBar, StyleSheet, Text, View } from 'react-native'
+import { StatusBar, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
 import { router } from 'expo-router';
 import LogoIcon from '../assets/logoicon.svg';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-const SplashScreen = ({ navigation }) => {
+import { getUserData } from '../lib/auth/authFunction';
+const SplashScreen = () => {
 
     useEffect(() => {
         const timer = setTimeout(async () => {
 
-            const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
-            if (isLoggedIn === 'true') {
-                router.push("/tabs");
+            const isLoggedIn = await getUserData();
+            if (isLoggedIn.data.session) {
+                router.replace("/tabs");
             } else {
                 router.replace('/OnBoarding')
             }
         }, 3000);
-
         return () => clearTimeout(timer)
     }, []);
-
 
     return (
         <SafeAreaView style={styles.container} >
