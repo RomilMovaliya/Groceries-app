@@ -22,7 +22,8 @@ export interface Area {
 
 export interface MyButtonProps extends ButtonProps, TextInputProps {
     title: string
-    textStyle?: TextStyle
+    textStyle?: TextStyle,
+    loader?: boolean
 }
 
 export interface MyProductTitle extends TextProps {

@@ -7,15 +7,20 @@ import { router } from 'expo-router';
 import { primaryColor } from '../../utils/myColors';
 import Toast from 'react-native-toast-message';
 import { useSearchParams } from 'expo-router/build/hooks';
-import { verifyOTP } from '../../lib/auth/authFunction';
+import { resendOtp, verifyOTP } from '../../supabase/auth/authFunction';
 const Verification = () => {
 
     const searchParams = useSearchParams();
     const email = searchParams.get('email');
-
     const [code, setCode] = useState('');
     const [countdown, setCountDown] = useState(60);
     const [loader, setLoader] = useState(false);
+
+    useEffect(() => {
+        if (code.length === 6 && !loader) {
+            submitHandler();
+        }
+    }, [code])
 
     useEffect(() => {
         if (countdown <= 0) return;
@@ -33,11 +38,13 @@ const Verification = () => {
         return `${min < 10 ? '0' + min : min}:${sec < 10 ? '0' + sec : sec}`;
     }
     const submitHandler = async () => {
+        if (loader) return;
         setLoader(true);
         const status = await verifyOTP(email, code);
         if (!status.success) {
             setLoader(false);
             Toast.show({
+                position: 'bottom',
                 type: 'error',
                 text2: `${status.messsage}`
             })
@@ -45,20 +52,30 @@ const Verification = () => {
             setLoader(false);
             router.navigate("/screens/SelectLocation");
         }
-
     }
 
-    const SendCodeHandler = () => {
+    const SendCodeHandler = async () => {
         if (countdown > 0) {
             Toast.show({
                 type: 'success',
                 text1: `wait ${countdown} seconds.`
             });
         } else {
-            Toast.show({
-                type: 'success',
-                text1: 'code sended to your mail.'
-            })
+            const response = await resendOtp(email);
+            if (response.success) {
+                Toast.show({
+                    type: 'success',
+                    text1: 'Code sent!',
+                    text2: response.message,
+                });
+                setCountDown(60);
+            } else {
+                Toast.show({
+                    type: 'error',
+                    text1: 'Failed to send code',
+                    text2: response.message,
+                });
+            }
         }
     }
 
@@ -120,6 +137,7 @@ const Verification = () => {
                         <LeftIcon
                             height={20}
                             width={20}
+                            disabled={loader}
                             onPress={submitHandler}
                         />
                     </View>
