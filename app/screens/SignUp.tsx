@@ -6,7 +6,6 @@ import {
     View,
     Platform,
     StatusBar,
-    Alert,
     ActivityIndicator,
 } from 'react-native';
 import React, { useState } from 'react';
@@ -23,7 +22,7 @@ import Toast from 'react-native-toast-message';
 
 const SignUp = () => {
     const [hidePassword, setHidePassword] = useState(true);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const togglePasswordVisibility = () => {
         setHidePassword(!hidePassword);
     };
@@ -33,13 +32,25 @@ const SignUp = () => {
         email: string,
         password: string
     }) => {
+        setLoading(true);
+        const status = await signUpWithEmail(values.username.toLocaleLowerCase(), values.email, values.password);
 
-        await signUpWithEmail(values.username, values.email, values.password);
+        if (status.success) {
+            console.log("Msg", status.message);
+            setLoading(false);
+            router.navigate({
+                pathname: "/screens/Verification",
+                params: { id: 'signup', email: values.email }
+            });
 
-        router.navigate({
-            pathname: "/screens/Verification",
-            params: { id: 'signup', email: values.email }
-        });
+        } else {
+            setLoading(false);
+            Toast.show({
+                type: 'error',
+                text1: 'Signup Failed',
+                text2: status.message,
+            });
+        }
     }
 
     const registerValidationSchema = Yup.object().shape({
@@ -85,7 +96,7 @@ const SignUp = () => {
                             <Formik
                                 initialValues={{ username: '', email: '', password: '' }}
                                 validationSchema={registerValidationSchema}
-                                onSubmit={(values) => {
+                                onSubmit={async (values) => {
                                     signupHandler(values);
                                 }}
                             >
@@ -140,15 +151,9 @@ const SignUp = () => {
                                         <Button
                                             title={'Sign Up'}
                                             onPress={() => handleSubmit()}
-                                        // disabled={loading}
+                                            disabled={loading}
+                                            loader={loading}
                                         />
-
-                                        {/* {loading && (
-                                            <ActivityIndicator
-                                                style={styles.loader}
-                                                size="large" color="green"
-                                            />
-                                        )} */}
 
                                         <Text style={styles.bottomText}>
                                             Already have an account?

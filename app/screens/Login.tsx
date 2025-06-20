@@ -1,4 +1,5 @@
 import {
+    ActivityIndicator,
     BackHandler,
     KeyboardAvoidingView,
     Platform,
@@ -17,7 +18,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TextInput } from 'react-native-paper';
-import { signInWithEmail } from '../../lib/auth/authFunction';
+import { signInWithEmail } from '../../supabase/auth/authFunction';
 import { supabase } from '../../supabase/supabase';
 import Toast from 'react-native-toast-message';
 
@@ -28,9 +29,7 @@ const Login = () => {
     const formikRef = useRef(null);
 
     useEffect(() => {
-        // Handle deep link parameters
         if (params.email) {
-            // Pre-fill the email field if it comes from deep link
             formikRef.current?.setFieldValue('email', params.email);
         }
     }, [params]);
@@ -43,19 +42,19 @@ const Login = () => {
         const status = await signInWithEmail(values.email, values.password);
 
         if (!status.success) {
-
+            setLoading(false);
             console.warn(status.error);
-
             Toast.show({
                 type: 'error',
                 text1: `${status.error}`
             })
         }
 
-        setLoading(false);
+
         const { data: { user } } = await supabase.auth.getUser();
         console.log("user", user);
         if (user) {
+            setLoading(false);
             router.navigate({
                 pathname: "/tabs/shop",
                 params: {
@@ -160,8 +159,9 @@ const Login = () => {
                                         <Button
                                             title="Log In"
                                             onPress={() => handleSubmit()}
-                                            disabled={loading} />
-
+                                            disabled={loading}
+                                            loader={loading}
+                                        />
                                         <Text style={styles.signupText}>
                                             Don't have an account?
                                             <Link href="/screens/SignUp" style={styles.linkText}>
@@ -233,4 +233,10 @@ const styles = StyleSheet.create({
     linkText: {
         color: '#53B175',
     },
+    loader: {
+        position: 'absolute',
+        top: 150,
+        left: 0,
+        right: 0,
+    }
 });

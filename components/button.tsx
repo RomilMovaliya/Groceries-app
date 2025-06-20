@@ -1,14 +1,22 @@
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { MyButtonProps } from '../types/types'
+import { ActivityIndicator } from 'react-native'
 
 
-
-const Button: React.FC<MyButtonProps> = ({ title, textStyle, ...props }) => {
-
+const Button: React.FC<MyButtonProps> = ({ title, textStyle, loader, ...props }) => {
     return (
-        <TouchableOpacity style={styles.btn} {...props}>
-            <Text style={[styles.title, textStyle]} {...props}>{title}</Text>
+        <TouchableOpacity
+            style={styles.btn} {...props}>
+            {loader ? (
+                <ActivityIndicator
+                    style={styles.loader}
+                    size="large" color="white"
+                />
+            ) : (
+                <Text style={[styles.title, textStyle]} {...props}>{title}</Text>
+            )}
+
         </TouchableOpacity>
     )
 }
@@ -27,5 +35,8 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 13,
         padding: 16
+    },
+    loader: {
+        padding: 10
     }
 })
