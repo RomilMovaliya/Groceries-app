@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { router } from 'expo-router';
 import LogoIcon from '../assets/logoicon.svg';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { getUserData } from '../lib/auth/authFunction';
+import { getUserData } from '../supabase/auth/authFunction';
 const SplashScreen = () => {
 
     useEffect(() => {

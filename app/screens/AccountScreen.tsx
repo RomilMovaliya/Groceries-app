@@ -15,7 +15,7 @@ import { primaryColor } from '../../utils/myColors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { getUserData, logout } from '../../lib/auth/authFunction';
+import { getUserData, logout } from '../../supabase/auth/authFunction';
 import { supabase } from '../../supabase/supabase';
 
 const AccountScreen = () => {
