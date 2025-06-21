@@ -102,7 +102,7 @@ const FavoriteScreen = () => {
                         onPress={() => {
                             storeData.map((item) => {
                                 dispatch(addToCart({ ...item }))
-                                dispatch(removeFromFavorite(item.name))
+                                dispatch(removeFromFavorite(item.id))
                             })
                         }}
                         title='Add All To Cart'

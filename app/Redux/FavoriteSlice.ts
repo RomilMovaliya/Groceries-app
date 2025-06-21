@@ -27,13 +27,13 @@ const FavoriteSlice = createSlice({
     initialState,
     reducers: {
         addToFavorite: (state, action) => {
-            const isAvailable = state.items.some(item => item.name === action.payload.name);
+            const isAvailable = state.items.some(item => item.id === action.payload.id);
             if (!isAvailable) {
                 state.items.push(action.payload);
             }
         },
         removeFromFavorite: (state, action) => {
-            state.items = state.items.filter(item => item.name != action.payload);
+            state.items = state.items.filter(item => item.id != action.payload);
         }
     }
 })

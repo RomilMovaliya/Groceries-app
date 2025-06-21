@@ -93,7 +93,7 @@ const CartScreen = () => {
                                             <CancelIcon onPress={() => {
                                                 console.log("item.id", item.id);
 
-                                                dispatch(removeFromCart({ name: item.name }))
+                                                dispatch(removeFromCart({ id: item.id }))
                                             }} height={20} width={20} />
                                         </View>
 
