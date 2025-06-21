@@ -1,5 +1,4 @@
 import {
-    ActivityIndicator,
     BackHandler,
     KeyboardAvoidingView,
     Platform,
@@ -18,50 +17,38 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TextInput } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { signInWithEmail } from '../../supabase/auth/authFunction';
 import { supabase } from '../../supabase/supabase';
-import Toast from 'react-native-toast-message';
 
 const Login = () => {
     const [hidePassword, setHidePassword] = useState(true);
-    const [loading, setLoading] = useState(false);
-    const params = useLocalSearchParams();
-    const formikRef = useRef(null);
-
-    useEffect(() => {
-        if (params.email) {
-            formikRef.current?.setFieldValue('email', params.email);
-        }
-    }, [params]);
 
     const togglePasswordVisibility = () => {
         setHidePassword(!hidePassword);
     };
     const handleUserLogin = async (values: { email: string, password: string }) => {
-        setLoading(true);
-        const status = await signInWithEmail(values.email, values.password);
-
-        if (!status.success) {
-            setLoading(false);
-            console.warn(status.error);
-            Toast.show({
-                type: 'error',
-                text1: `${status.error}`
-            })
-        }
-
-
+        await signInWithEmail(values.email, values.password);
         const { data: { user } } = await supabase.auth.getUser();
         console.log("user", user);
         if (user) {
-            setLoading(false);
-            router.navigate({
-                pathname: "/tabs/shop",
-                params: {
-                    email: values.email,
-                }
-            });
+            router.navigate("/screens/Verification");
         }
+
+        /*const user = await AsyncStorage.getItem('user');
+        if (user) {
+            const userData = JSON.parse(user);
+            if (userData.email === values.email && userData.password === values.password) {
+                console.log("Login successful");
+                await AsyncStorage.setItem('isLoggedIn', 'true');
+                router.navigate("/screens/Verification");
+            } else {
+                console.log("Your credentials are Invalid");
+            }
+        } else {
+            console.log("No user data found");
+        }*/
+
     };
 
     const loginValidationSchema = Yup.object().shape({
@@ -104,7 +91,6 @@ const Login = () => {
 
                         <View style={styles.form}>
                             <Formik
-                                innerRef={formikRef}
                                 initialValues={{ email: '', password: '' }}
                                 validationSchema={loginValidationSchema}
                                 onSubmit={(values) => {
@@ -156,12 +142,8 @@ const Login = () => {
                                             Forgot Password?
                                         </Text>
 
-                                        <Button
-                                            title="Log In"
-                                            onPress={() => handleSubmit()}
-                                            disabled={loading}
-                                            loader={loading}
-                                        />
+                                        <Button title="Log In" onPress={() => handleSubmit()} />
+
                                         <Text style={styles.signupText}>
                                             Don't have an account?
                                             <Link href="/screens/SignUp" style={styles.linkText}>
@@ -169,8 +151,6 @@ const Login = () => {
                                                 Sign Up
                                             </Link>
                                         </Text>
-
-
                                     </>
                                 )}
                             </Formik>
@@ -233,10 +213,4 @@ const styles = StyleSheet.create({
     linkText: {
         color: '#53B175',
     },
-    loader: {
-        position: 'absolute',
-        top: 150,
-        left: 0,
-        right: 0,
-    }
 });

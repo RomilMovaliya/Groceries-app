@@ -71,7 +71,8 @@ const CartScreen = () => {
 
                                         <Image
                                             style={{
-                                                width: responsiveWidth(25)
+                                                width: responsiveWidth(25),
+                                                height: responsiveHeight(12),
                                             }}
                                             resizeMode='contain'
                                             source={typeof item.img === 'string' ? { uri: item.img } : item.img}

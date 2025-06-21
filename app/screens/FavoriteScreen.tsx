@@ -54,7 +54,8 @@ const FavoriteScreen = () => {
 
                                 <Image
                                     style={{
-                                        width: responsiveWidth(25)
+                                        width: responsiveWidth(25),
+                                        height: responsiveHeight(12),
                                     }}
                                     resizeMode='contain'
                                     source={typeof item.img === 'string' ? { uri: item.img } : item.img}
@@ -86,11 +87,7 @@ const FavoriteScreen = () => {
                                             height={18}
                                             width={18} />
                                     </View>
-
                                 </View>
-
-
-
                             </View>
                         </View>
 

@@ -1,10 +1,34 @@
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import { ActivityIndicator, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { ProductListData } from '../store/ProductListData'
 import { router } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { fetchCategory } from '../supabase/data/dataFunction'
+import { Database } from '../database.types'
+
+export type ITEM = Database["public"]["Tables"]["category_table"]["Row"];
 
 const ProductListBox = () => {
+
+    const [productsCategory, setProductsCategory] = useState<ITEM[]>([]);
+    const [loading, setLoading] = useState(false);
+    useEffect(() => {
+        console.log('useEffect')
+        loadCategories()
+    }, [])
+
+    async function loadCategories() {
+        setLoading(true);
+        const status = await fetchCategory()
+        if (status.success) {
+            setProductsCategory(status.data ?? []);
+        } else {
+            console.log("error", status.message);
+        }
+        setLoading(false);
+    }
+
+
 
     const colorPalette = [
         { borderColor: '#53B175', backgroundColor: '#d0fac8' },
@@ -25,7 +49,7 @@ const ProductListBox = () => {
             flex: 1,
         }}>
             <FlatList
-                data={ProductListData}
+                data={productsCategory}
                 contentContainerStyle={{
                     paddingVertical: 20,
                 }}
@@ -44,23 +68,36 @@ const ProductListBox = () => {
                             }
                             ]}>
                             <Image
-                                source={item.image}
+                                style={{
+                                    height: 100,
+                                    width: 100
+                                }}
+                                resizeMode='contain'
+                                source={{ uri: item.image }}
                             />
                             <Text style={{
                                 textAlign: 'center'
                             }}>{item.title}</Text>
                         </TouchableOpacity>
                     )
-                }
-                }
-
-
+                }}
                 keyExtractor={(item) => item.id.toString()}
                 numColumns={2}
                 showsVerticalScrollIndicator={false}
                 columnWrapperStyle={styles.row}
-
             />
+
+            {loading && <ActivityIndicator
+                style={{
+                    position: 'absolute',
+                    left: 0,
+                    right: 0,
+                    top: 10,
+                    bottom: 10
+                }}
+                size={'large'}
+                color={'green'}
+            />}
         </SafeAreaView>
     )
 }
