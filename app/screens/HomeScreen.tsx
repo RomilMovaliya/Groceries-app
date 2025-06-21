@@ -13,7 +13,6 @@ import GroceriesList from '../../components/GroceriesList'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const HomeScreen = () => {
-
     const [zone, setZone] = useState(null);
     const [area, setArea] = useState(null);
 

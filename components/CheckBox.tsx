@@ -6,25 +6,37 @@ import { ProductListData } from '../store/ProductListData';
 import { router } from 'expo-router';
 import { primaryColor } from '../utils/myColors';
 import Button from './button';
+import { fetchCategory } from '../supabase/data/dataFunction';
+import { Database } from '../database.types';
 
+export type ITEM = Database["public"]["Tables"]["category_table"]["Row"];
 interface FilterContentProps {
     title: string;
 }
 
 const FilterContent: React.FC<FilterContentProps> = ({ title }) => {
-
-    const allTitles = ProductListData.map((item) => item.title);
-
+    const [allTitles, setAllTitles] = useState<ITEM[]>([]);
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
+    console.log("selectedOption", selectedOption);
 
+    useEffect(() => {
+        const categories = async () => {
+            const cate_data = await fetchCategory();
+            setAllTitles(cate_data.data);
+        }
+        categories()
+    }, []);
 
     useEffect(() => {
         setSelectedOption(title);
+        console.log("setSelectedOption", selectedOption);
+
     }, [title]);
 
     const handleApplyFilter = () => {
 
-        const selectedCategory = ProductListData.find((item) => item.title === selectedOption);
+        const selectedCategory = allTitles.find((item) => item.title === selectedOption);
+        //console.log("selectedCategory", selectedCategory);
 
         const selectedId = selectedCategory?.id;
 
@@ -41,12 +53,12 @@ const FilterContent: React.FC<FilterContentProps> = ({ title }) => {
 
             <View style={{ paddingHorizontal: 20 }}>
                 {allTitles.map((item) => (
-                    <View key={item} style={styles.checkBoxItem}>
+                    <View key={item.id} style={styles.checkBoxItem}>
                         <Checkbox
-                            status={selectedOption === item ? 'checked' : 'unchecked'}
-                            onPress={() => setSelectedOption(item)}
+                            status={selectedOption === item.title ? 'checked' : 'unchecked'}
+                            onPress={() => setSelectedOption(item.title)}
                         />
-                        <Text style={styles.label}>{item}</Text>
+                        <Text style={styles.label}>{item.title}</Text>
                     </View>
                 ))}
             </View>
@@ -80,6 +92,6 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         marginHorizontal: 20,
-        marginTop: 50,
+        marginTop: 40,
     },
 });
