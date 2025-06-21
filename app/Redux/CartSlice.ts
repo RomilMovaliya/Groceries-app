@@ -27,7 +27,7 @@ const cartSlice = createSlice({
     initialState,
     reducers: {
         addToCart: (state, action) => {
-            const isAvailable = state.items.find((value) => value.name == action.payload.name);
+            const isAvailable = state.items.find((value) => value.id == action.payload.id);
             if (isAvailable) {
                 isAvailable.quantity += action.payload.quantity ?? 1;
             } else {
@@ -37,10 +37,10 @@ const cartSlice = createSlice({
         },
         removeFromCart: (state, action) => {
             console.log("calling");
-            state.items = state.items.filter((value) => value.name != action.payload.name);
+            state.items = state.items.filter((value) => value.id != action.payload.id);
         },
         IncremetQuantity: (state, action) => {
-            const isAvailable = state.items.find((value) => value.name == action.payload.name);
+            const isAvailable = state.items.find((value) => value.id == action.payload.id);
             if (isAvailable) {
                 isAvailable.quantity += 1;
                 console.log("quantity adding by one");
@@ -49,7 +49,7 @@ const cartSlice = createSlice({
             }
         },
         decrementQuantity: (state, action) => {
-            const isAvailable = state.items.find((value) => value.name == action.payload.name);
+            const isAvailable = state.items.find((value) => value.id == action.payload.id);
             if (isAvailable) {
 
                 if (isAvailable.quantity == 1) {

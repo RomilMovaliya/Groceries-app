@@ -71,7 +71,7 @@ const ProductDetail = () => {
 
         const isFavorite = favoriteItems.some((item) => item.id === filterProduct.id);
         if (isFavorite) {
-            dispatch(removeFromFavorite(filterProduct.name));
+            dispatch(removeFromFavorite(filterProduct.id));
         } else {
             dispatch(addToFavorite({ ...filterProduct }));
         }
