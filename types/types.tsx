@@ -37,3 +37,4 @@ export interface ProductData {
     price: number,
     img: ImageSourcePropType
 }
+
