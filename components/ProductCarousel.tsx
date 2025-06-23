@@ -1,31 +1,40 @@
 import { FlatList, FlatListProps, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import AddIcon from '../assets/plusIcon.svg';
 import { primaryColor } from '../utils/myColors';
 import { ProductData } from '../types/types';
 import { router } from 'expo-router';
+import { Database } from '../database.types';
+import { fetchCategory, fetchItemData } from '../supabase/data/dataFunction';
 
-interface ProductCarouselProps extends Omit<FlatListProps<ProductData>, 'data' | 'renderItem'> {
-    data: ProductData[],
-    numColumns?: number;
+type ITEMS = Database['public']['Tables']['items_data']['Row'];
+interface ProductCarouselProps extends Omit<FlatListProps<ITEMS>, 'data' | 'renderItem'> {
+    numColumns?: number,
+    id: number;
 }
 
-const ProductCarousel: React.FC<ProductCarouselProps> = ({ data, id, numColumns = 1, ...rest }) => {
-
-
+const ProductCarousel: React.FC<ProductCarouselProps> = ({ id, numColumns = 1, ...rest }) => {
+    const [filterProduct, setFilterProduct] = useState<ITEMS[]>([]);
+    useEffect(() => {
+        const products = async (id: number) => {
+            const fetchData = await fetchItemData(id);
+            setFilterProduct(fetchData.data);
+        }
+        products(id);
+    }, [])
     return (
         <View style={{ height: 220 }}>
             <FlatList
                 key={numColumns}
                 numColumns={numColumns}
-                data={data}
+                data={filterProduct}
                 renderItem={({ item }) => (
                     <TouchableOpacity
                         style={styles.box}
                         activeOpacity={0.7}
                         onPress={() => {
                             const data = JSON.stringify(item)
-                            router.navigate(`/screens/ProductDetail?id=${item.id}&parentid=${id}`)
+                            router.navigate(`/screens/ProductDetail?id=${item.id}&parentid=${item.category_id}`)
                         }}>
                         <Image
                             source={typeof item.img === 'string' ? { uri: item.img } : item.img}
@@ -35,7 +44,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ data, id, numColumns 
                             }}
                             resizeMode='contain'
                         />
-                        <Text>{item.name}</Text>
+                        <Text style={styles.title}>{item.name}</Text>
                         <Text>{item.pieces}, Priceg</Text>
 
                         <View style={{
@@ -65,7 +74,7 @@ export default ProductCarousel
 const styles = StyleSheet.create({
     box: {
         borderWidth: 1,
-        height: 190,
+        height: 210,
         borderColor: '#E3E3E3',
         width: 180,
         padding: 10,
@@ -81,5 +90,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: primaryColor,
+    },
+
+    title: {
+        fontSize: 12
     }
 })

@@ -14,7 +14,6 @@ export const fetchItemData = async (category_id: number) => {
     return { success: true, message: "item data successfully retrieved.", data };
 };
 
-
 export const fetchCategory = async () => {
     const { data, error } = await supabase
         .from('category_table')
