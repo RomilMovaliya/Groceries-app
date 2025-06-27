@@ -11,6 +11,7 @@
   "dependencies": {
     "@gorhom/bottom-sheet": "^5.1.5",
     "@react-native-async-storage/async-storage": "2.1.2",
+    "@react-native-community/cli": "^18.0.0",
     "@react-native-vector-icons/material-design-icons": "^12.0.0",
     "@react-navigation/native": "^7.1.9",
     "@react-navigation/native-stack": "^7.3.13",
@@ -44,8 +45,8 @@
     "react-native-vision-camera": "^4.6.4",
     "react-native-web": "^0.20.0",
     "react-redux": "^9.2.0",
-    "yup": "^1.6.1",
-    "supabase": "2.26.9"
+    "supabase": "2.26.9",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

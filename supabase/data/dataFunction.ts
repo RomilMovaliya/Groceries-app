@@ -10,7 +10,6 @@ export const fetchItemData = async (category_id: number) => {
         console.error('Error fetching data:', error);
         return { success: false, message: error.message };
     }
-    console.log("data from api", JSON.stringify(data, null, 2));
     return { success: true, message: "item data successfully retrieved.", data };
 };
 
@@ -22,7 +21,6 @@ export const fetchCategory = async () => {
         console.log('Error fetching data:', error);
         return { success: false, message: error.message };
     }
-    console.log("data from api", JSON.stringify(data, null, 2));
     return { success: true, message: "category data successfully retrieved.", data };
 };
 
