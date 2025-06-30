@@ -6,15 +6,23 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { getUserSession } from "../supabase/auth/authFunction";
 const SplashScreen = () => {
   useEffect(() => {
-    const timer = setTimeout(async () => {
-      const isLoggedIn = await getUserSession();
-      if (isLoggedIn.success) {
+    const getSession = async () => {
+      const userSession = await getUserSession();
+
+      if (userSession.user.session) {
         router.replace("/tabs");
       } else {
         router.replace("/OnBoarding");
       }
-    }, 3000);
-    return () => clearTimeout(timer);
+
+      // if (isLoggedIn.success) {
+      //   router.replace("/tabs");
+      // } else {
+      //   router.replace("/OnBoarding");
+      // }
+    };
+
+    getSession();
   }, []);
 
   return (
