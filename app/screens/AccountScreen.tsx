@@ -140,7 +140,7 @@ const AccountScreen = () => {
                 <TouchableOpacity
                   activeOpacity={1}
                   style={styles.modalContent}
-                  onPress={() => {}}
+                  onPress={() => { }}
                 >
                   <TouchableOpacity
                     onPress={() => {
@@ -211,23 +211,12 @@ const AccountScreen = () => {
             </View>
           )}
         />
-        {isLoading && (
-          <ActivityIndicator
-            style={{
-              position: "absolute",
-              left: 0,
-              right: 0,
-              top: 10,
-              bottom: 10,
-            }}
-            color={"green"}
-            size={"large"}
-          />
-        )}
+
         <View style={styles.btn}>
           <Button
             style={styles.logout}
             title="Log Out"
+            loader={isLoading}
             onPress={handleLogout}
             textStyle={{ color: primaryColor, backgroundColor: "#ebebeb" }}
           />
