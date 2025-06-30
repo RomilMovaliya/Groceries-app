@@ -10,18 +10,12 @@ import {
 import React, { useEffect, useState } from "react";
 import BackIcon from "../../assets/backIcon.svg";
 import ShareIcon from "../../assets/shareIcon.svg";
-import { router } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import UpdateItemButton from "../../components/updateItemButton";
 import ProductDescription from "../../components/productDescription";
 import Button from "../../components/button";
 import { useSearchParams } from "expo-router/build/hooks";
 import Icon from "@react-native-vector-icons/material-design-icons";
-import { ProductListData } from "../../store/ProductListData";
-import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../Redux/CartSlice";
-import { RootState } from "../Redux/Store";
-import { addToFavorite } from "../Redux/FavoriteSlice";
-import { removeFromFavorite } from "../Redux/FavoriteSlice";
 import { fetchItemData } from "../../supabase/data/dataFunction";
 import { Database } from "../../database.types";
 import {
@@ -29,6 +23,11 @@ import {
   fetchCartItems,
 } from "../../supabase/cart/cart.function";
 import { getUserSession } from "../../supabase/auth/authFunction";
+import {
+  addItemToFavorite,
+  fetchFavoriteItems,
+  removeItemFromFavorite,
+} from "../../supabase/favorite/favorite.function";
 
 export type ITEM = Database["public"]["Tables"]["items_data"]["Row"];
 export type CART_ITEM = Database["public"]["Tables"]["cart"]["Row"];
@@ -37,11 +36,12 @@ const ProductDetail = () => {
   const searchParams = useSearchParams();
   const id = Number(searchParams.get("id"));
   const parentId = Number(searchParams.get("parentid"));
+  const navigation = useNavigation();
 
   const [quantity, setQuantity] = useState(1);
   const [filterProduct, setFilterProduct] = useState<ITEM | null>(null);
   const [cartapiItems, setCartapiItems] = useState<CART_ITEM[]>([]);
-
+  const [like, setLike] = useState(false);
   const [userId, setUserId] = useState();
 
   useEffect(() => {
@@ -89,7 +89,6 @@ const ProductDetail = () => {
 
   const addToCartFunc = async () => {
     if (!filterProduct) return;
-    console.log("quantity in afftocartfunc:", quantity);
 
     const payload = {
       ...filterProduct,
@@ -97,10 +96,8 @@ const ProductDetail = () => {
     };
 
     const addData = await addItemToCart(payload, userId);
-    console.log("addData", addData);
 
     if (addData.success) {
-      console.log("Item added to Supabase cart successfully");
       router.navigate("/tabs/cart");
     } else {
       console.error("Failed to add item to cart:", addData.message);
@@ -118,41 +115,43 @@ const ProductDetail = () => {
         (item) => item.id === id
       );
       setFilterProduct(matchedProduct ?? null);
-      console.log("Matched Product:", matchedProduct);
     };
 
     productListDataFunc();
   }, [id, parentId]);
 
-  const cartItems = useSelector((state: RootState) => state.cart.items);
-  const dispatch = useDispatch();
-
-  const itemInCart = filterProduct
-    ? cartItems.find((item) => item?.id === filterProduct.id)
-    : null;
-
-  const [like, setLike] = useState(false);
-  const favoriteItems = useSelector((state: RootState) => state.favorite.items);
-
   useEffect(() => {
-    if (filterProduct) {
-      const isFavorite = favoriteItems.some(
-        (item) => item.id === filterProduct.id
-      );
-      setLike(isFavorite);
-    }
-  }, [favoriteItems, filterProduct]);
+    const fetchFavoriteData = async () => {
+      const result = await fetchFavoriteItems(userId);
 
-  const favoriteItemHandler = () => {
-    if (!filterProduct) return;
+      if (result.success) {
+        const iteminfav = result.data.some(
+          (item) => item.id === filterProduct?.id
+        );
+        setLike(iteminfav);
+      }
+    };
+    fetchFavoriteData();
+  }, [filterProduct]);
 
-    const isFavorite = favoriteItems.some(
-      (item) => item.id === filterProduct.id
-    );
-    if (isFavorite) {
-      dispatch(removeFromFavorite(filterProduct.id));
+  const favoriteItemHandler = async () => {
+    if (!filterProduct || !userId) return;
+
+    if (like) {
+      const removed = await removeItemFromFavorite(userId, filterProduct.id);
+      if (removed.success) {
+        setLike(false);
+      }
     } else {
-      dispatch(addToFavorite({ ...filterProduct }));
+      const favoritePayload = {
+        ...filterProduct,
+        quantity: 1,
+        userid: userId,
+      };
+      const added = await addItemToFavorite(favoritePayload, userId);
+      if (added.success) {
+        setLike(true);
+      }
     }
   };
 
@@ -186,7 +185,11 @@ const ProductDetail = () => {
         </View>
 
         <View style={styles.topheading}>
-          <BackIcon height={24} width={24} onPress={() => router.back()} />
+          <BackIcon
+            height={24}
+            width={24}
+            onPress={() => navigation.goBack()}
+          />
           <ShareIcon height={25} width={25} />
         </View>
 

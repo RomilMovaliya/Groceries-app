@@ -2,36 +2,20 @@ import {
   FlatList,
   Image,
   SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
   View,
 } from "react-native";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useRef, useState } from "react";
 import {
   responsiveHeight,
   responsiveWidth,
 } from "react-native-responsive-dimensions";
 import CancelIcon from "../../assets/cancelIcon.svg";
 import UpdateItemButton from "../../components/updateItemButton";
-import { useDispatch, useSelector } from "react-redux";
-import CartSlice, { removeFromCart } from "../Redux/CartSlice";
-import { RootState } from "../Redux/Store";
 import Button from "../../components/button";
 import CheckoutBottomSheet from "../../components/checkoutBottomSheet";
-import BottomSheet, {
-  BottomSheetBackdrop,
-  BottomSheetBackdropProps,
-  BottomSheetFooter,
-  BottomSheetFooterProps,
-  BottomSheetView,
-} from "@gorhom/bottom-sheet";
+import BottomSheet from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
   fetchCartItems,
@@ -39,38 +23,42 @@ import {
 } from "../../supabase/cart/cart.function";
 import { Database } from "../../database.types";
 import { getUserSession } from "../../supabase/auth/authFunction";
+import { useFocusEffect } from "expo-router";
+
 type ITEM = Database["public"]["Tables"]["cart"]["Row"];
 const CartScreen = () => {
   const [cartItems, setCartItems] = useState<ITEM[]>([]);
   const [quantity, setQuantity] = useState(1);
-
   const [userId, setUserId] = useState();
 
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      const userInfo = await getUserSession();
-      if (userInfo.success) {
-        setUserId(userInfo.user.session.user.user_metadata.sub);
-      }
-    };
-    fetchUserInfo();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      console.log("CartScreen is focused");
 
-  useEffect(() => {
-    if (!userId) return;
+      const fetchUserAndCart = async () => {
+        const userInfo = await getUserSession();
+        if (userInfo.success) {
+          const id = userInfo.user.session.user.user_metadata.sub;
+          setUserId(id);
 
-    const cartItemFunc = async () => {
-      const cartItemss = await fetchCartItems(userId);
-      if (cartItemss.success && cartItemss.data) {
-        setCartItems(cartItemss.data);
-        console.log("foundItems", JSON.stringify(cartItemss.data, null, 2));
-      } else {
-        console.log("Cart fetch failed:", cartItemss.message);
-      }
-    };
+          const cartResult = await fetchCartItems(id);
+          if (cartResult.success && cartResult.data) {
+            setCartItems(cartResult.data);
+            console.log(
+              "Cart items refreshed:",
+              JSON.stringify(cartResult.data, null, 2)
+            );
+          } else {
+            console.log("Cart fetch failed:", cartResult.message);
+          }
+        } else {
+          console.log("User session fetch failed.");
+        }
+      };
 
-    cartItemFunc();
-  }, [userId]);
+      fetchUserAndCart();
+    }, [])
+  );
 
   const removeItemFn = async (userid: string, id: number) => {
     const result = await removeItemFromCart(userid, id);
@@ -79,20 +67,12 @@ const CartScreen = () => {
     }
   };
 
-  console.log("cartItems from api jovo", JSON.stringify(cartItems, null, 2));
-
-  const storedData = useSelector((state: RootState) => state.cart.items);
-  const dispatch = useDispatch();
   const total = cartItems.reduce(
     (sum, item) => sum + item.price * (item.quantity ?? 1),
     0
   );
 
   const bottomSheetRef = useRef<BottomSheet>(null);
-
-  useEffect(() => {
-    console.log("storedData from state", storedData);
-  }, [storedData]);
 
   return (
     <>
@@ -184,9 +164,7 @@ const CartScreen = () => {
                       </Text>
                       <CancelIcon
                         onPress={() => {
-                          console.log("item.id", item.id);
                           removeItemFn(userId, item.id);
-                          //dispatch(removeFromCart({ id: item.id }));
                         }}
                         height={20}
                         width={20}
@@ -258,6 +236,7 @@ const CartScreen = () => {
             ref={bottomSheetRef}
             totalprice={total.toFixed(2)}
             children={""}
+
           />
         </SafeAreaView>
       </GestureHandlerRootView>
