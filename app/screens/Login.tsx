@@ -24,7 +24,7 @@ import Toast from "react-native-toast-message";
 
 const Login = () => {
   const [hidePassword, setHidePassword] = useState(true);
-
+  const [loading, setLoading] = useState(false);
   const togglePasswordVisibility = () => {
     setHidePassword(!hidePassword);
   };
@@ -32,15 +32,19 @@ const Login = () => {
     email: string;
     password: string;
   }) => {
+    setLoading(true);
     const data = await signInWithEmail(values.email, values.password);
-    if (data.success) {
-      router.dismissTo("/tabs/shop");
-    }
 
-    Toast.show({
-      type: "error",
-      text1: data.error,
-    });
+    if (data.success) {
+      setLoading(false);
+      router.dismissTo("/tabs/shop");
+    } else {
+      setLoading(false);
+      Toast.show({
+        type: "error",
+        text1: data.error,
+      });
+    }
 
     /*const user = await AsyncStorage.getItem('user');
         if (user) {
@@ -155,7 +159,12 @@ const Login = () => {
 
                     <Text style={styles.forgotText}>Forgot Password?</Text>
 
-                    <Button title="Log In" onPress={() => handleSubmit()} />
+                    <Button
+                      title="Log In"
+                      onPress={() => handleSubmit()}
+                      disabled={loading}
+                      loader={loading}
+                    />
 
                     <Text style={styles.signupText}>
                       Don't have an account?

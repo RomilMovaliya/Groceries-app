@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   Modal,
@@ -32,6 +33,7 @@ const AccountScreen = () => {
   const [email, setEmail] = useState("youmail@gmail.com");
   const [uri, setUri] = useState("");
   const [modeVisible, setModeVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const getUserData1 = async () => {
     const imageUri = await AsyncStorage.getItem("capturedPhoto");
     if (imageUri) {
@@ -56,15 +58,18 @@ const AccountScreen = () => {
   }, []);
 
   const handleLogout = async () => {
+    setIsLoading(true);
     const logoutstatus = await logout();
     if (logoutstatus.success) {
       router.dismissTo("/screens/Login");
+      setIsLoading(false);
     } else {
       Toast.show({
         type: "error",
         text1: "Signup Failed",
         text2: logoutstatus.message,
       });
+      setIsLoading(false);
     }
   };
 
@@ -206,7 +211,19 @@ const AccountScreen = () => {
             </View>
           )}
         />
-
+        {isLoading && (
+          <ActivityIndicator
+            style={{
+              position: "absolute",
+              left: 0,
+              right: 0,
+              top: 10,
+              bottom: 10,
+            }}
+            color={"green"}
+            size={"large"}
+          />
+        )}
         <View style={styles.btn}>
           <Button
             style={styles.logout}
