@@ -8,18 +8,11 @@ const SplashScreen = () => {
   useEffect(() => {
     const getSession = async () => {
       const userSession = await getUserSession();
-
       if (userSession.user.session) {
         router.replace("/tabs");
       } else {
         router.replace("/OnBoarding");
       }
-
-      // if (isLoggedIn.success) {
-      //   router.replace("/tabs");
-      // } else {
-      //   router.replace("/OnBoarding");
-      // }
     };
 
     getSession();
