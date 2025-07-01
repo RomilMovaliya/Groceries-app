@@ -10,24 +10,35 @@ import { fetchCategory, fetchItemData } from '../supabase/data/dataFunction';
 type ITEMS = Database['public']['Tables']['items_data']['Row'];
 interface ProductCarouselProps extends Omit<FlatListProps<ITEMS>, 'data' | 'renderItem'> {
     numColumns?: number,
-    id: number;
+    categoryId: number;
 }
 
-const ProductCarousel: React.FC<ProductCarouselProps> = ({ id, numColumns = 1, ...rest }) => {
+const ProductCarousel: React.FC<ProductCarouselProps> = ({ categoryId, numColumns = 1, ...rest }) => {
     const [filterProduct, setFilterProduct] = useState<ITEMS[]>([]);
-    useEffect(() => {
-        const products = async (id: number) => {
-            const fetchData = await fetchItemData(id);
+    const [loading, setLoading] = useState(false);
+
+    const loadProducts = async () => {
+        setLoading(true);
+        const fetchData = await fetchItemData(categoryId);
+        if (fetchData.success && fetchData.data) {
             setFilterProduct(fetchData.data);
+        } else {
+            console.log("Error fetching products:", fetchData.message);
         }
-        products(id);
-    }, [])
+        setLoading(false);
+    };
+
+    useEffect(() => {
+        loadProducts();
+    }, []);
     return (
         <View style={{ height: 220 }}>
             <FlatList
                 key={numColumns}
                 numColumns={numColumns}
                 data={filterProduct}
+                refreshing={loading}
+                onRefresh={loadProducts}
                 renderItem={({ item }) => (
                     <TouchableOpacity
                         style={styles.box}

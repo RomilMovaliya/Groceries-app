@@ -29,7 +29,6 @@ const HomeScreen = () => {
         fetchData();
     }, []);
 
-
     return (
 
         <SafeAreaView style={styles.safeArea}>
@@ -46,14 +45,14 @@ const HomeScreen = () => {
                 <CarouselScetion />
                 <ProductTitle title={'Exclusive Offers'} />
                 <ProductCarousel
-                    id={6}
+                    categoryId={6}
                     horizontal
                     showsHorizontalScrollIndicator={false}
                 />
 
                 <ProductTitle title={'Best Selling'} />
                 <ProductCarousel
-                    id={2}
+                    categoryId={2}
                     horizontal
                     showsHorizontalScrollIndicator={false}
                 />
