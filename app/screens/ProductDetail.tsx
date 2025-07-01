@@ -28,10 +28,11 @@ import {
   fetchFavoriteItems,
   removeItemFromFavorite,
 } from "../../supabase/favorite/favorite.function";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../Redux/CartSlice";
 
 export type ITEM = Database["public"]["Tables"]["items_data"]["Row"];
 export type CART_ITEM = Database["public"]["Tables"]["cart"]["Row"];
-
 const ProductDetail = () => {
   const searchParams = useSearchParams();
   const id = Number(searchParams.get("id"));
@@ -43,7 +44,9 @@ const ProductDetail = () => {
   const [cartapiItems, setCartapiItems] = useState<CART_ITEM[]>([]);
   const [like, setLike] = useState(false);
   const [userId, setUserId] = useState();
+  const [cartItems, setCartItems] = useState();
 
+  const dispatch = useDispatch();
   useEffect(() => {
     const fetchUserInfo = async () => {
       const userInfo = await getUserSession();
@@ -76,7 +79,7 @@ const ProductDetail = () => {
 
     const cartItemFunc = async () => {
       const cartItems = await fetchCartItems(userId);
-      console.log("cartItems", cartItems);
+      console.log("cartItems", cartItems.data);
 
       if (cartItems.success && cartItems.data) {
         setCartapiItems(cartItems.data);
@@ -91,13 +94,15 @@ const ProductDetail = () => {
     if (!filterProduct) return;
 
     const payload = {
-      ...filterProduct,
+      category_id: filterProduct.category_id,
+      productid: filterProduct.id,
       quantity: quantity,
     };
 
     const addData = await addItemToCart(payload, userId);
 
     if (addData.success) {
+      dispatch(addToCart(filterProduct))
       router.navigate("/tabs/cart");
     } else {
       console.error("Failed to add item to cart:", addData.message);
@@ -209,7 +214,7 @@ const ProductDetail = () => {
         </Text>
 
         <UpdateItemButton
-          itemData={filterProduct}
+          itemData={cartItems}
           storeItem={cartapiItems}
           addQuantity={() => setQuantity((prev) => prev + 1)}
           removeQuantity={() => setQuantity((prev) => Math.max(prev - 1, 1))}

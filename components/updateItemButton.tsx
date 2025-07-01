@@ -9,10 +9,14 @@ import {
 } from "../supabase/cart/cart.function";
 import { getUserSession } from "../supabase/auth/authFunction";
 import { Database } from "../database.types";
+import { useDispatch, useSelector } from "react-redux";
+import { decrementQuantity, IncremetQuantity } from "../app/Redux/CartSlice";
 
 export type CART_ITEM = Database["public"]["Tables"]["cart"]["Row"];
 interface UpdateItemButtonProps {
   itemData: {
+    items_data: any;
+    productid: number;
     id: number;
     name: string;
     quantity?: number;
@@ -21,6 +25,7 @@ interface UpdateItemButtonProps {
   addQuantity: () => void;
   removeQuantity: () => void;
   quantity?: number;
+  page?: string;
 }
 
 const UpdateItemButton: React.FC<UpdateItemButtonProps> = ({
@@ -42,43 +47,50 @@ const UpdateItemButton: React.FC<UpdateItemButtonProps> = ({
     fetchUserInfo();
   }, []);
 
+  const dispatch = useDispatch();
+  const storedData = useSelector((state: RootState) => state.cart.items);
+
   const [quantityToShow, setQuantityToShow] = useState(1);
 
+  console.log("itemdata", itemData);
+  console.log("storeItem", JSON.stringify(storeItem, null, 2));
+
+  // console.log("storeItem.find((item) => item?.items_data.id === itemData.id): ", storeItem.find((item) => item?.items_data.id === itemData?.items_data.id));
+
   const itemInSupabaseCart = useMemo(
-    () => storeItem.find((item) => item?.id === itemData?.id),
+    () => storeItem.find((item) => item?.items_data?.id === itemData?.items_data?.id),
     [storeItem, itemData?.id]
   );
+  console.log("iteminsupabase 1", itemInSupabaseCart);
 
   useEffect(() => {
     const quantity = Number(
       itemInSupabaseCart?.quantity ?? itemData?.quantity ?? 1
     );
     setQuantityToShow(quantity);
+
   }, [itemInSupabaseCart?.quantity, itemData?.quantity]);
 
   const inCrementQuantityHandler = async () => {
     const newQty = quantityToShow + 1;
 
-    const result = await incrementCartItemQuantity(userId, itemData.id);
-    console.log("itemData.id", itemData.id);
-    console.log("userId", userId);
+    const result = await incrementCartItemQuantity(userId, itemData.productid);
 
     if (result.success) {
+      dispatch(IncremetQuantity(itemData.productid))
       addQuantity();
       setQuantityToShow(newQty);
-      console.log("result.item", result.item);
     }
-    console.log("message", result.message);
   };
 
   const deCrementQuantityHandler = async () => {
     if (quantityToShow <= 1) return;
     const newQty = quantityToShow - 1;
-    const result = await decrementCartItemQuantity(userId, itemData.id);
+    const result = await decrementCartItemQuantity(userId, itemData.productid);
     if (result.success) {
+      dispatch(decrementQuantity(itemData.productid))
       removeQuantity();
       setQuantityToShow(newQty);
-      console.log("result.item", result);
     }
   };
 

@@ -25,15 +25,21 @@ import {
 import { Database } from "../../database.types";
 import { getUserSession } from "../../supabase/auth/authFunction";
 import { useFocusEffect } from "expo-router";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../Redux/Store";
+import { removeFromCart } from "../Redux/CartSlice";
 
 type ITEM = Database["public"]["Tables"]["cart"]["Row"];
-
+type ITEM_CART = Database["public"]["Tables"]["cart_table"]["Row"];
 const CartScreen = () => {
-  const [cartItems, setCartItems] = useState<ITEM[]>([]);
+  const [cartItems, setCartItems] = useState<ITEM[] | ITEM_CART[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const bottomSheetRef = useRef<BottomSheet>(null);
+
+  const storedData = useSelector((state: RootState) => state.cart.items);
+  const dispatch = useDispatch();
 
   const loadCartItems = async (uid: string, refresh = false) => {
     if (refresh) {
@@ -44,6 +50,7 @@ const CartScreen = () => {
 
     const cartResult = await fetchCartItems(uid);
     if (cartResult.success && cartResult.data) {
+      console.log("cartResult.data", JSON.stringify(cartResult.data, null, 2));
       setCartItems(cartResult.data);
     } else {
       console.log("Cart fetch failed:", cartResult.message);
@@ -74,14 +81,18 @@ const CartScreen = () => {
     if (!userId) return;
     const result = await removeItemFromCart(userId, itemId);
     if (result.success) {
+      dispatch(removeFromCart({ id: itemId }))
       await loadCartItems(userId);
     }
   };
 
+  console.log("total", cartItems);
+
   const total = cartItems.reduce(
-    (sum, item) => sum + item.price * (item.quantity ?? 1),
+    (sum, item) => sum + item.items_data.price * (item.quantity ?? 1),
     0
   );
+
 
   return (
     <GestureHandlerRootView>
@@ -96,41 +107,47 @@ const CartScreen = () => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.listContainer}
           ItemSeparatorComponent={() => <View style={styles.separator} />}
-          renderItem={({ item }) => (
-            <View style={styles.itemRow}>
-              <View style={styles.imageContainer}>
-                <Image
-                  style={styles.image}
-                  resizeMode="contain"
-                  source={
-                    typeof item.img === "string" ? { uri: item.img } : item.img
-                  }
-                />
-              </View>
-              <View style={styles.detailsContainer}>
-                <View style={styles.itemHeader}>
-                  <Text style={styles.itemName}>{item.name}</Text>
-                  <CancelIcon
-                    onPress={() => removeItemFn(item.id)}
-                    height={20}
-                    width={20}
+          renderItem={({ item }) => {
+            const product = item.items_data;
+            console.log("product inside render", product);
+            console.log("cartItems 123", JSON.stringify(cartItems, null, 2));
+
+            return (
+              <View style={styles.itemRow}>
+                <View style={styles.imageContainer}>
+                  <Image
+                    style={styles.image}
+                    resizeMode="contain"
+                    source={
+                      typeof product.img === "string" ? { uri: product.img } : product.img
+                    }
                   />
                 </View>
-                <Text>1Kg Price</Text>
-                <View style={styles.footerRow}>
-                  <UpdateItemButton
-                    storeItem={cartItems}
-                    itemData={item}
-                    addQuantity={() => { }}
-                    removeQuantity={() => { }}
-                  />
-                  <Text style={styles.priceText}>
-                    ${(item.price * item.quantity).toFixed(2)}
-                  </Text>
+                <View style={styles.detailsContainer}>
+                  <View style={styles.itemHeader}>
+                    <Text style={styles.itemName}>{product.name}</Text>
+                    <CancelIcon
+                      onPress={() => removeItemFn(item.id)}
+                      height={20}
+                      width={20}
+                    />
+                  </View>
+                  <Text>1Kg Price</Text>
+                  <View style={styles.footerRow}>
+                    <UpdateItemButton
+                      storeItem={cartItems}
+                      itemData={item}
+                      addQuantity={() => { }}
+                      removeQuantity={() => { }}
+                    />
+                    <Text style={styles.priceText}>
+                      ${(product.price * item.quantity).toFixed(2)}
+                    </Text>
+                  </View>
                 </View>
               </View>
-            </View>
-          )}
+            )
+          }}
         />
 
         <View style={styles.checkoutContainer}>
