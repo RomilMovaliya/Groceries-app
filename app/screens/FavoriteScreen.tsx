@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   SafeAreaView,
@@ -24,24 +25,40 @@ const FavoriteScreen = () => {
   const [userId, setUserId] = useState();
   const [favoriteData, setFavoriteData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [buttonLoading, setButtonLoading] = useState(false);
+  const fetchUserInfo = async () => {
+    const userInfo = await getUserSession();
+    if (userInfo.success) {
+      setUserId(userInfo.user.session.user.user_metadata.sub);
+    }
+  };
+
+  const loadFavorites = async (isRefresh = false) => {
+    if (!userId) return;
+    if (isRefresh) {
+      setIsRefreshing(true);
+    } else {
+      setIsLoading(true);
+    }
+    const data = await fetchFavoriteItems(userId);
+    if (data.success) {
+      setFavoriteData(data.data);
+    }
+    if (isRefresh) {
+      setIsRefreshing(false);
+    } else {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchUserInfo = async () => {
-      const userInfo = await getUserSession();
-      if (userInfo.success) {
-        setUserId(userInfo.user.session.user.user_metadata.sub);
-      }
-    };
     fetchUserInfo();
   }, []);
 
   useEffect(() => {
-    if (!userId) return;
-    const fetchData = async () => {
-      const data = await fetchFavoriteItems(userId);
-      setFavoriteData(data.data);
-    };
-    fetchData();
-  }, [userId, favoriteData]);
+    if (userId) loadFavorites();
+  }, [userId]);
 
   const addToCartFunc = async (item: ITEM_CART) => {
     if (!item) return;
@@ -88,6 +105,8 @@ const FavoriteScreen = () => {
           contentContainerStyle={{
             paddingHorizontal: 20,
           }}
+          refreshing={isRefreshing}
+          onRefresh={() => loadFavorites(true)}
           data={favoriteData}
           renderItem={({ item }) => (
             <View
@@ -151,7 +170,17 @@ const FavoriteScreen = () => {
             </View>
           )}
         />
-
+        {isLoading && <ActivityIndicator
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: 10,
+            bottom: 10
+          }}
+          size={'large'}
+          color={'green'}
+        />}
         <View
           style={{
             paddingHorizontal: 20,
@@ -160,17 +189,17 @@ const FavoriteScreen = () => {
         >
           <Button
             onPress={async () => {
-              setIsLoading(true);
+              setButtonLoading(true);
               for (const item of favoriteData) {
                 await addToCartFunc(item);
               }
               await fetchFavoriteItems(userId);
-              setIsLoading(false);
+              setButtonLoading(false);
               router.navigate("/tabs/cart");
             }}
             title="Add All To Cart"
-            loader={isLoading}
-            disabled={isLoading}
+            loader={buttonLoading}
+            disabled={buttonLoading}
           />
         </View>
       </View>

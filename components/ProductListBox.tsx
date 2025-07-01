@@ -12,23 +12,34 @@ const ProductListBox = () => {
 
     const [productsCategory, setProductsCategory] = useState<ITEM[]>([]);
     const [loading, setLoading] = useState(false);
+    const [isRefreshing, setIsRefreshing] = useState(false);
     useEffect(() => {
-        console.log('useEffect')
-        loadCategories()
-    }, [])
+        const fetchData = async () => {
+            await loadCategories();
+        };
+        fetchData();
+    }, []);
 
-    async function loadCategories() {
-        setLoading(true);
+
+    async function loadCategories(isRefresh = false) {
+        if (isRefresh) {
+            setIsRefreshing(true);
+        } else {
+            setLoading(true);
+        }
         const status = await fetchCategory()
         if (status.success) {
             setProductsCategory(status.data ?? []);
         } else {
             console.log("error", status.message);
         }
-        setLoading(false);
+        if (isRefresh) {
+            setIsRefreshing(false);
+        } else {
+            setLoading(false);
+        }
+
     }
-
-
 
     const colorPalette = [
         { borderColor: '#53B175', backgroundColor: '#d0fac8' },
@@ -53,6 +64,8 @@ const ProductListBox = () => {
                 contentContainerStyle={{
                     paddingVertical: 20,
                 }}
+                refreshing={isRefreshing}
+                onRefresh={() => loadCategories(true)}
                 renderItem={({ item, index }) => {
                     const color = colorPalette[index % colorPalette.length];
                     return (
@@ -86,7 +99,6 @@ const ProductListBox = () => {
                 showsVerticalScrollIndicator={false}
                 columnWrapperStyle={styles.row}
             />
-
             {loading && <ActivityIndicator
                 style={{
                     position: 'absolute',

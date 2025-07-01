@@ -13,7 +13,6 @@ import BackBtn from "../../assets/backIcon.svg";
 import ManuBtn from "../../assets/filterIcon.svg";
 import AddIcon from "../../assets/plusIcon.svg";
 import { router } from "expo-router";
-import { ProductListData } from "../../store/ProductListData";
 import { primaryColor } from "../../utils/myColors";
 import { useSearchParams } from "expo-router/build/hooks";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -29,30 +28,40 @@ const ProductList = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [productItems, setProductItems] = useState<ITEM[]>([]);
   const [loading, setLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const fetchData = async (isRefresh = false) => {
+    if (isRefresh) {
+      setIsRefreshing(true);
+    } else {
+      setLoading(true);
+    }
+
+    const productData = await fetchItemData(Number(id));
+    const category = await fetchCategory();
+
+    if (productData.success && category.success) {
+      const productItem = productData.data.filter(
+        (item) => item.category_id === Number(id)
+      );
+      setProductItems(productItem);
+      const categoryItem = category.data.find((item) => item.id === Number(id));
+      setSelectedCategory(categoryItem?.title);
+    } else {
+      console.log("productData's error", productData.message);
+      console.log("category's error", category.message);
+    }
+
+    if (isRefresh) {
+      setIsRefreshing(false);
+    } else {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const productData = await fetchItemData(Number(id));
-      const category = await fetchCategory();
-
-      if (productData.success && category.success) {
-        const productItem = productData.data.filter(
-          (item) => item.category_id === Number(id)
-        );
-        setProductItems(productItem);
-        const categoryItem = category.data.find(
-          (item) => item.id === Number(id)
-        );
-        setSelectedCategory(categoryItem?.title);
-      } else {
-        console.log("productData's error", productData.message);
-        console.log("category's error", category.message);
-      }
-      setLoading(false);
-    };
     fetchData();
-  }, []);
+  }, [])
 
   const bottomSheetRef = useRef<BottomSheet>(null);
   const openBottomSheet = () => bottomSheetRef.current?.expand();
@@ -86,6 +95,8 @@ const ProductList = () => {
           contentContainerStyle={{ padding: 10, paddingBottom: 70 }}
           numColumns={2}
           data={productItems}
+          refreshing={isRefreshing}
+          onRefresh={() => fetchData(true)}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
             <TouchableOpacity
@@ -131,25 +142,23 @@ const ProductList = () => {
           keyExtractor={(item) => item.id.toString()}
         />
 
-        {loading && (
-          <ActivityIndicator
-            style={{
-              position: "absolute",
-              left: 0,
-              right: 0,
-              top: 10,
-              bottom: 10,
-            }}
-            color={"green"}
-            size={"large"}
-          />
-        )}
-
         <FilterBottomSheet
           title={selectedCategory}
           parentid={id}
           ref={bottomSheetRef}
         />
+
+        {loading && <ActivityIndicator
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: 10,
+            bottom: 10
+          }}
+          size={'large'}
+          color={'green'}
+        />}
       </SafeAreaView>
     </GestureHandlerRootView>
   );
