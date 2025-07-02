@@ -72,16 +72,19 @@ const FavoriteScreen = () => {
     if (!item) return;
 
     const payload = {
+      id: item.id,
       category_id: item.category_id,
       productid: item.id,
       quantity: 1,
+      userid: userId,
     };
+    console.log("payload", payload);
 
 
     const addData = await addItemToCart(payload, userId);
 
     if (addData.success) {
-      await dispatch(addCartItem({ userId, cartItems: payload }) as any);
+      await dispatch(addCartItem({ userId, item: payload }) as any);
       console.log("Item added to Supabase cart successfully");
     } else {
       console.error("Failed to add item to cart:", addData.message);

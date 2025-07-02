@@ -18,10 +18,6 @@ import { useSearchParams } from "expo-router/build/hooks";
 import Icon from "@react-native-vector-icons/material-design-icons";
 import { fetchItemData } from "../../supabase/data/dataFunction";
 import { Database } from "../../database.types";
-import {
-  addItemToCart,
-  fetchCartItems,
-} from "../../supabase/cart/cart.function";
 import { getUserSession } from "../../supabase/auth/authFunction";
 import {
   addItemToFavorite,
@@ -30,10 +26,11 @@ import {
 } from "../../supabase/favorite/favorite.function";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../Redux/Store";
-import { addCartItem } from "../Redux/cart.thunks";
+import { addCartItem, fetchCart } from "../Redux/cart.thunks";
 
 export type ITEM = Database["public"]["Tables"]["items_data"]["Row"];
 export type CART_ITEM = Database["public"]["Tables"]["cart"]["Row"];
+
 const ProductDetail = () => {
   const searchParams = useSearchParams();
   const id = Number(searchParams.get("id"));
@@ -42,186 +39,151 @@ const ProductDetail = () => {
 
   const [quantity, setQuantity] = useState(1);
   const [filterProduct, setFilterProduct] = useState<ITEM | null>(null);
-  const [cartapiItems, setCartapiItems] = useState<CART_ITEM[]>([]);
   const [like, setLike] = useState(false);
-  const [userId, setUserId] = useState();
+  const [userId, setUserId] = useState<string>("");
   const [fullCartItem, setFullCartItem] = useState<any>();
   const [isInCart, setIsInCart] = useState(false);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
 
   const dispatch = useDispatch();
   const { items: cartItems, loading } = useSelector(
     (state: RootState) => state.cart
   );
 
-
-  //console.log("Cart State:", cartItems);
-
-
+  // Initialize user session
   useEffect(() => {
     const fetchUserInfo = async () => {
       const userInfo = await getUserSession();
       if (userInfo.success) {
-        setUserId(userInfo.user.session.user.user_metadata.sub);
+        const uid = userInfo.user.session.user.user_metadata.sub;
+        setUserId(uid);
+        // Load cart items when user is found
+        await dispatch(fetchCart(uid) as any);
       }
     };
     fetchUserInfo();
-  }, []);
+  }, [dispatch]);
 
+  // Fetch product data
   useEffect(() => {
     const productListDataFunc = async () => {
       if (!parentId || !id) {
         console.warn("Invalid parentId or id");
         return;
       }
-      const productListData = await fetchItemData(parentId);
-      // console.log("productListData", JSON.stringify(productListData.data, null, 2));
 
-      const matchedProduct = productListData.data?.find(
-        (item) => item.id === id
-      );
-      setFilterProduct(matchedProduct ?? null);
-      // console.log("Matched Product:", JSON.stringify(matchedProduct, null, 2));
+      try {
+        const productListData = await fetchItemData(parentId);
+        const matchedProduct = productListData.data?.find(
+          (item) => item.id === id
+        );
+
+        if (matchedProduct) {
+          setFilterProduct(matchedProduct);
+
+          // Create cart item payload
+          const payload = {
+            items_data: matchedProduct,
+            productid: matchedProduct.id,
+            quantity: quantity,
+            id: 0, // This will be set by the database
+            category_id: matchedProduct.category_id,
+          };
+          setFullCartItem(payload);
+        }
+      } catch (error) {
+        console.error("Error fetching product data:", error);
+      }
     };
 
     productListDataFunc();
-  }, [id, parentId]);
+  }, [id, parentId, quantity]);
 
+  // Check if item is in cart
   useEffect(() => {
-    if (!userId) return;
-
-    const cartItemFunc = async () => {
-      const cartItems = await fetchCartItems(userId);
-      // console.log("cartItems", cartItems.data);
-
-      if (cartItems.success && cartItems.data) {
-        setCartapiItems(cartItems.data);
-        const exists = cartItems.data.some(
-          (cartItem) => cartItem.productid === filterProduct?.id
-        );
-        setIsInCart(exists);
-        // console.log("foundItems", JSON.stringify(cartItems.data, null, 2));
-      }
-    };
-    cartItemFunc();
-  }, [userId]);
-
-  useEffect(() => {
-    if (filterProduct) {
+    if (filterProduct && cartItems.length >= 0) {
       const exists = cartItems.some(
         (item) => item.productid === filterProduct.id
       );
       setIsInCart(exists);
     }
-  }, [userId, cartItems, filterProduct]);
+  }, [filterProduct, cartItems]);
 
-
-  useEffect(() => {
-    if (!userId || !filterProduct) return;
-
-    const checkCartItem = async () => {
-      // Use API cart only if redux cart is empty
-      if (cartItems.length === 0) {
-        const cartRes = await fetchCartItems(userId);
-        if (cartRes.success && cartRes.data) {
-          const inCart = cartRes.data.some(
-            (item) => item.productid === filterProduct.id
-          );
-          setIsInCart(inCart);
-          setCartapiItems(cartRes.data);
-        }
-      } else {
-        const exists = cartItems.some(
-          (item) => item.productid === filterProduct.id
-        );
-        setIsInCart(exists);
-      }
-    };
-
-    checkCartItem();
-  }, [userId, filterProduct]);
-
-  const addToCartFunc = async () => {
-    if (!filterProduct) return;
-
-    const payload = {
-      category_id: filterProduct.category_id,
-      productid: filterProduct.id,
-      quantity: quantity,
-    };
-
-    const addData = await addItemToCart(payload, userId);
-
-    if (addData.success) {
-      await dispatch(addCartItem({ userId, item: payload }) as any);
-    } else {
-      console.error("Failed to add item to cart:", addData.message);
-    }
-  };
-
-  useEffect(() => {
-    const productListDataFunc = async () => {
-      if (!parentId || !id) {
-        console.warn("Invalid parentId or id");
-        return;
-      }
-      const productListData = await fetchItemData(parentId);
-      const matchedProduct = productListData.data?.find(
-        (item) => item.id === id
-      );
-      setFilterProduct(matchedProduct ?? null);
-      const payload = {
-        items_data: matchedProduct,
-        productid: matchedProduct?.id,
-        quantity: 1,
-      }
-      //console.log("payload", payload);
-
-      setFullCartItem(payload);
-    };
-
-    productListDataFunc();
-  }, [id, parentId]);
-
+  // Fetch favorite status
   useEffect(() => {
     const fetchFavoriteData = async () => {
-      const result = await fetchFavoriteItems(userId);
+      if (!userId || !filterProduct) return;
 
-      if (result.success) {
-        const iteminfav = result.data.some(
-          (item) => item.id === filterProduct?.id
-        );
-        setLike(iteminfav);
+      try {
+        const result = await fetchFavoriteItems(userId);
+        if (result.success) {
+          const itemInFav = result.data.some(
+            (item) => item.id === filterProduct.id
+          );
+          setLike(itemInFav);
+        }
+      } catch (error) {
+        console.error("Error fetching favorite data:", error);
       }
     };
     fetchFavoriteData();
-  }, [filterProduct]);
+  }, [filterProduct, userId]);
+
+  const addToCartFunc = async () => {
+    if (!filterProduct || !userId || isAddingToCart) return;
+
+    setIsAddingToCart(true);
+    try {
+      const payload = {
+
+        productid: filterProduct.id,
+        quantity: quantity,
+        userid: userId,
+        category_id: filterProduct.category_id,
+      };
+
+      const result = await dispatch(addCartItem({ userId, item: payload }) as any);
+
+      if (result.type.endsWith('/fulfilled')) {
+        setIsInCart(true);
+        // Optionally refresh cart to get latest data
+        await dispatch(fetchCart(userId) as any);
+      }
+    } catch (error) {
+      console.error("Failed to add item to cart:", error);
+    } finally {
+      setIsAddingToCart(false);
+    }
+  };
 
   const favoriteItemHandler = async () => {
     if (!filterProduct || !userId) return;
 
-    if (like) {
-      const removed = await removeItemFromFavorite(userId, filterProduct.id);
-      if (removed.success) {
-        setLike(false);
+    try {
+      if (like) {
+        const removed = await removeItemFromFavorite(userId, filterProduct.id);
+        if (removed.success) {
+          setLike(false);
+        }
+      } else {
+        const favoritePayload = {
+          ...filterProduct,
+          quantity: 1,
+          userid: userId,
+        };
+        const added = await addItemToFavorite(favoritePayload, userId);
+        if (added.success) {
+          setLike(true);
+        }
       }
-    } else {
-      const favoritePayload = {
-        ...filterProduct,
-        quantity: 1,
-        userid: userId,
-      };
-      const added = await addItemToFavorite(favoritePayload, userId);
-      if (added.success) {
-        setLike(true);
-      }
+    } catch (error) {
+      console.error("Error handling favorite:", error);
     }
   };
 
   if (!filterProduct) {
     return (
-      <SafeAreaView
-        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-      >
+      <SafeAreaView style={styles.loadingContainer}>
         <Text>Loading product details...</Text>
       </SafeAreaView>
     );
@@ -235,28 +197,21 @@ const ProductDetail = () => {
       >
         <View style={styles.topBox}>
           <Image
-            style={{
-              width: "90%",
-              height: "100%",
-              alignSelf: "center",
-              marginBottom: 10,
-            }}
+            style={styles.productImage}
             resizeMode="contain"
             source={{ uri: filterProduct.img }}
           />
         </View>
 
         <View style={styles.topheading}>
-          <BackIcon
-            height={24}
-            width={24}
-            onPress={() => navigation.goBack()}
-          />
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <BackIcon height={24} width={24} />
+          </TouchableOpacity>
           <ShareIcon height={25} width={25} />
         </View>
 
         <View style={styles.titleRow}>
-          <Text>{filterProduct.name}</Text>
+          <Text style={styles.productTitle}>{filterProduct.name}</Text>
           <TouchableOpacity onPress={favoriteItemHandler}>
             <Icon
               name={like ? "heart" : "heart-outline"}
@@ -270,9 +225,10 @@ const ProductDetail = () => {
           1kg, Price ${filterProduct.price}
         </Text>
 
+
         <UpdateItemButton
           itemData={fullCartItem}
-          storeItem={cartapiItems}
+          storeItem={cartItems}
           addQuantity={() => setQuantity((prev) => prev + 1)}
           removeQuantity={() => setQuantity((prev) => Math.max(prev - 1, 1))}
           quantity={quantity}
@@ -300,18 +256,24 @@ const ProductDetail = () => {
 
       <View style={styles.bottomButton}>
         <Button
-          title="Add To Basket"
-          onPress={() => addToCartFunc()}
-          loader={loading}
-          disabled={isInCart || loading}
+          title={isInCart ? "Already in Cart" : "Add To Basket"}
+          onPress={addToCartFunc}
+          loader={isAddingToCart}
+          disabled={isInCart || isAddingToCart}
         />
-
       </View>
     </SafeAreaView>
   );
 };
+
 export default ProductDetail;
+
 const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   topheading: {
     position: "absolute",
     width: "100%",
@@ -319,6 +281,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     paddingVertical: 30,
     justifyContent: "space-between",
+    zIndex: 1,
   },
   topBox: {
     alignSelf: "center",
@@ -332,19 +295,65 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 25,
     borderBottomRightRadius: 25,
   },
+  productImage: {
+    width: "90%",
+    height: "100%",
+    alignSelf: "center",
+    marginBottom: 10,
+  },
   titleRow: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     paddingHorizontal: 20,
-    paddingTop: 10,
+    paddingTop: 20,
+  },
+  productTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    flex: 1,
+    marginRight: 10,
   },
   subtitleText: {
     color: "#7C7C7C",
     paddingHorizontal: 20,
+    fontSize: 16,
+    marginTop: 5,
+  },
+  quantityContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    marginTop: 20,
+    gap: 10,
+  },
+  quantityButton: {
+    width: 40,
+    height: 40,
+    borderWidth: 1,
+    borderColor: "#E2E2E2",
+    borderRadius: 8,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  quantityButtonText: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  quantityText: {
+    fontSize: 18,
+    fontWeight: "600",
+    minWidth: 40,
+    textAlign: "center",
+    borderWidth: 1,
+    borderColor: "#E2E2E2",
+    borderRadius: 8,
+    paddingVertical: 8,
   },
   bottomButton: {
     padding: 20,
-    borderColor: "#E2E2E2",
+    borderTopWidth: 1,
+    borderTopColor: "#E2E2E2",
     backgroundColor: "white",
   },
 });

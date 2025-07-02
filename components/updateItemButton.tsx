@@ -9,11 +9,7 @@ import {
   incrementCartItem,
   decrementCartItem,
 } from "../app/Redux/cart.thunks";
-import {
-  CartWithItem,
-  IncremetQuantity,
-  decrementQuantity,
-} from "../app/Redux/CartSlice";
+import { CartWithItem } from "../app/Redux/CartSlice";
 
 export type CART_ITEM = Database["public"]["Tables"]["cart"]["Row"];
 
@@ -22,7 +18,7 @@ interface UpdateItemButtonProps {
     items_data: any;
     productid: number;
     id: number;
-    name: string;
+    name?: string;
     quantity?: number;
   };
   storeItem?: CartWithItem[];
@@ -37,11 +33,11 @@ const UpdateItemButton: React.FC<UpdateItemButtonProps> = ({
   storeItem = [],
   addQuantity,
   removeQuantity,
+  quantity,
 }) => {
   const [userId, setUserId] = useState<string | null>(null);
+  const [isUpdating, setIsUpdating] = useState(false);
   const dispatch = useDispatch();
-
-  const [quantityToShow, setQuantityToShow] = useState(1);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -56,45 +52,73 @@ const UpdateItemButton: React.FC<UpdateItemButtonProps> = ({
   const itemInReduxCart = useMemo(
     () =>
       storeItem.find(
-        (item) => item?.items_data?.id === itemData?.items_data?.id
+        (item) => item?.productid === itemData?.productid
       ),
-    [storeItem, itemData?.items_data?.id]
+    [storeItem, itemData?.productid]
   );
 
-  useEffect(() => {
-    const quantity = Number(
-      itemInReduxCart?.quantity ?? itemData?.quantity ?? 1
-    );
-    setQuantityToShow(quantity);
-  }, [itemInReduxCart?.quantity, itemData?.quantity]);
+  // Use Redux cart quantity if available, otherwise use local quantity or itemData quantity
+  const currentQuantity = itemInReduxCart?.quantity ?? quantity ?? itemData?.quantity ?? 1;
 
-  const inCrementQuantityHandler = () => {
-    if (!userId) return;
-    dispatch(incrementCartItem({ userId, productid: itemData.productid }) as any);
-    dispatch(IncremetQuantity(itemData.id));
-    setQuantityToShow((prev) => prev + 1);
+  const incrementQuantityHandler = async () => {
+    if (!userId || isUpdating || !itemData?.productid) return;
+
+    setIsUpdating(true);
+    try {
+      if (itemInReduxCart) {
+        // Item is in cart, update via Redux
+        await dispatch(incrementCartItem({ userId, productid: itemData.productid }) as any);
+      } else {
+        // Item not in cart, use local handler
+        addQuantity();
+      }
+    } catch (error) {
+      console.error('Error incrementing quantity:', error);
+    } finally {
+      setIsUpdating(false);
+    }
   };
 
-  const deCrementQuantityHandler = () => {
-    if (!userId || quantityToShow <= 1) return;
-    dispatch(decrementCartItem({ userId, productid: itemData.productid }) as any);
-    dispatch(decrementQuantity(itemData.id));
-    setQuantityToShow((prev) => prev - 1);
+  const decrementQuantityHandler = async () => {
+    if (!userId || currentQuantity <= 1 || isUpdating || !itemData?.productid) return;
+
+    setIsUpdating(true);
+    try {
+      if (itemInReduxCart) {
+        // Item is in cart, update via Redux
+        await dispatch(decrementCartItem({ userId, productid: itemData.productid }) as any);
+      } else {
+        // Item not in cart, use local handler
+        removeQuantity();
+      }
+    } catch (error) {
+      console.error('Error decrementing quantity:', error);
+    } finally {
+      setIsUpdating(false);
+    }
   };
 
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        style={styles.btnbox}
-        disabled={quantityToShow === 1}
-        onPress={deCrementQuantityHandler}
+        // style={[styles.btnbox, (currentQuantity === 1 || isUpdating) && styles.disabled]}
+        disabled={currentQuantity === 1 || isUpdating}
+        onPress={decrementQuantityHandler}
       >
         <DecrementIcon height={20} width={20} />
       </TouchableOpacity>
 
-      <Text style={styles.rectangleBox}>{quantityToShow}</Text>
+      <View style={styles.rectangleBox}>
+        <Text style={styles.quantityText} allowFontScaling={false}>
+          {currentQuantity}
+        </Text>
+      </View>
 
-      <TouchableOpacity style={styles.btnbox} onPress={inCrementQuantityHandler}>
+      <TouchableOpacity
+        // style={[styles.btnbox, isUpdating && styles.disabled]}
+        disabled={isUpdating}
+        onPress={incrementQuantityHandler}
+      >
         <IncrementIcon height={20} width={20} />
       </TouchableOpacity>
     </View>
@@ -108,15 +132,27 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     width: 40,
     height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 0.2,
+    backgroundColor: "#fff",
+    minWidth: 40,      // 👈 lock min size
+    minHeight: 40,     // 👈 lock min size
+  },
+  quantityText: {
+    fontSize: 18,
+    fontWeight: "600",
     textAlign: "center",
     textAlignVertical: "center",
-    borderWidth: 0.2,
+
   },
+
   container: {
     marginTop: 10,
     flexDirection: "row",
     alignItems: "center",
     gap: 5,
+    paddingHorizontal: 20,
   },
   btnbox: {
     height: 40,
@@ -125,5 +161,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 0.5,
     borderColor: "#E2E2E2",
+    borderRadius: 8,
+  },
+  disabled: {
+    opacity: 0.5,
   },
 });

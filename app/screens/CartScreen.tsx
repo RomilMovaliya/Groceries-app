@@ -26,7 +26,6 @@ import {
   fetchCart,
   removeCartItem,
 } from "../Redux/cart.thunks";
-import { removeFromCart } from "../Redux/CartSlice";
 
 
 const CartScreen = () => {
@@ -62,7 +61,7 @@ const CartScreen = () => {
   const removeItemFn = async (itemId: number) => {
     if (!userId) return;
     await dispatch(removeCartItem({ userId, id: itemId }) as any);
-    dispatch(removeFromCart(itemId))
+    // dispatch(removeFromCart(itemId))
   };
 
   const total = cartItems?.reduce(

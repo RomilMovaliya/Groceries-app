@@ -30,7 +30,10 @@ export const fetchCartItems = async (userid: string) => {
   return { success: true, message: "cart data fetched successfully.", data };
 };
 
-export const addItemToCart = async (item: ITEM_CART, userid: string) => {
+export const addItemToCart = async (
+  item: Omit<ITEM_CART, "id">,
+  userid: string
+) => {
   //console.log("item", item);
   try {
     const { data: existingItem, error: fetchError } = await supabase

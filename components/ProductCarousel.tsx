@@ -6,6 +6,10 @@ import { ProductData } from '../types/types';
 import { router } from 'expo-router';
 import { Database } from '../database.types';
 import { fetchCategory, fetchItemData } from '../supabase/data/dataFunction';
+import { useSelector } from 'react-redux';
+import { RootState } from '../app/Redux/Store';
+
+
 
 type ITEMS = Database['public']['Tables']['items_data']['Row'];
 interface ProductCarouselProps extends Omit<FlatListProps<ITEMS>, 'data' | 'renderItem'> {
@@ -13,11 +17,19 @@ interface ProductCarouselProps extends Omit<FlatListProps<ITEMS>, 'data' | 'rend
     categoryId: number;
 }
 
+// LOG  cartItems [{"category_id": 6, "created_at": "2025-07-02T11:00:47.682622", "id": 101, "items_data": {"id": 48, "img": "https://www.bbassets.com/media/uploads/p/l/40201858-2_2-baidyanath-nagpur-drakshasava-ayurvedic-tonic-improves-hunger-heart-health.jpg", "name": "Baidyanath Drakshasava Tonic", "nutritions": "Approx. 59 kcal per 100 ml. Promotes digestion.", "pieces": 1, "price": 260, "productdetails": "Larger pack of classic Ayurvedic Drakshasava tonic.", "rating": 5, "review": "Well-loved herbal tonic.", "volume": 650}, "productid": 48, "quantity": 1, "userid": "005a287c-f378-4d4e-ab70-14403ca6296a"}]
 const ProductCarousel: React.FC<ProductCarouselProps> = ({ categoryId, numColumns = 1, ...rest }) => {
     const [filterProduct, setFilterProduct] = useState<ITEMS[]>([]);
     const [loading, setLoading] = useState(false);
 
+    const { items: cartItems } = useSelector(
+        (state: RootState) => state.cart
+    );
+    console.log("cartItems", JSON.stringify(cartItems, null, 2));
+    console.log("filterProduct", JSON.stringify(filterProduct, null, 2));
+
     const loadProducts = async () => {
+
         setLoading(true);
         const fetchData = await fetchItemData(categoryId);
         if (fetchData.success && fetchData.data) {

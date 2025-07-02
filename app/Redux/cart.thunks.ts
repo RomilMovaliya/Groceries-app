@@ -17,20 +17,23 @@ export const fetchCart = createAsyncThunk(
     if (!res.success) {
       return thunkAPI.rejectWithValue(res.message);
     }
-    console.log(res.data);
     return res.data;
   }
 );
 
 export const addCartItem = createAsyncThunk(
   "cart/addItem",
-  async ({ item, userId }: { item: ITEM_CART; userId: string }, thunkAPI) => {
+  async (
+    { item, userId }: { item: Omit<ITEM_CART, "id">; userId: string },
+    thunkAPI
+  ) => {
     const res = await addItemToCart(item, userId);
-    console.log("res from addCartItem", res);
-
     if (!res.success) {
       return thunkAPI.rejectWithValue(res.message);
     }
+    // Return updated cart data
+    const fetchRes = await fetchCartItems(userId);
+    return fetchRes.data;
   }
 );
 
@@ -52,14 +55,12 @@ export const incrementCartItem = createAsyncThunk(
     { userId, productid }: { userId: string; productid: number },
     thunkAPI
   ) => {
-    console.log("-------------------------------");
-
-    console.log("increment ");
     const res = await incrementCartItemQuantity(userId, productid);
-    console.log("res from increment :", res.item.quantity);
     if (!res.success) {
       return thunkAPI.rejectWithValue(res.message);
     }
+    // Return the updated item data
+    return res.item;
   }
 );
 
