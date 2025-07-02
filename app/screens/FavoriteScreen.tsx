@@ -19,8 +19,9 @@ import { getUserSession } from "../../supabase/auth/authFunction";
 import { addItemToCart } from "../../supabase/cart/cart.function";
 import { router } from "expo-router";
 import { Database } from "../../database.types";
-import { useDispatch } from "react-redux";
-import { addToCart } from "../Redux/CartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../Redux/Store";
+import { addCartItem } from "../Redux/cart.thunks";
 
 type ITEM_CART = Database["public"]["Tables"]["cart"]["Row"];
 const FavoriteScreen = () => {
@@ -29,7 +30,11 @@ const FavoriteScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [buttonLoading, setButtonLoading] = useState(false);
+
   const dispatch = useDispatch();
+  const { items: cartItems, loading } = useSelector(
+    (state: RootState) => state.cart
+  );
   const fetchUserInfo = async () => {
     const userInfo = await getUserSession();
     if (userInfo.success) {
@@ -76,7 +81,7 @@ const FavoriteScreen = () => {
     const addData = await addItemToCart(payload, userId);
 
     if (addData.success) {
-      dispatch(addToCart(item))
+      await dispatch(addCartItem({ userId, cartItems: payload }) as any);
       console.log("Item added to Supabase cart successfully");
     } else {
       console.error("Failed to add item to cart:", addData.message);

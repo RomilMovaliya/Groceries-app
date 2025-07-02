@@ -28,8 +28,9 @@ import {
   fetchFavoriteItems,
   removeItemFromFavorite,
 } from "../../supabase/favorite/favorite.function";
-import { useDispatch } from "react-redux";
-import { addToCart } from "../Redux/CartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../Redux/Store";
+import { addCartItem } from "../Redux/cart.thunks";
 
 export type ITEM = Database["public"]["Tables"]["items_data"]["Row"];
 export type CART_ITEM = Database["public"]["Tables"]["cart"]["Row"];
@@ -44,9 +45,18 @@ const ProductDetail = () => {
   const [cartapiItems, setCartapiItems] = useState<CART_ITEM[]>([]);
   const [like, setLike] = useState(false);
   const [userId, setUserId] = useState();
-  const [cartItems, setCartItems] = useState();
+  const [fullCartItem, setFullCartItem] = useState<any>();
+  const [isInCart, setIsInCart] = useState(false);
 
   const dispatch = useDispatch();
+  const { items: cartItems, loading } = useSelector(
+    (state: RootState) => state.cart
+  );
+
+
+  //console.log("Cart State:", cartItems);
+
+
   useEffect(() => {
     const fetchUserInfo = async () => {
       const userInfo = await getUserSession();
@@ -64,11 +74,13 @@ const ProductDetail = () => {
         return;
       }
       const productListData = await fetchItemData(parentId);
+      // console.log("productListData", JSON.stringify(productListData.data, null, 2));
+
       const matchedProduct = productListData.data?.find(
         (item) => item.id === id
       );
       setFilterProduct(matchedProduct ?? null);
-      console.log("Matched Product:", matchedProduct);
+      // console.log("Matched Product:", JSON.stringify(matchedProduct, null, 2));
     };
 
     productListDataFunc();
@@ -79,16 +91,54 @@ const ProductDetail = () => {
 
     const cartItemFunc = async () => {
       const cartItems = await fetchCartItems(userId);
-      console.log("cartItems", cartItems.data);
+      // console.log("cartItems", cartItems.data);
 
       if (cartItems.success && cartItems.data) {
         setCartapiItems(cartItems.data);
-        console.log("foundItems", JSON.stringify(cartItems.data, null, 2));
+        const exists = cartItems.data.some(
+          (cartItem) => cartItem.productid === filterProduct?.id
+        );
+        setIsInCart(exists);
+        // console.log("foundItems", JSON.stringify(cartItems.data, null, 2));
+      }
+    };
+    cartItemFunc();
+  }, [userId]);
+
+  useEffect(() => {
+    if (filterProduct) {
+      const exists = cartItems.some(
+        (item) => item.productid === filterProduct.id
+      );
+      setIsInCart(exists);
+    }
+  }, [userId, cartItems, filterProduct]);
+
+
+  useEffect(() => {
+    if (!userId || !filterProduct) return;
+
+    const checkCartItem = async () => {
+      // Use API cart only if redux cart is empty
+      if (cartItems.length === 0) {
+        const cartRes = await fetchCartItems(userId);
+        if (cartRes.success && cartRes.data) {
+          const inCart = cartRes.data.some(
+            (item) => item.productid === filterProduct.id
+          );
+          setIsInCart(inCart);
+          setCartapiItems(cartRes.data);
+        }
+      } else {
+        const exists = cartItems.some(
+          (item) => item.productid === filterProduct.id
+        );
+        setIsInCart(exists);
       }
     };
 
-    cartItemFunc();
-  }, [userId]);
+    checkCartItem();
+  }, [userId, filterProduct]);
 
   const addToCartFunc = async () => {
     if (!filterProduct) return;
@@ -102,8 +152,7 @@ const ProductDetail = () => {
     const addData = await addItemToCart(payload, userId);
 
     if (addData.success) {
-      dispatch(addToCart(filterProduct))
-      router.navigate("/tabs/cart");
+      await dispatch(addCartItem({ userId, item: payload }) as any);
     } else {
       console.error("Failed to add item to cart:", addData.message);
     }
@@ -120,6 +169,14 @@ const ProductDetail = () => {
         (item) => item.id === id
       );
       setFilterProduct(matchedProduct ?? null);
+      const payload = {
+        items_data: matchedProduct,
+        productid: matchedProduct?.id,
+        quantity: 1,
+      }
+      //console.log("payload", payload);
+
+      setFullCartItem(payload);
     };
 
     productListDataFunc();
@@ -214,7 +271,7 @@ const ProductDetail = () => {
         </Text>
 
         <UpdateItemButton
-          itemData={cartItems}
+          itemData={fullCartItem}
           storeItem={cartapiItems}
           addQuantity={() => setQuantity((prev) => prev + 1)}
           removeQuantity={() => setQuantity((prev) => Math.max(prev - 1, 1))}
@@ -242,7 +299,13 @@ const ProductDetail = () => {
       </ScrollView>
 
       <View style={styles.bottomButton}>
-        <Button title="Add To Basket" onPress={() => addToCartFunc()} />
+        <Button
+          title="Add To Basket"
+          onPress={() => addToCartFunc()}
+          loader={loading}
+          disabled={isInCart || loading}
+        />
+
       </View>
     </SafeAreaView>
   );

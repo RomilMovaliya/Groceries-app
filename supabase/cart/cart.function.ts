@@ -19,10 +19,11 @@ export const fetchCartItems = async (userid: string) => {
     review,
     rating)`
     )
+    .order("created_at", { ascending: true })
     .eq("userid", userid);
 
   if (error) {
-    console.log("error", error.message);
+    // console.log("error", error.message);
     return { success: false, message: error.message };
   }
 
@@ -30,6 +31,7 @@ export const fetchCartItems = async (userid: string) => {
 };
 
 export const addItemToCart = async (item: ITEM_CART, userid: string) => {
+  //console.log("item", item);
   try {
     const { data: existingItem, error: fetchError } = await supabase
       .from("cart_table")
@@ -38,21 +40,24 @@ export const addItemToCart = async (item: ITEM_CART, userid: string) => {
       .eq("productid", item.productid)
       .maybeSingle();
 
+    //console.log("existingItem", existingItem);
     if (fetchError) {
-      console.log("Fetch error", fetchError.message);
+      //console.log("Fetch error", fetchError.message);
       return { success: false, message: fetchError.message };
     }
 
     if (existingItem) {
+      //console.log("existingItem", existingItem);
+
       //  If it exists, increment quantity
       const { error: updateError } = await supabase
         .from("cart_table")
-        .update({ quantity: existingItem.quantity + 1 })
+        .update({ quantity: existingItem.quantity })
         .eq("userid", userid)
         .eq("productid", item.productid);
 
       if (updateError) {
-        console.log("Update error", updateError.message);
+        //console.log("Update error", updateError.message);
         return { success: false, message: updateError.message };
       }
 
@@ -60,12 +65,12 @@ export const addItemToCart = async (item: ITEM_CART, userid: string) => {
     }
 
     //  If not exists, insert with quantity = 1
-    const { error: insertError } = await supabase
+    const { data: newData, error: insertError } = await supabase
       .from("cart_table")
       .insert([{ ...item, userid }]);
-
+    // console.log("new exist", newData);
     if (insertError) {
-      console.log("Insert error", insertError.message);
+      // console.log("Insert error", insertError.message);
       return { success: false, message: insertError.message };
     }
 
@@ -83,12 +88,12 @@ export const removeItemFromCart = async (userid: string, id: number) => {
       .match({ userid, id });
 
     if (error) {
-      console.log("Delete error", error.message);
+      //console.log("Delete error", error.message);
       return { success: false, message: error.message };
     }
     return { success: true, message: "Item removed from cart" };
   } catch (error) {
-    console.log("Error in catch", error);
+    // console.log("Error in catch", error);
     return { success: false, message: error };
   }
 };
@@ -96,7 +101,7 @@ export const removeItemFromCart = async (userid: string, id: number) => {
 export const incrementCartItemQuantity = async (userId: string, id: number) => {
   try {
     // Step 1: Fetch current quantity
-    console.log("increment cart func", { id, userId });
+    //console.log("increment cart func", { id, userId });
 
     const { data: currentData, error: fetchError } = await supabase
       .from("cart_table")
@@ -120,7 +125,7 @@ export const incrementCartItemQuantity = async (userId: string, id: number) => {
       .eq("productid", id)
       .select()
       .single();
-    console.log("quantity no 2", updatedData);
+    //console.log("quantity no 2", updatedData);
 
     if (updateError) return { success: false, message: updateError.message };
     return { success: true, message: "Quantity increased", item: updatedData };
