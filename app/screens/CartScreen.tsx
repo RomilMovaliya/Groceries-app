@@ -18,42 +18,30 @@ import Button from "../../components/button";
 import CheckoutBottomSheet from "../../components/checkoutBottomSheet";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import {
-  fetchCartItems,
-  removeItemFromCart,
-} from "../../supabase/cart/cart.function";
-import { Database } from "../../database.types";
 import { getUserSession } from "../../supabase/auth/authFunction";
 import { useFocusEffect } from "expo-router";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../Redux/Store";
+import {
+  fetchCart,
+  removeCartItem,
+} from "../Redux/cart.thunks";
 
-type ITEM = Database["public"]["Tables"]["cart"]["Row"];
 
 const CartScreen = () => {
-  const [cartItems, setCartItems] = useState<ITEM[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const bottomSheetRef = useRef<BottomSheet>(null);
 
+  const dispatch = useDispatch();
+  const { items: cartItems, loading } = useSelector(
+    (state: RootState) => state.cart
+  );
+
   const loadCartItems = async (uid: string, refresh = false) => {
-    if (refresh) {
-      setIsRefreshing(true);
-    } else {
-      setIsLoading(true);
-    }
-
-    const cartResult = await fetchCartItems(uid);
-    if (cartResult.success && cartResult.data) {
-      setCartItems(cartResult.data);
-    } else {
-      console.log("Cart fetch failed:", cartResult.message);
-    }
-
-    if (refresh) {
-      setIsRefreshing(false);
-    } else {
-      setIsLoading(false);
-    }
+    if (refresh) setIsRefreshing(true);
+    await dispatch(fetchCart(uid) as any);
+    if (refresh) setIsRefreshing(false);
   };
 
   useFocusEffect(
@@ -72,14 +60,12 @@ const CartScreen = () => {
 
   const removeItemFn = async (itemId: number) => {
     if (!userId) return;
-    const result = await removeItemFromCart(userId, itemId);
-    if (result.success) {
-      await loadCartItems(userId);
-    }
+    await dispatch(removeCartItem({ userId, id: itemId }) as any);
+    // dispatch(removeFromCart(itemId))
   };
 
-  const total = cartItems.reduce(
-    (sum, item) => sum + item.price * (item.quantity ?? 1),
+  const total = cartItems?.reduce(
+    (sum, item) => sum + item.items_data?.price * (item.quantity ?? 1),
     0
   );
 
@@ -96,41 +82,48 @@ const CartScreen = () => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.listContainer}
           ItemSeparatorComponent={() => <View style={styles.separator} />}
-          renderItem={({ item }) => (
-            <View style={styles.itemRow}>
-              <View style={styles.imageContainer}>
-                <Image
-                  style={styles.image}
-                  resizeMode="contain"
-                  source={
-                    typeof item.img === "string" ? { uri: item.img } : item.img
-                  }
-                />
-              </View>
-              <View style={styles.detailsContainer}>
-                <View style={styles.itemHeader}>
-                  <Text style={styles.itemName}>{item.name}</Text>
-                  <CancelIcon
-                    onPress={() => removeItemFn(item.id)}
-                    height={20}
-                    width={20}
+          renderItem={({ item }) => {
+            const product = item.items_data;
+            if (!product) return null;
+
+            return (
+              <View style={styles.itemRow}>
+                <View style={styles.imageContainer}>
+                  <Image
+                    style={styles.image}
+                    resizeMode="contain"
+                    source={
+                      typeof product.img === "string"
+                        ? { uri: product.img }
+                        : product.img
+                    }
                   />
                 </View>
-                <Text>1Kg Price</Text>
-                <View style={styles.footerRow}>
-                  <UpdateItemButton
-                    storeItem={cartItems}
-                    itemData={item}
-                    addQuantity={() => { }}
-                    removeQuantity={() => { }}
-                  />
-                  <Text style={styles.priceText}>
-                    ${(item.price * item.quantity).toFixed(2)}
-                  </Text>
+                <View style={styles.detailsContainer}>
+                  <View style={styles.itemHeader}>
+                    <Text style={styles.itemName}>{product.name}</Text>
+                    <CancelIcon
+                      onPress={() => removeItemFn(item.id)}
+                      height={20}
+                      width={20}
+                    />
+                  </View>
+                  <Text>1Kg Price</Text>
+                  <View style={styles.footerRow}>
+                    <UpdateItemButton
+                      storeItem={cartItems}
+                      itemData={item}
+                      addQuantity={() => { }} // hook up with increment thunk
+                      removeQuantity={() => { }} // hook up with decrement thunk
+                    />
+                    <Text style={styles.priceText}>
+                      ${(product.price * item.quantity)?.toFixed(2)}
+                    </Text>
+                  </View>
                 </View>
               </View>
-            </View>
-          )}
+            );
+          }}
         />
 
         <View style={styles.checkoutContainer}>
@@ -138,26 +131,28 @@ const CartScreen = () => {
             onPress={() => bottomSheetRef.current?.expand()}
             title="Go To Checkout"
           />
-          <Text style={styles.totalText}>${total.toFixed(2)}</Text>
+          <Text style={styles.totalText}>${total?.toFixed(2)}</Text>
         </View>
 
         <CheckoutBottomSheet
           ref={bottomSheetRef}
-          totalprice={total.toFixed(2)}
+          totalprice={total?.toFixed(2)}
           children={""}
         />
 
-        {isLoading && <ActivityIndicator
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            top: 10,
-            bottom: 10
-          }}
-          size={'large'}
-          color={'green'}
-        />}
+        {loading && !isRefreshing && (
+          <ActivityIndicator
+            style={{
+              position: "absolute",
+              left: 0,
+              right: 0,
+              top: 10,
+              bottom: 10,
+            }}
+            size={"large"}
+            color={"green"}
+          />
+        )}
       </SafeAreaView>
     </GestureHandlerRootView>
   );
